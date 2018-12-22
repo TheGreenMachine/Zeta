@@ -1,0 +1,37 @@
+/.gradle/
+*.iws
+*.iml
+*.ipr
+/.classpath
+/.project
+/.settings/
+/build/
+/bin/
+
+./.gradle
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+# User Specific Stuff
+.idea/
+
+# Why should I need to add this?
+*.class
+
+# Log Files
+*.csv
+
+1816-Project-Template.iml
+1816-Project-Template.ipr
+1816-Project-Template.iws
+
