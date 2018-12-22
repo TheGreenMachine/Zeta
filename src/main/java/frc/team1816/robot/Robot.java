@@ -1,7 +1,15 @@
 package frc.team1816.robot;
 
+import com.edinarobotics.utils.checker.Checker;
 import edu.wpi.first.wpilibj.TimedRobot;
 
+/**
+ * The main robot class.
+ *
+ * <p>This class contains procedures for initialization as well as
+ * methods to be called once and repeatedly for the autonomous,
+ * teleop, and testing states of the robot.</p>
+ */
 public class Robot extends TimedRobot {
     @Override
     public void robotInit() { }
