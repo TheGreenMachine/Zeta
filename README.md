@@ -1,4 +1,4 @@
-![The Green Machine Logo](http://edinarobotics.com/sites/all/themes/greenmachine/assets/images/Logo.gif)
+<img src=".github/assets/greenmachine_gear_eyes.svg" height="100" alt="The Green Machine"/>
 
 # Zeta
 
