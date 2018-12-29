@@ -24,7 +24,9 @@ public class Robot extends TimedRobot {
     public void teleopInit() { }
 
     @Override
-    public void testInit() { }
+    public void testInit() {
+        Checker.runTests();
+    }
 
 
     @Override
