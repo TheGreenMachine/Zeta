@@ -2,13 +2,13 @@
 
 # Zeta
 
-Zeta is FRC Team 1816's robot for the 2019 FRC season *Destination: Deep Space*. The software uses Java and the [WPILib](https://github.com/wpilibsuite/allwpilib) library.
+Zeta is FRC Team 1816's robot for the 2019 FRC season, *Destination: Deep Space*. This software uses Java 11 and the [WPILib](https://github.com/wpilibsuite/allwpilib) library.
 
 ## Prerequisites
-1. You must have JDK 8 installed on your system. You can [download it for free from Oracle here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-2. You must have either [Visual Studio Code](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) installed.
+1. You must have Java 11 installed on your system. You can [download OpenJDK 11 Here](https://openjdk.java.net/projects/jdk/11/). Alternatively, this will be installed through the WPILib One-Click Installer
+2. You must have an IDE of your choice installed. [Visual Studio Code](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) are recommended as official and unofficial options. VSCode can be optionally installed using the WPILib One-Click Installer
 3. You must have [Git](https://git-scm.com/) installed.
-4. Select `Import project from external model` and then select 'Gradle'.
+4. It is recommended that you run the [WPILib One-Click Installer](link:todo). This includes the VSCode plugins as well as all NI software tools. It does **NOT** include any CTRE software tools.
 
 ## Cloning
 
