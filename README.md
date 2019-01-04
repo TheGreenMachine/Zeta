@@ -5,8 +5,8 @@
 Zeta is FRC Team 1816's robot for the 2019 FRC season, *Destination: Deep Space*. This software uses Java 11 and the [WPILib](https://github.com/wpilibsuite/allwpilib) library.
 
 ## Prerequisites
-1. You must have Java 11 installed on your system. You can [download OpenJDK 11 Here](https://openjdk.java.net/projects/jdk/11/). Alternatively, this will be installed through the WPILib One-Click Installer
-2. You must have an IDE of your choice installed. [Visual Studio Code](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) are recommended as official and unofficial options. VSCode can be optionally installed using the WPILib One-Click Installer
+1. You must have Java 11 installed on your system. You can [download OpenJDK 11 here](https://openjdk.java.net/projects/jdk/11/) or [download Oracle's JDK 11 here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html). Alternatively, this will be installed through the WPILib One-Click Installer.
+2. You must have an IDE of your choice installed. [Visual Studio Code](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) are recommended as official and unofficial options. VSCode can be optionally installed using the WPILib One-Click Installer.
 3. You must have [Git](https://git-scm.com/) installed.
 4. It is recommended that you run the [WPILib One-Click Installer](link:todo). This includes the VSCode plugins as well as all NI software tools. It does **NOT** include any CTRE software tools.
 
@@ -32,7 +32,9 @@ $ git clone https://github.com/TheGreenMachine/Zeta.git
 
 ### Importing into Visual Studio Code
 
-<!-- TODO: Complete section -->
+1. Make sure Visual Studio Code is properly set up with the Java Development Toolchains. Refer to [the WPILib Screensteps Guide](http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/999999-installing-c-and-java-development-tools-for-frc) for further instructions.
+2. Clone the project into your desired folder.
+3. The WPILib VSCode extension should automatically detect and setup your project.
 
 ## Build and Deploy
 Build the project by running the build task through the Gradle wrapper. Just issue the following command in a Bash shell:
