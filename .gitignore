@@ -24,6 +24,8 @@ gradle-app.setting
 
 # User Specific Stuff
 .idea/
+.vscode/
+.wpilib/
 
 # Why should I need to add this?
 *.class
