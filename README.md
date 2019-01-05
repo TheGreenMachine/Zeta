@@ -54,4 +54,4 @@ To clear previous built binaries and minimize the possibility of bugs, it is rec
 $ ./gradlew clean deploy
 ```
 ---
-2018 - FRC Team 1816 The Green Machine
+2019 - FRC Team 1816 The Green Machine
