@@ -2,7 +2,9 @@ package frc.team1816.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
+/**
+ * An example of a command.
+ */
 public class ExampleCommand extends Command {
     public ExampleCommand() {
         // Use requires() here to declare subsystem dependencies
