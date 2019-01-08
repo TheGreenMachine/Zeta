@@ -10,7 +10,7 @@ public class Drivetrain extends Subsystem {
     private TalonSRX rightMain, rightSlaveOne, rightSlaveTwo;
     private TalonSRX leftMain, leftSlaveOne, leftSlaveTwo;
 
-    public Drivetrain(int rightMain, int rightSlaveOne, int rightSlaveTwo, int leftMain, int leftSlaveOne, int leftSlaveTwo) {
+    public Drivetrain(int leftMain, int leftSlaveOne, int leftSlaveTwo, int rightMain, int rightSlaveOne, int rightSlaveTwo) {
         super();
 
         this.leftMain = new TalonSRX(leftMain);

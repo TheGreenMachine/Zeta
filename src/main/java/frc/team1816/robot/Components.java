@@ -1,5 +1,7 @@
 package frc.team1816.robot;
 
+
+import frc.team1816.robot.subsystems.Drivetrain;
 /**
  * Contains all subsystems of the robot.
  * Follows the singleton pattern.
@@ -7,8 +9,19 @@ package frc.team1816.robot;
 public class Components {
     private static Components instance;
 
+    public Drivetrain drivetrain;
+
+    //TODO: Talon IDs
+    public final int LEFT_MAIN = 1;
+    public final int LEFT_SLAVE_ONE = 2;
+    public final int LEFT_SLAVE_TWO = 3;
+    public final int RIGHT_MAIN = 5;
+    public final int RIGHT_SLAVE_ONE = 6;
+    public final int RIGHT_SLAVE_TWO = 7;
+
     private Components() {
-        
+        drivetrain = new Drivetrain(LEFT_MAIN, LEFT_SLAVE_ONE, LEFT_SLAVE_TWO, 
+            RIGHT_MAIN, RIGHT_SLAVE_ONE, RIGHT_SLAVE_TWO);
     }
 
     /**
