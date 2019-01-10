@@ -28,7 +28,6 @@ public class Robot extends TimedRobot {
         Checker.runTests();
     }
 
-
     @Override
     public void disabledPeriodic() { }
     
