@@ -15,12 +15,15 @@ public class Components {
     public final int LEFT_MAIN = 1;
     public final int LEFT_SLAVE_ONE = 2;
     public final int LEFT_SLAVE_TWO = 3;
-    public final int RIGHT_MAIN = 5;
-    public final int RIGHT_SLAVE_ONE = 6;
-    public final int RIGHT_SLAVE_TWO = 7;
+    public final int RIGHT_MAIN = 4;
+    public final int RIGHT_SLAVE_ONE = 5;
+    public final int RIGHT_SLAVE_TWO = 6;
+
+    //TODO: Pigeon IMU ID
+    public final int GYRO_ID = 7;
 
     private Components() {
-        drivetrain = new Drivetrain(LEFT_MAIN, LEFT_SLAVE_ONE, LEFT_SLAVE_TWO, 
+        drivetrain = new Drivetrain(GYRO_ID, LEFT_MAIN, LEFT_SLAVE_ONE, LEFT_SLAVE_TWO,
             RIGHT_MAIN, RIGHT_SLAVE_ONE, RIGHT_SLAVE_TWO);
     }
 
