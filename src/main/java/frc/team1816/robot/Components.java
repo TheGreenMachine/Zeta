@@ -1,7 +1,7 @@
 package frc.team1816.robot;
 
-
 import frc.team1816.robot.subsystems.Drivetrain;
+
 /**
  * Contains all subsystems of the robot.
  * Follows the singleton pattern.
@@ -12,15 +12,15 @@ public class Components {
     public Drivetrain drivetrain;
 
     //TODO: Talon IDs
-    public final int LEFT_MAIN = 1;
-    public final int LEFT_SLAVE_ONE = 2;
-    public final int LEFT_SLAVE_TWO = 3;
-    public final int RIGHT_MAIN = 4;
-    public final int RIGHT_SLAVE_ONE = 5;
-    public final int RIGHT_SLAVE_TWO = 6;
+    public static final int LEFT_MAIN = 1;
+    public static final int LEFT_SLAVE_ONE = 2;
+    public static final int LEFT_SLAVE_TWO = 3;
+    public static final int RIGHT_MAIN = 4;
+    public static final int RIGHT_SLAVE_ONE = 5;
+    public static final int RIGHT_SLAVE_TWO = 6;
 
     //TODO: Pigeon IMU ID
-    public final int GYRO_ID = 7;
+    public static final int GYRO_ID = 7;
 
     private Components() {
         drivetrain = new Drivetrain(GYRO_ID, LEFT_MAIN, LEFT_SLAVE_ONE, LEFT_SLAVE_TWO,

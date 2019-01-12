@@ -17,8 +17,12 @@ public class Drivetrain extends Subsystem {
 
     private boolean isPercentOut;
 
-    public Drivetrain(int pigeonId, int leftMain, int leftSlaveOne, int leftSlaveTwo, int rightMain, int rightSlaveOne, int rightSlaveTwo) {
-        super();
+    public Drivetrain(
+            int pigeonId,
+            int leftMain, int leftSlaveOne, int leftSlaveTwo,
+            int rightMain, int rightSlaveOne, int rightSlaveTwo
+    ) {
+        super("Drivetrain");
 
         this.gyro = new PigeonIMU(pigeonId);
 
@@ -72,9 +76,8 @@ public class Drivetrain extends Subsystem {
 
     @Override
     public void periodic() {
-        double leftVel, rightVel;
-        leftVel = leftPower;
-        rightVel = rightPower; //TODO: Add velocity conversion factors.
+        double leftVel = leftPower;
+        double rightVel = rightPower; //TODO: Add velocity conversion factors.
 
         if (isPercentOut) {
             this.leftMain.set(ControlMode.PercentOutput, leftPower);
