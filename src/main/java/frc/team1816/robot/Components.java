@@ -15,6 +15,9 @@ public class Components {
     public Climber climber;
     public Birdbeak birdbeak;
 
+    // TODO: CANifier ID
+    public static final int CANIFIER_ID = 8;
+
     private Components() {
         drivetrain = new Drivetrain();
         climber = new Climber();
