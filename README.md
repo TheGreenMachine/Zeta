@@ -8,7 +8,7 @@ Zeta is FRC Team 1816's robot for the 2019 FRC season, *Destination: Deep Space*
 1. You must have Java 11 installed on your system. You can [download OpenJDK 11 here](https://openjdk.java.net/projects/jdk/11/) or [download Oracle's JDK 11 here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html). Alternatively, this will be installed through the WPILib One-Click Installer.
 2. You must have an IDE of your choice installed. [Visual Studio Code](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) are recommended as official and unofficial options. VSCode can be optionally installed using the WPILib One-Click Installer.
 3. You must have [Git](https://git-scm.com/) installed.
-4. It is recommended that you run the [WPILib One-Click Installer](link:todo). This includes the VSCode plugins as well as all NI software tools. It does **NOT** include any CTRE software tools.
+4. It is recommended that you run the [WPILib One-Click Installer](https://github.com/wpilibsuite/allwpilib/releases). This includes the VSCode plugins as well as all NI software tools. It does **NOT** include any CTRE software tools.
 
 ## Cloning
 
