@@ -3,6 +3,7 @@ package frc.team1816.robot;
 import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.Climber;
 import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.LEDManager;
 
 /**
  * Contains all subsystems of the robot.
@@ -14,6 +15,7 @@ public class Components {
     public Drivetrain drivetrain;
     public Climber climber;
     public Birdbeak birdbeak;
+    public LEDManager ledManager;
 
     // TODO: CANifier ID
     public static final int CANIFIER_ID = 8;
@@ -22,6 +24,7 @@ public class Components {
         drivetrain = new Drivetrain();
         climber = new Climber();
         birdbeak = new Birdbeak();
+        ledManager = new LEDManager(CANIFIER_ID);
     }
 
     /**
