@@ -6,6 +6,7 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Components;
 
 @RunTest
 public class LEDManager extends Subsystem implements Checkable {
@@ -29,6 +30,7 @@ public class LEDManager extends Subsystem implements Checkable {
     }
 
     public void indicateStatus(RobotStatus status) {
+        System.out.println("Robot Status: " + status.name());
         setLedColor(status.getR(), status.getG(), status.getB());
     }
 
