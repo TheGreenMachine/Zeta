@@ -10,34 +10,40 @@ public class Drivetrain extends Subsystem {
 
     private PigeonIMU gyro;
 
-    private TalonSRX rightMain, rightSlaveOne, rightSlaveTwo;
-    private TalonSRX leftMain, leftSlaveOne, leftSlaveTwo;
+    private TalonSRX rightMain;
+    private TalonSRX rightSlaveOne;
+    private TalonSRX rightSlaveTwo;
 
-    private double leftPower, rightPower;
+    private TalonSRX leftMain;
+    private TalonSRX leftSlaveOne;
+    private TalonSRX leftSlaveTwo;
+
+    private double leftPower;
+    private double rightPower;
 
     private boolean isPercentOut;
 
     public Drivetrain(
-            int pigeonID,
-            int leftMainID, int leftSlaveOneID, int leftSlaveTwoID,
-            int rightMainID, int rightSlaveOneID, int rightSlaveTwoID
+            int pigeonId,
+            int leftMainId, int leftSlaveOneId, int leftSlaveTwoId,
+            int rightMainId, int rightSlaveOneId, int rightSlaveTwoId
     ) {
         super("Drivetrain");
 
-        this.gyro = new PigeonIMU(pigeonID);
+        this.gyro = new PigeonIMU(pigeonId);
 
-        this.leftMain = new TalonSRX(leftMainID);
-        this.leftSlaveOne = new TalonSRX(leftSlaveOneID);
-        this.leftSlaveTwo = new TalonSRX(leftSlaveTwoID);
+        this.leftMain = new TalonSRX(leftMainId);
+        this.leftSlaveOne = new TalonSRX(leftSlaveOneId);
+        this.leftSlaveTwo = new TalonSRX(leftSlaveTwoId);
 
-        this.rightMain = new TalonSRX(rightMainID);
-        this.rightSlaveOne = new TalonSRX(rightSlaveOneID);
-        this.rightSlaveTwo = new TalonSRX(rightSlaveTwoID);
+        this.rightMain = new TalonSRX(rightMainId);
+        this.rightSlaveOne = new TalonSRX(rightSlaveOneId);
+        this.rightSlaveTwo = new TalonSRX(rightSlaveTwoId);
 
-        this.leftSlaveOne.set(ControlMode.Follower, leftMainID);
-        this.leftSlaveTwo.set(ControlMode.Follower, leftMainID);
-        this.rightSlaveOne.set(ControlMode.Follower, rightMainID);
-        this.rightSlaveTwo.set(ControlMode.Follower, rightMainID);
+        this.leftSlaveOne.set(ControlMode.Follower, leftMainId);
+        this.leftSlaveTwo.set(ControlMode.Follower, leftMainId);
+        this.rightSlaveOne.set(ControlMode.Follower, rightMainId);
+        this.rightSlaveTwo.set(ControlMode.Follower, rightMainId);
 
         this.leftMain.setInverted(true);
         this.leftSlaveOne.setInverted(true);
