@@ -14,8 +14,11 @@ public class CargoShooter extends Subsystem {
     private TalonSRX intake;
 
     private double armPosition;
-    private double armVelocity = 0.5;
+    private double armVelocity;
     private double intakeVelocity;
+
+    public static final double ARM_POSITION_MIN = 0;
+    public static final double ARM_POSITION_MAX = 2048;
 
     private boolean outputsChanged = false;
 
@@ -25,6 +28,7 @@ public class CargoShooter extends Subsystem {
         this.arm = new TalonSRX(armTalonId);
         this.intake = new TalonSRX(intakeTalonId);
         this.armPosition = 0;
+        this.armVelocity = 0.5;
         this.intakeVelocity = 0;
         this.outputsChanged = false;
 
@@ -35,7 +39,11 @@ public class CargoShooter extends Subsystem {
     }
 
     public void setArmPosition(double armPosition) {
-        this.armPosition = Math1816.clip(armPosition * 2048, 0, 2048);
+        this.armPosition = Math1816.coerceValue(
+                ARM_POSITION_MAX,
+                ARM_POSITION_MIN,
+                armPosition * ARM_POSITION_MAX
+        );
         outputsChanged = true;
     }
 
@@ -48,7 +56,7 @@ public class CargoShooter extends Subsystem {
     }
 
     public void setArmVelocity(double armVelocity) {
-        this.armVelocity = Math1816.clip(armVelocity, -1, 1);
+        this.armVelocity = armVelocity;
         outputsChanged = true;
     }
 
@@ -57,7 +65,7 @@ public class CargoShooter extends Subsystem {
     }
 
     public void setIntakeVelocity(double intakeVelocity) {
-        this.intakeVelocity = Math1816.clip(intakeVelocity, -1, 1);
+        this.intakeVelocity = intakeVelocity;
         outputsChanged = true;
     }
 
