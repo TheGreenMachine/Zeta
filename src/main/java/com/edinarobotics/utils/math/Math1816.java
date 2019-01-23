@@ -121,4 +121,13 @@ public final class Math1816 {
             return atanApprox(num , Math.sqrt(1 - num * num));
         }
     }
+
+    public static double clip(double value, double min, double max) {
+        if (value > max) {
+            return max;
+        } else if (value < min) {
+            return min;
+        }
+        return value;
+    }
 }
