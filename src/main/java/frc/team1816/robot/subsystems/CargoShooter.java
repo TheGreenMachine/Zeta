@@ -35,7 +35,7 @@ public class CargoShooter extends Subsystem {
     }
 
     public void setArmPosition(double armPosition) {
-        this.armPosition = Math1816.clip(armPosition, -1, 1);
+        this.armPosition = Math1816.clip(armPosition * 2048, 0, 2048);
         outputsChanged = true;
     }
 
