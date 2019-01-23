@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class BirdBeak extends Subsystem {
 
+    //TODO: Tune timer delays
+
     private Solenoid beakOpener;
     private Solenoid hatchEjector;
     private Solenoid pivoter;
