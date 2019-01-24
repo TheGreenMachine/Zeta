@@ -4,11 +4,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.edinarobotics.utils.math.Math1816;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * Subsystem for the cargo shooter.
  */
 public class CargoShooter extends Subsystem {
+
+    private static final String NAME = "CargoShooter";
 
     private TalonSRX arm;
     private TalonSRX intake;
@@ -23,7 +26,7 @@ public class CargoShooter extends Subsystem {
     private boolean outputsChanged = false;
 
     public CargoShooter(int armTalonId, int intakeTalonId) {
-        super("CargoShooter");
+        super(NAME);
 
         this.arm = new TalonSRX(armTalonId);
         this.intake = new TalonSRX(intakeTalonId);
@@ -86,4 +89,11 @@ public class CargoShooter extends Subsystem {
 
     }
 
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty(NAME + "/ArmPosition",
+                this::getArmPosition, this::setArmPosition);
+        builder.addDoubleProperty(NAME + "/IntakeVelocity",
+                this::getIntakeVelocity, this::setIntakeVelocity);
+    }
 }
