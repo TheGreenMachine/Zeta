@@ -35,7 +35,6 @@ public class CargoShooter extends Subsystem {
         arm.set(ControlMode.Position, 0.0);
         intake.set(ControlMode.PercentOutput, 0.0);
         arm.configOpenloopRamp(6.0);
-        intake.configOpenloopRamp(3.0);
     }
 
     public void setArmPosition(double armPosition) {
