@@ -11,26 +11,34 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  */
 public class CargoCollector extends Subsystem {
     private TalonSRX intake;
-    private DoubleSolenoid pivot1;
-    private DoubleSolenoid pivot2;
+    private Solenoid pivot1;
+    private Solenoid pivot2;
 
-  //  private double power;
+    private double power;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public CargoCollector(int intakeId , int pivot1CANBusId, int pivot1PCMPort , int pivot2CANbusId, int pivot2PCMPort) {
+    public CargoCollector(int intakeId , int pivot1CANBusId, int pivot2CANbusId) {
         super("CargoCollector");
         this.intake = new TalonSRX(intakeId);
-        this.pivot1 = new DoubleSolenoid(pivot1CANBusId, pivot1PCMPort);
-        this.pivot2 = new DoubleSolenoid(pivot2CANbusId, pivot2PCMPort);
+        this.pivot1 = new Solenoid(pivot1CANBusId);
+        this.pivot2 = new Solenoid(pivot2CANbusId);
 
-
-        this.pivot1.set(DoubleSolenoid.Value.kOff);
-        this.pivot2.set(DoubleSolenoid.Value.kOff);
+        intake.set(ControlMode.PercentOutput, 0.0);
+        pivot1.set(false);
+        pivot2.set(false);
     }
 
     public void setCargoCollectorIntake(double power) {
+        this.power = power;
         this.intake.set(ControlMode.PercentOutput, power);
+
+        periodic();
+    }
+
+    public void getCargoCollectorIntake() {
+        System.out.println("Intake power:" + power);
+
         periodic();
     }
 
