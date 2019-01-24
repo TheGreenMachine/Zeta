@@ -5,31 +5,51 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- * An example of a Subsystem.
- */
 public class Climber extends Subsystem {
-    private TalonSRX climb_moto1, climb_moto2;
-    private DoubleSolenoid HAB_piston;
+    private TalonSRX climbMotorOne, climbMotorTwo;
+    private DoubleSolenoid HABpiston;
 
-    public Climber(int climb_moto1, int climb_moto2, int HAB_piston ) {
-        super();
-        this.climb_moto1 = new TalonSRX(climb_moto1);
-        this.climb_moto2 = new TalonSRX(climb_moto2);
-        this.HAB_piston = new DoubleSolenoid(HAB_piston);
+    private double MotorOnePower, MotorTwoPower;
 
-        this.climb_moto1.setInverted(true);
-        this.climb_moto2.setInverted(true);
+    public Climber(int climbMotor1, int climbMotor2, int HABpistonCANId, int HABpistonPCMPort) {
+        super("Climber");
+        this.climbMotorOne = new TalonSRX(climbMotor1);
+        this.climbMotorTwo = new TalonSRX(climbMotor2);
+        this.HABpiston = new DoubleSolenoid(HABpistonCANId, HABpistonPCMPort);
 
-        this.climb_moto1.set(ControlMode.Follower, climb_moto1);
-        this.climb_moto2.set(ControlMode.Follower, climb_moto1);
+        this.HABpiston.set(DoubleSolenoid.Value.kOff);
+
+        this.climbMotorOne.setInverted(true);
+
+        this.climbMotorOne.set(ControlMode.Follower, climbMotor1);
+        this.climbMotorTwo.set(ControlMode.Follower, climbMotor1);
     }
 
-    public void initClimber(double power1, double power2, boolean piston) {
-        this.climb_moto2.set(ControlMode.PercentOutput, power1);
-        this.climb_moto1.set(ControlMode.PercentOutput, power2);
-        this.HAB_piston.set(HAB_piston);
+    public void setClimberPower(double MotorOnePower, double MotorTwoPower) {
+        this.climbMotorTwo.set(ControlMode.PercentOutput, MotorOnePower);
+        this.climbMotorOne.set(ControlMode.PercentOutput, MotorTwoPower);
 
+        periodic();
+    }
+
+    public void setHABPiston(boolean status) {
+        if(status) {
+            HABpiston.set(DoubleSolenoid.Value.kOff);
+        } else {
+            HABpiston.close();
+        }
+
+        periodic();
+    }
+    public void getHABPiston() {
+
+    }
+
+    public void getClimberPower() {
+        System.out.println("MotorOne power:" + MotorOnePower);
+        System.out.println("MotorTwo power:" + MotorTwoPower);
+
+        periodic();
     }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
