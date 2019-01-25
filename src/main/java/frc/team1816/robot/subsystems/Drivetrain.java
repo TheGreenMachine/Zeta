@@ -10,8 +10,13 @@ public class Drivetrain extends Subsystem {
 
     private PigeonIMU gyro;
 
-    private TalonSRX rightMain, rightSlaveOne, rightSlaveTwo;
-    private TalonSRX leftMain, leftSlaveOne, leftSlaveTwo;
+    private TalonSRX rightMain;
+    private TalonSRX rightSlaveOne;
+    private TalonSRX rightSlaveTwo;
+
+    private TalonSRX leftMain;
+    private TalonSRX leftSlaveOne;
+    private TalonSRX leftSlaveTwo;
 
     private double leftPower, rightPower;
 

@@ -6,51 +6,70 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Climber extends Subsystem {
-    private TalonSRX climbMotorOne, climbMotorTwo;
-    private DoubleSolenoid HABpiston;
 
-    private double MotorOnePower, MotorTwoPower;
+    //TODO: Renaming variables
 
-    public Climber(int climbMotor1, int climbMotor2, int HABpistonCANId, int HABpistonPCMPort) {
+    private TalonSRX climbMotorOne;
+    private TalonSRX climbMotorTwo;
+
+    private DoubleSolenoid habPiston;
+    private DoubleSolenoid.Value habPistonState;
+
+    private double motorOnePower;
+    private double motorTwoPower;
+
+    private boolean outputsChanged = false;
+
+    public Climber(int cmId1, int cmId2, int hpcId, int hppPortId) {
         super("Climber");
-        this.climbMotorOne = new TalonSRX(climbMotor1);
-        this.climbMotorTwo = new TalonSRX(climbMotor2);
-        this.HABpiston = new DoubleSolenoid(HABpistonCANId, HABpistonPCMPort);
 
-        this.HABpiston.set(DoubleSolenoid.Value.kOff);
+        this.climbMotorOne = new TalonSRX(cmId1);
+        this.climbMotorTwo = new TalonSRX(cmId2);
+        this.habPiston = new DoubleSolenoid(hpcId, hppPortId);
+
+        this.habPistonState = DoubleSolenoid.Value.kOff;
 
         this.climbMotorOne.setInverted(true);
 
-        this.climbMotorOne.set(ControlMode.Follower, climbMotor1);
-        this.climbMotorTwo.set(ControlMode.Follower, climbMotor1);
+        this.habPiston.set(habPistonState);
     }
+
+    //TODO: Check if call to periodic() method is necessary
 
     public void setClimberPower(double MotorOnePower, double MotorTwoPower) {
-        this.climbMotorTwo.set(ControlMode.PercentOutput, MotorOnePower);
-        this.climbMotorOne.set(ControlMode.PercentOutput, MotorTwoPower);
-
+        this.motorOnePower = MotorOnePower;
+        this.motorTwoPower = MotorTwoPower;
+        outputsChanged = true;
         periodic();
     }
 
-    public void setHABPiston(boolean status) {
-        if(status) {
-            HABpiston.set(DoubleSolenoid.Value.kOff);
-        } else {
-            HABpiston.close();
+    public void setHABPistonState(DoubleSolenoid.Value state) {
+        this.HABpistonState = state;
+        periodic();
+    }
+
+    public DoubleSolenoid.Value getHABPistonState() {
+        return HABpistonState;
+    }
+
+    public double getMotorOnePower() {
+        return motorOnePower;
+    }
+
+    public double getMotorTwoPower() {
+        return motorTwoPower;
+    }
+
+    @Override
+    public void periodic() {
+        if (outputsChanged) {
+            this.climbMotorTwo.set(ControlMode.PercentOutput, motorOnePower);
+            this.climbMotorOne.set(ControlMode.PercentOutput, motorTwoPower);
+            HABpiston.set(HABpistonState);
+            outputsChanged = false;
         }
-
-        periodic();
-    }
-    public void getHABPiston() {
-
     }
 
-    public void getClimberPower() {
-        System.out.println("MotorOne power:" + MotorOnePower);
-        System.out.println("MotorTwo power:" + MotorTwoPower);
-
-        periodic();
-    }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
