@@ -5,6 +5,7 @@ import com.edinarobotics.utils.hardware.TalonSRXFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RobotFactory {
@@ -68,7 +69,7 @@ public class RobotFactory {
 
         public static class SubsystemConfig {
             public boolean implemented = false;
-            public Map<String, Integer> talons;
+            public Map<String, Integer> talons = new HashMap<>();
 
             @Override
             public String toString() {

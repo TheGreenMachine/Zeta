@@ -8,3 +8,7 @@ subsystems:
       rightMain: 5
       rightSlaveOne: 6
       rightSlaveTwo: 7
+  climber:
+    implemented: false
+    talons:
+      one: 8
