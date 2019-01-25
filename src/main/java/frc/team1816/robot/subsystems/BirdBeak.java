@@ -16,6 +16,9 @@ public class BirdBeak extends Subsystem {
     private Solenoid pivoter;
     private TalonSRX hatchIntake;
 
+    private boolean intake;
+    private boolean outputsChanged = false;
+
     public BirdBeak(int beakOpenerID, int hatchEjectorID, int pivoterID, int hatchIntakeID) {
         super("BirdBeak");
         this.beakOpener = new Solenoid(beakOpenerID);
@@ -25,28 +28,32 @@ public class BirdBeak extends Subsystem {
     }
 
     public void ejectHatch() {
-        setIntake(false);
-        Timer.delay(0.5);
-        hatchEjector.set(true);
+        intake = false;
+        outputsChanged = true;
     }
 
     public void pickUpHatch() {
-        setIntake(true);
-        Timer.delay(0.5);
-        hatchIntake.set(ControlMode.Velocity, 0.25);
-        Timer.delay(1);
-        hatchIntake.setNeutralMode(NeutralMode.Brake);
-        beakOpener.set(true);
-        Timer.delay(0.5);
-        pivoter.set(false);
+        intake = true;
+        outputsChanged = true;
     }
 
     private void setIntake(boolean on) {
         pivoter.set(on);
         Timer.delay(0.25);
-        beakOpener.set(!on);
-        Timer.delay(0.25);
         hatchEjector.set(!on);
+        Timer.delay(0.5);
+        beakOpener.set(!on);
+        Timer.delay(0.5);
+        if(on) {
+            hatchIntake.set(ControlMode.Velocity, 0.25);
+            Timer.delay(1);
+            hatchIntake.setNeutralMode(NeutralMode.Brake);
+            beakOpener.set(true);
+            Timer.delay(0.5);
+            pivoter.set(false);
+        } else {
+            hatchEjector.set(true);
+        }
     }
 
     public boolean getIntake() {
@@ -54,7 +61,12 @@ public class BirdBeak extends Subsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {
+    protected void initDefaultCommand() { }
 
+    @Override
+    public void periodic() {
+        if(outputsChanged) {
+            setIntake(intake);
+        }
     }
 }
