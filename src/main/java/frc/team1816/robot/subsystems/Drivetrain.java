@@ -1,22 +1,30 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
+import frc.team1816.robot.RobotFactory;
 
-public class Drivetrain extends Subsystem {
+@RunTest
+public class Drivetrain extends Subsystem implements Checkable {
+    private static final String NAME = "drivetrain";
 
     private PigeonIMU gyro;
 
-    private TalonSRX rightMain;
-    private TalonSRX rightSlaveOne;
-    private TalonSRX rightSlaveTwo;
+    private IMotorControllerEnhanced rightMain;
+    private IMotorControllerEnhanced rightSlaveOne;
+    private IMotorControllerEnhanced rightSlaveTwo;
 
-    private TalonSRX leftMain;
-    private TalonSRX leftSlaveOne;
-    private TalonSRX leftSlaveTwo;
+    private IMotorControllerEnhanced leftMain;
+    private IMotorControllerEnhanced leftSlaveOne;
+    private IMotorControllerEnhanced leftSlaveTwo;
 
     private double leftPower;
     private double rightPower;
@@ -26,33 +34,22 @@ public class Drivetrain extends Subsystem {
 
     public Drivetrain(int pigeonId, int leftMainId, int leftSlaveOneId, int leftSlaveTwoId, int rightMainId,
             int rightSlaveOneId, int rightSlaveTwoId) {
-        super("Drivetrain");
+        super(NAME);
+        RobotFactory factory = Robot.FACTORY;
 
-        this.gyro = new PigeonIMU(pigeonId);
+        this.leftMain = factory.getTalon(NAME, "leftMain");
+        this.leftSlaveOne = factory.getTalon(NAME, "leftSlaveOne", "leftMain");
+        this.leftSlaveTwo = factory.getTalon(NAME, "leftSlaveTwo", "leftMain");
 
-        this.leftMain = new TalonSRX(leftMainId);
-        this.leftSlaveOne = new TalonSRX(leftSlaveOneId);
-        this.leftSlaveTwo = new TalonSRX(leftSlaveTwoId);
+        this.rightMain = factory.getTalon(NAME, "rightMain");
+        this.rightSlaveOne = factory.getTalon(NAME, "rightSlaveOne", "rightMain");
+        this.rightSlaveTwo = factory.getTalon(NAME, "rightSlaveTwo", "rightMain");
 
-        this.rightMain = new TalonSRX(rightMainId);
-        this.rightSlaveOne = new TalonSRX(rightSlaveOneId);
-        this.rightSlaveTwo = new TalonSRX(rightSlaveTwoId);
-
-        this.leftSlaveOne.set(ControlMode.Follower, leftMainId);
-        this.leftSlaveTwo.set(ControlMode.Follower, leftMainId);
-        this.rightSlaveOne.set(ControlMode.Follower, rightMainId);
-        this.rightSlaveTwo.set(ControlMode.Follower, rightMainId);
+        this.gyro = new PigeonIMU((TalonSRX) this.leftSlaveTwo);
 
         this.leftMain.setInverted(true);
         this.leftSlaveOne.setInverted(true);
         this.leftSlaveTwo.setInverted(true);
-
-        this.leftMain.setNeutralMode(NeutralMode.Brake);
-        this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
-        this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
-        this.rightMain.setNeutralMode(NeutralMode.Brake);
-        this.rightSlaveOne.setNeutralMode(NeutralMode.Brake);
-        this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
     }
 
     public double getGyroAngle() {
@@ -96,5 +93,13 @@ public class Drivetrain extends Subsystem {
 
             outputsChanged = false;
         }
+    }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        setDrivetrainPercent(0.5, 0.5);
+        Timer.delay(3);
+        setDrivetrainPercent(0, 0);
+        return true;
     }
 }

@@ -15,7 +15,9 @@ public class Robot extends TimedRobot {
     public static final RobotFactory FACTORY = new RobotFactory("zenith");
 
     @Override
-    public void robotInit() { }
+    public void robotInit() {
+        System.out.println("Initializing robot!");
+    }
 
     @Override
     public void disabledInit() { }
