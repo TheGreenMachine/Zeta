@@ -20,7 +20,7 @@ public class Components {
     private static final int RIGHT_SLAVE_TWO = 6;
 
     //TODO: Pigeon IMU ID
-    public static final int GYRO_ID = 7;
+    private static final int GYRO_ID = 7;
 
     private Components() {
         drivetrain = new Drivetrain(GYRO_ID, LEFT_MAIN, LEFT_SLAVE_ONE, LEFT_SLAVE_TWO,
