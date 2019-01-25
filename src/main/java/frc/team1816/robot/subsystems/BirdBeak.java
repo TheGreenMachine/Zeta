@@ -11,20 +11,21 @@ public class BirdBeak extends Subsystem {
 
     //TODO: Tune timer delays
 
-    private Solenoid beakOpener;
+    private Solenoid beak;
     private Solenoid hatchEjector;
-    private Solenoid pivoter;
+    private Solenoid hatchArm;
     private TalonSRX hatchIntake;
 
     private boolean intake;
     private boolean outputsChanged = false;
 
-    public BirdBeak(int beakOpenerID, int hatchEjectorID, int pivoterID, int hatchIntakeID) {
+    public BirdBeak(int beakOpenerId, int hatchEjectorId, int hatchArmId, int hatchIntakeId) {
         super("BirdBeak");
-        this.beakOpener = new Solenoid(beakOpenerID);
-        this.hatchEjector = new Solenoid(hatchEjectorID);
-        this.pivoter = new Solenoid(pivoterID);
-        this.hatchIntake = new TalonSRX(hatchIntakeID);
+        this.beak = new Solenoid(beakOpenerId);
+        this.hatchEjector = new Solenoid(hatchEjectorId);
+        this.hatchArm = new Solenoid(hatchArmId);
+        this.hatchIntake = new TalonSRX(hatchIntakeId);
+        hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 
     public void ejectHatch() {
@@ -38,26 +39,26 @@ public class BirdBeak extends Subsystem {
     }
 
     private void setIntake(boolean on) {
-        pivoter.set(on);
+        hatchArm.set(on);
         Timer.delay(0.25);
         hatchEjector.set(!on);
         Timer.delay(0.5);
-        beakOpener.set(!on);
+        beak.set(!on);
         Timer.delay(0.5);
         if(on) {
-            hatchIntake.set(ControlMode.Velocity, 0.25);
+            hatchIntake.set(ControlMode.PercentOutput, 0.25);
             Timer.delay(1);
-            hatchIntake.setNeutralMode(NeutralMode.Brake);
-            beakOpener.set(true);
+            hatchIntake.set(ControlMode.PercentOutput, 0);
+            beak.set(true);
             Timer.delay(0.5);
-            pivoter.set(false);
+            hatchArm.set(false);
         } else {
             hatchEjector.set(true);
         }
     }
 
     public boolean getIntake() {
-        return pivoter.get();
+        return hatchArm.get();
     }
 
     @Override

@@ -9,7 +9,7 @@ import frc.team1816.robot.subsystems.Drivetrain;
 public class Components {
     private static Components instance;
 
-    private Drivetrain drivetrain;
+    public Drivetrain drivetrain;
 
     //TODO: Talon IDs
     private static final int LEFT_MAIN = 1;
