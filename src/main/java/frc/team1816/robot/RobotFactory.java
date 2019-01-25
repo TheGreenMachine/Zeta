@@ -9,17 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RobotFactory {
-    private static final String CONFIG_NAME = "zeta";
-    private static RobotFactory INSTANCE;
 
     private Configuration config;
 
-    private RobotFactory() {
+    public RobotFactory(String configName) {
         Yaml yaml = new Yaml(new Constructor(Configuration.class));
         config = yaml.load(
             this.getClass()
                 .getClassLoader()
-                .getResourceAsStream(CONFIG_NAME + ".config.yml")
+                .getResourceAsStream(configName + ".config.yml")
         );
     }
 
@@ -57,13 +55,6 @@ public class RobotFactory {
 
     public Configuration.SubsystemConfig getSubsystem(String subsystem) {
         return config.subsystems.get(subsystem);
-    }
-
-    public static RobotFactory getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new RobotFactory();
-        }
-        return INSTANCE;
     }
 
     public static class Configuration {

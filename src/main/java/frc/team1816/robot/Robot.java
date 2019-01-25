@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * teleop, and testing states of the robot.</p>
  */
 public class Robot extends TimedRobot {
+
+    public static final RobotFactory FACTORY = new RobotFactory("zenith");
+
     @Override
     public void robotInit() { }
 
