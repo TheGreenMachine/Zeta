@@ -4,7 +4,7 @@ subsystems:
     talons:
       leftMain: 1
       leftSlaveOne: 2
-      leftSlaveThree: 3
+      leftSlaveTwo: 3
       rightMain: 5
       rightSlaveOne: 6
       rightSlaveTwo: 7
