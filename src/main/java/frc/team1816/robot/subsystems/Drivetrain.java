@@ -22,12 +22,10 @@ public class Drivetrain extends Subsystem {
     private double rightPower;
 
     private boolean isPercentOut;
+    private boolean outputsChanged = false;
 
-    public Drivetrain(
-            int pigeonId,
-            int leftMainId, int leftSlaveOneId, int leftSlaveTwoId,
-            int rightMainId, int rightSlaveOneId, int rightSlaveTwoId
-    ) {
+    public Drivetrain(int pigeonId, int leftMainId, int leftSlaveOneId, int leftSlaveTwoId, int rightMainId,
+            int rightSlaveOneId, int rightSlaveTwoId) {
         super("Drivetrain");
 
         this.gyro = new PigeonIMU(pigeonId);
@@ -58,13 +56,14 @@ public class Drivetrain extends Subsystem {
     }
 
     public double getGyroAngle() {
-        return gyro.getFusedHeading(); //TODO: check this method
+        return gyro.getFusedHeading(); // TODO: check this method
     }
 
     public void setDrivetrainVelocity(double leftPower, double rightPower) {
         this.leftPower = leftPower;
         this.rightPower = rightPower;
         isPercentOut = false;
+        outputsChanged = true;
         periodic();
     }
 
@@ -72,6 +71,7 @@ public class Drivetrain extends Subsystem {
         this.leftPower = leftPower;
         this.rightPower = rightPower;
         isPercentOut = true;
+        outputsChanged = true;
         periodic();
     }
 
@@ -82,15 +82,19 @@ public class Drivetrain extends Subsystem {
 
     @Override
     public void periodic() {
-        double leftVel = leftPower;
-        double rightVel = rightPower; //TODO: Add velocity conversion factors.
+        if (outputsChanged) {
+            double leftVel = leftPower;
+            double rightVel = rightPower; // TODO: Add velocity conversion factors.
 
-        if (isPercentOut) {
-            this.leftMain.set(ControlMode.PercentOutput, leftPower);
-            this.rightMain.set(ControlMode.PercentOutput, rightPower);
-        } else {
-            this.leftMain.set(ControlMode.Velocity, leftVel);
-            this.rightMain.set(ControlMode.Velocity, rightVel);
+            if (isPercentOut) {
+                this.leftMain.set(ControlMode.PercentOutput, leftPower);
+                this.rightMain.set(ControlMode.PercentOutput, rightPower);
+            } else {
+                this.leftMain.set(ControlMode.Velocity, leftVel);
+                this.rightMain.set(ControlMode.Velocity, rightVel);
+            }
+
+            outputsChanged = false;
         }
     }
 }
