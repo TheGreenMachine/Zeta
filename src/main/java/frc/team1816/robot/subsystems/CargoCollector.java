@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class CargoCollector extends Subsystem {
 
     private TalonSRX intake;
-    private Solenoid armPiston;
-
     private double power;
+
+    private Solenoid armPiston;
     private boolean pistonOn;
 
     private static boolean outputsChanged = false;
@@ -23,6 +23,7 @@ public class CargoCollector extends Subsystem {
 
     public CargoCollector(int intakeId, int pcmId, int solenoidId) {
         super("CargoCollector");
+
         this.intake = new TalonSRX(intakeId);
         this.armPiston = new Solenoid(pcmId, solenoidId);
 
