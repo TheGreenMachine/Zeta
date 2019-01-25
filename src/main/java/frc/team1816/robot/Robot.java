@@ -13,11 +13,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public class Robot extends TimedRobot {
 
-    public static final RobotFactory FACTORY = new RobotFactory("zenith");
+    public static final RobotFactory FACTORY = new RobotFactory(
+            System.getenv("ROBOT_NAME") != null
+                    ? System.getenv("ROBOT_NAME") : "zeta"
+    );
 
     @Override
     public void robotInit() {
         System.out.println("Initializing robot!");
+        System.out.println(System.getenv("ROBOT_NAME"));
     }
 
     @Override
