@@ -38,7 +38,7 @@ public class RobotFactory {
         return TalonSRXFactory.createGhostTalon();
     }
 
-    public IMotorControllerEnhanced getSlaveTalon(String subsystem, String name, String master) {
+    public IMotorControllerEnhanced getTalon(String subsystem, String name, String master) {
         if (
             isImplemented(subsystem) &&
             getSubsystem(subsystem).talons.get(name) != null &&
