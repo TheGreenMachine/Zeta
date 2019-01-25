@@ -43,12 +43,12 @@ public class Climber extends Subsystem {
         periodic();
     }
 
-    public void setHABPistonState(DoubleSolenoid.Value state) {
+    public void setHabPistonState(DoubleSolenoid.Value state) {
         this.habPistonState = state;
         periodic();
     }
 
-    public DoubleSolenoid.Value getHABPistonState() {
+    public DoubleSolenoid.Value getHabPistonState() {
         return habPistonState;
     }
 
