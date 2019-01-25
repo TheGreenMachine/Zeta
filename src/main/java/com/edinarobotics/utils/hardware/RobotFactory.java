@@ -1,7 +1,6 @@
-package frc.team1816.robot;
+package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
-import com.edinarobotics.utils.hardware.TalonSRXFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 

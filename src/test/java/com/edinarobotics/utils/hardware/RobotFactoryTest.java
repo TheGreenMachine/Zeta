@@ -1,8 +1,9 @@
-package frc.team1816.robot;
+package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.edinarobotics.utils.hardware.GhostTalonSRX;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RobotFactoryTest {
-    private RobotFactory robotFactory = RobotFactory.getInstance();
+    private RobotFactory robotFactory = new RobotFactory("zeta");
 
     @Test
     void streamExists_zeta() throws IOException {

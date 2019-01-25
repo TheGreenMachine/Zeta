@@ -10,7 +10,7 @@ import com.edinarobotics.utils.checker.RunTest;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
-import frc.team1816.robot.RobotFactory;
+import com.edinarobotics.utils.hardware.RobotFactory;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
