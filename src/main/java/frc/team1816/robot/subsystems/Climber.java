@@ -44,12 +44,12 @@ public class Climber extends Subsystem {
     }
 
     public void setHABPistonState(DoubleSolenoid.Value state) {
-        this.HABpistonState = state;
+        this.habPistonState = state;
         periodic();
     }
 
     public DoubleSolenoid.Value getHABPistonState() {
-        return HABpistonState;
+        return habPistonState;
     }
 
     public double getMotorOnePower() {
@@ -65,7 +65,7 @@ public class Climber extends Subsystem {
         if (outputsChanged) {
             this.climbMotorTwo.set(ControlMode.PercentOutput, motorOnePower);
             this.climbMotorOne.set(ControlMode.PercentOutput, motorTwoPower);
-            HABpiston.set(HABpistonState);
+            habPiston.set(habPistonState);
             outputsChanged = false;
         }
     }
