@@ -61,6 +61,19 @@ public class BirdBeak extends Subsystem {
         return hatchArm.get();
     }
 
+    public boolean getBeakState() {
+        return beak.get();
+    }
+
+    public boolean getEjectorState() {
+        return hatchEjector.get();
+    }
+
+    public double getIntakeMotorPower() {
+        return hatchIntake.getOutputCurrent();
+    }
+
+
     @Override
     protected void initDefaultCommand() { }
 
