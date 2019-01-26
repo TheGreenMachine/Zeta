@@ -11,20 +11,8 @@ public class Components {
 
     public Drivetrain drivetrain;
 
-    //TODO: Talon IDs
-    private static final int LEFT_MAIN = 1;
-    private static final int LEFT_SLAVE_ONE = 2;
-    private static final int LEFT_SLAVE_TWO = 3;
-    private static final int RIGHT_MAIN = 4;
-    private static final int RIGHT_SLAVE_ONE = 5;
-    private static final int RIGHT_SLAVE_TWO = 6;
-
-    //TODO: Pigeon IMU ID
-    private static final int GYRO_ID = 7;
-
     private Components() {
-        drivetrain = new Drivetrain(GYRO_ID, LEFT_MAIN, LEFT_SLAVE_ONE, LEFT_SLAVE_TWO,
-            RIGHT_MAIN, RIGHT_SLAVE_ONE, RIGHT_SLAVE_TWO);
+        drivetrain = new Drivetrain();
     }
 
     /**
