@@ -37,8 +37,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isSlowMode;
     private boolean outputsChanged = false;
 
-    public Drivetrain(int pigeonId, int leftMainId, int leftSlaveOneId, int leftSlaveTwoId, int rightMainId,
-            int rightSlaveOneId, int rightSlaveTwoId) {
+    public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.FACTORY;
 
