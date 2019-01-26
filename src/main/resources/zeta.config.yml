@@ -1,0 +1,14 @@
+subsystems:
+  drivetrain:
+    implemented: true
+    talons:
+      leftMain: 1
+      leftSlaveOne: 2
+      leftSlaveTwo: 3
+      rightMain: 4
+      rightSlaveOne: 5
+      rightSlaveTwo: 6
+  climber:
+    implemented: false
+    talons:
+      one: 8
