@@ -52,9 +52,9 @@ public class Drivetrain extends Subsystem implements Checkable {
 
         this.gyro = new PigeonIMU((TalonSRX) this.leftSlaveTwo);
 
-        this.leftMain.setInverted(true);
-        this.leftSlaveOne.setInverted(true);
-        this.leftSlaveTwo.setInverted(true);
+        this.rightMain.setInverted(true);
+        this.rightSlaveOne.setInverted(true);
+        this.rightSlaveTwo.setInverted(true);
     }
 
     public double getGyroAngle() {
