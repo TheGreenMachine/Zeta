@@ -2,12 +2,12 @@ subsystems:
   drivetrain:
     implemented: true
     talons:
-      leftMain: 1
-      leftSlaveOne: 2
-      leftSlaveTwo: 3
-      rightMain: 4
-      rightSlaveOne: 5
-      rightSlaveTwo: 6
+      leftMain: 14
+      leftSlaveOne: 13
+      leftSlaveTwo: 15
+      rightMain: 1
+      rightSlaveOne: 0
+      rightSlaveTwo: 2
   climber:
     implemented: false
     talons:
