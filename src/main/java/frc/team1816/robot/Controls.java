@@ -1,6 +1,7 @@
 package frc.team1816.robot;
 
 import com.edinarobotics.utils.gamepad.Gamepad;
+import frc.team1816.robot.commands.ToggleReverseModeCommand;
 import frc.team1816.robot.commands.ToggleSlowModeCommand;
 
 /**
@@ -17,6 +18,8 @@ public class Controls {
 
         gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(true));
         gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(false));
+
+        gamepadDriver.rightBumper().whenReleased(new ToggleReverseModeCommand());
     }
 
     public double getDriveThrottle() {
