@@ -30,7 +30,7 @@ public class RobotFactory {
             getSubsystem(subsystem).talons.get(name) != null &&
             getSubsystem(subsystem).talons.get(name) > -1
         ) {
-            return TalonSRXFactory.createTalon(getSubsystem(subsystem).talons.get(name));
+            return TalonSRXFactory.createDefaultTalon(getSubsystem(subsystem).talons.get(name));
         }
         return TalonSRXFactory.createGhostTalon();
     }
@@ -43,7 +43,7 @@ public class RobotFactory {
             getSubsystem(subsystem).talons.get(master) != null &&
             getSubsystem(subsystem).talons.get(master) > -1
         ) {
-            return TalonSRXFactory.createSlaveTalon(getSubsystem(subsystem).talons.get(name), getSubsystem(subsystem).talons.get(master));
+            return TalonSRXFactory.createPermanentSlaveTalon(getSubsystem(subsystem).talons.get(name), getSubsystem(subsystem).talons.get(master));
         }
         return TalonSRXFactory.createGhostTalon();
     }
