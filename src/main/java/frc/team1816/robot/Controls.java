@@ -15,7 +15,7 @@ public class Controls {
         gamepadDriver = new Gamepad(1);
     }
 
-    public double getDriveSpeed() {
+    public double getDriveThrottle() {
         return gamepadDriver.getLeftY();
     }
 

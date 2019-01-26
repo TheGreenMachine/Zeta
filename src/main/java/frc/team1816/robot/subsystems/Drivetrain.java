@@ -16,6 +16,9 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 public class Drivetrain extends Subsystem implements Checkable {
     private static final String NAME = "drivetrain";
 
+    private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
+    private static final double SLOW_MOD_ROT = 0.8;
+
     private PigeonIMU gyro;
 
     private IMotorControllerEnhanced rightMain;
@@ -28,8 +31,10 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private double leftPower;
     private double rightPower;
+    private double rotation;
 
     private boolean isPercentOut;
+    private boolean isSlowMode;
     private boolean outputsChanged = false;
 
     public Drivetrain(int pigeonId, int leftMainId, int leftSlaveOneId, int leftSlaveTwoId, int rightMainId,
@@ -57,29 +62,48 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public void setDrivetrainVelocity(double leftPower, double rightPower) {
+        setDrivetrainVelocity(leftPower, rightPower, 0);
+    }
+
+    public void setDrivetrainVelocity(double leftPower, double rightPower, double rotation) {
         this.leftPower = leftPower;
         this.rightPower = rightPower;
+        this.rotation = rotation;
         isPercentOut = false;
         outputsChanged = true;
         periodic();
     }
 
     public void setDrivetrainPercent(double leftPower, double rightPower) {
+        setDrivetrainPercent(leftPower, rightPower, 0);
+    }
+
+    public void setDrivetrainPercent(double leftPower, double rightPower, double rotation) {
         this.leftPower = leftPower;
         this.rightPower = rightPower;
+        this.rotation = rotation;
         isPercentOut = true;
         outputsChanged = true;
         periodic();
     }
 
-    @Override
-    protected void initDefaultCommand() {
-
+    public void setSlowMode(boolean slowMode) {
+        this.isSlowMode = slowMode;
+        periodic();
     }
 
     @Override
     public void periodic() {
         if (outputsChanged) {
+            if (isSlowMode) {
+                leftPower *= SLOW_MOD_THROTTLE;
+                rightPower *= SLOW_MOD_THROTTLE;
+                rotation *= SLOW_MOD_ROT;
+            }
+
+            leftPower += rotation * .55;
+            rightPower -= rotation * .55;
+
             double leftVel = leftPower;
             double rightVel = rightPower; // TODO: Add velocity conversion factors.
 
@@ -95,6 +119,11 @@ public class Drivetrain extends Subsystem implements Checkable {
         }
     }
 
+    @Override
+    protected void initDefaultCommand() {
+
+    }
+    
     @Override
     public boolean check() throws CheckFailException {
         setDrivetrainPercent(0.5, 0.5);
