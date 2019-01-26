@@ -1,6 +1,7 @@
 package frc.team1816.robot;
 
 import com.edinarobotics.utils.gamepad.Gamepad;
+import frc.team1816.robot.commands.ToggleSlowModeCommand;
 
 /**
  * Contains all control inputs of the robot.
@@ -13,6 +14,9 @@ public class Controls {
 
     private Controls() {
         gamepadDriver = new Gamepad(1);
+
+        gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(true));
+        gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(false));
     }
 
     public double getDriveThrottle() {
