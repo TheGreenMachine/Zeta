@@ -69,5 +69,6 @@ public class BirdBeak extends Subsystem {
         if(outputsChanged) {
             setIntake(intake);
         }
+        outputsChanged = false;
     }
 }
