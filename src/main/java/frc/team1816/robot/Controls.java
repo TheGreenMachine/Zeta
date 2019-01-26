@@ -1,5 +1,7 @@
 package frc.team1816.robot;
 
+import com.edinarobotics.utils.gamepad.Gamepad;
+
 /**
  * Contains all control inputs of the robot.
  * Follows the singleton pattern.
@@ -7,8 +9,18 @@ package frc.team1816.robot;
 public class Controls {
     private static Controls instance;
 
-    private Controls() {
+    public Gamepad gamepadDriver;
 
+    private Controls() {
+        gamepadDriver = new Gamepad(1);
+    }
+
+    public double getDriveSpeed() {
+        return gamepadDriver.getLeftY();
+    }
+
+    public double getDriveTurn() {
+        return gamepadDriver.getRightX();
     }
 
     /**
