@@ -50,7 +50,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveOne = factory.getTalon(NAME, "rightSlaveOne", "rightMain");
         this.rightSlaveTwo = factory.getTalon(NAME, "rightSlaveTwo", "rightMain");
 
-        this.gyro = new PigeonIMU((TalonSRX) this.leftSlaveTwo);
+        this.gyro = new PigeonIMU((TalonSRX) this.leftSlaveTwo); // TODO: Determine whether using Talon breakout or CAN bus
 
         this.rightMain.setInverted(true);
         this.rightSlaveOne.setInverted(true);
