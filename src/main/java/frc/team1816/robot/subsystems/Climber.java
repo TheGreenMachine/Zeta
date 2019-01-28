@@ -9,36 +9,35 @@ public class Climber extends Subsystem {
 
     //TODO: Renaming variables
 
-    private TalonSRX climbMotorOne;
-    private TalonSRX climbMotorTwo;
+    private TalonSRX climbMotorMaster;
+    private TalonSRX climbMotorSlave;
 
     private DoubleSolenoid habPiston;
     private DoubleSolenoid.Value habPistonState;
 
-    private double motorOnePower;
-    private double motorTwoPower;
+    private double motorPower;
 
     private boolean outputsChanged = false;
 
-    public Climber(int cmId1, int cmId2, int hpcId, int hppPortId) {
+    public Climber(int cmIdMaster, int cmIdSlave, int hpcId, int hppPortId) {
         super("Climber");
 
-        this.climbMotorOne = new TalonSRX(cmId1);
-        this.climbMotorTwo = new TalonSRX(cmId2);
+        this.climbMotorMaster = new TalonSRX(cmIdMaster);
+        this.climbMotorSlave = new TalonSRX(cmIdSlave);
         this.habPiston = new DoubleSolenoid(hpcId, hppPortId);
 
         this.habPistonState = DoubleSolenoid.Value.kOff;
 
-        this.climbMotorOne.setInverted(true);
+        this.climbMotorMaster.setInverted(true);
+        this.climbMotorSlave.set(ControlMode.Follower, cmIdMaster);
 
         this.habPiston.set(habPistonState);
     }
 
     //TODO: Check if call to periodic() method is necessary
 
-    public void setClimberPower(double MotorOnePower, double MotorTwoPower) {
-        this.motorOnePower = MotorOnePower;
-        this.motorTwoPower = MotorTwoPower;
+    public void setClimberPower(double MotorPower) {
+        this.motorPower = MotorPower;
         outputsChanged = true;
         periodic();
     }
@@ -52,19 +51,14 @@ public class Climber extends Subsystem {
         return habPistonState;
     }
 
-    public double getMotorOnePower() {
-        return motorOnePower;
-    }
-
-    public double getMotorTwoPower() {
-        return motorTwoPower;
+    public double getMotorPower() {
+        return motorPower;
     }
 
     @Override
     public void periodic() {
         if (outputsChanged) {
-            this.climbMotorTwo.set(ControlMode.PercentOutput, motorOnePower);
-            this.climbMotorOne.set(ControlMode.PercentOutput, motorTwoPower);
+            this.climbMotorMaster.set(ControlMode.PercentOutput, motorPower);
             habPiston.set(habPistonState);
             outputsChanged = false;
         }
