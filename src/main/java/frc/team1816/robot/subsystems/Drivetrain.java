@@ -103,6 +103,12 @@ public class Drivetrain extends Subsystem implements Checkable {
         periodic();
     }
 
+    public void toggleReverseMode() {
+        this.isReverseMode = !this.isReverseMode;
+        outputsChanged = true;
+        periodic();
+    }
+
     @Override
     public void periodic() {
         if (outputsChanged) {
