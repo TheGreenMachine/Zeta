@@ -3,6 +3,8 @@ package frc.team1816.robot;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1816.robot.commands.GamepadDriveCommand;
 
 /**
  * The main robot class.
@@ -22,6 +24,9 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
+
+        Components.getInstance();
+        Controls.getInstance();
     }
 
     @Override
@@ -31,7 +36,9 @@ public class Robot extends TimedRobot {
     public void autonomousInit() { }
 
     @Override
-    public void teleopInit() { }
+    public void teleopInit() {
+        Components.getInstance().drivetrain.setDefaultCommand(new GamepadDriveCommand());
+    }
 
     @Override
     public void testInit() {
@@ -45,7 +52,9 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() { }
 
     @Override
-    public void teleopPeriodic() { }
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
     @Override
     public void testPeriodic() { }

@@ -1,5 +1,9 @@
 package frc.team1816.robot;
 
+import com.edinarobotics.utils.gamepad.Gamepad;
+import frc.team1816.robot.commands.ToggleReverseModeCommand;
+import frc.team1816.robot.commands.ToggleSlowModeCommand;
+
 /**
  * Contains all control inputs of the robot.
  * Follows the singleton pattern.
@@ -7,8 +11,23 @@ package frc.team1816.robot;
 public class Controls {
     private static Controls instance;
 
-    private Controls() {
+    public Gamepad gamepadDriver;
 
+    private Controls() {
+        gamepadDriver = new Gamepad(0);
+
+        gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(true));
+        gamepadDriver.leftBumper().whenReleased(new ToggleSlowModeCommand(false));
+
+        gamepadDriver.rightBumper().whenPressed(new ToggleReverseModeCommand());
+    }
+
+    public double getDriveThrottle() {
+        return gamepadDriver.getLeftY();
+    }
+
+    public double getDriveTurn() {
+        return gamepadDriver.getRightX();
     }
 
     /**
