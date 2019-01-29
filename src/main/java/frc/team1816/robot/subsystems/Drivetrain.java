@@ -115,7 +115,6 @@ public class Drivetrain extends Subsystem implements Checkable {
             if (isReverseMode) {
                 leftPower *= -1;
                 rightPower *= -1;
-                rotation *= -1;
             }
 
             leftPower += rotation * .55;

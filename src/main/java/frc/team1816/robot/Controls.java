@@ -14,12 +14,12 @@ public class Controls {
     public Gamepad gamepadDriver;
 
     private Controls() {
-        gamepadDriver = new Gamepad(1);
+        gamepadDriver = new Gamepad(0);
 
         gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(true));
-        gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(false));
+        gamepadDriver.leftBumper().whenReleased(new ToggleSlowModeCommand(false));
 
-        gamepadDriver.rightBumper().whenReleased(new ToggleReverseModeCommand());
+        gamepadDriver.rightBumper().whenPressed(new ToggleReverseModeCommand());
     }
 
     public double getDriveThrottle() {

@@ -13,7 +13,6 @@ public class ToggleReverseModeCommand extends Command {
 
     public ToggleReverseModeCommand() {
         drivetrain = Components.getInstance().drivetrain;
-        requires(drivetrain);
     }
 
 

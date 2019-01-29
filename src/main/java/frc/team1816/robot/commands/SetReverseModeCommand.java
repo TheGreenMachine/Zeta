@@ -7,14 +7,14 @@ import frc.team1816.robot.subsystems.Drivetrain;
 /**
  * An example of a command.
  */
-public class ToggleSlowModeCommand extends Command {
+public class SetReverseModeCommand extends Command {
 
     private Drivetrain drivetrain;
-    private boolean slowMode;
+    boolean reverseMode;
 
-    public ToggleSlowModeCommand(boolean slowMode) {
+    public SetReverseModeCommand(boolean reverseMode) {
+        this.reverseMode = reverseMode;
         drivetrain = Components.getInstance().drivetrain;
-        this.slowMode = slowMode;
     }
 
 
@@ -24,7 +24,7 @@ public class ToggleSlowModeCommand extends Command {
      */
     @Override
     protected void initialize() {
-        drivetrain.setSlowMode(slowMode);
+        drivetrain.setReverseMode(reverseMode);
     }
 
 
