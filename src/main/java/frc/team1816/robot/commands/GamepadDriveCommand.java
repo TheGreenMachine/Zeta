@@ -1,7 +1,5 @@
 package frc.team1816.robot.commands;
 
-import com.edinarobotics.utils.gamepad.Gamepad;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.Components;
@@ -11,7 +9,6 @@ public class GamepadDriveCommand extends Command {
     private static final String NAME = "gamepaddrivecommand";
 
     private Drivetrain drivetrain;
-    private Gamepad gamepad;
 
     private double prevPowLeft = 0;
     private double prevPowRight = 0;
@@ -21,7 +18,6 @@ public class GamepadDriveCommand extends Command {
     public GamepadDriveCommand() {
         super(NAME);
         this.drivetrain = Components.getInstance().drivetrain;
-        this.gamepad = Controls.getInstance().gamepadDriver;
         requires(drivetrain);
     }
 
