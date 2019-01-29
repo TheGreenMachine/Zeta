@@ -36,22 +36,8 @@ public class GamepadDriveCommand extends Command {
         double rotation = Controls.getInstance().getDriveTurn();
 
         if(rotation == 0 || leftPow != 0) {
-            //Acceleration curve in teleop
-            if (Math.abs(leftPow - prevPowLeft) > SET_SPEED_DIFF_MAX && leftPow != prevPowLeft) {
-                if (leftPow > prevPowLeft) {
-                    leftPow = prevPowLeft + SET_SPEED_DIFF_MAX;
-                } else if (leftPow < prevPowLeft) {
-                    leftPow = prevPowLeft - SET_SPEED_DIFF_MAX;
-                }
-            }
-
-            if (Math.abs(rightPow - prevPowRight) > SET_SPEED_DIFF_MAX && rightPow != prevPowRight) {
-                if (rightPow > prevPowRight) {
-                    rightPow = prevPowRight + SET_SPEED_DIFF_MAX;
-                } else if (rightPow < prevPowRight) {
-                    rightPow = prevPowRight - SET_SPEED_DIFF_MAX;
-                }
-            }
+            leftPow = limitAcceleration(leftPow, prevPowLeft);
+            rightPow = limitAcceleration(rightPow, prevPowRight);
         }
 
         prevPowLeft = leftPow;
@@ -73,5 +59,19 @@ public class GamepadDriveCommand extends Command {
     @Override
     protected void interrupted() {
         end();
+    }
+
+    private double limitAcceleration(double setPow, double prevPow) {
+        if (Math.abs(setPow - prevPow) > SET_SPEED_DIFF_MAX) {
+            if (setPow > prevPow) {
+                return prevPow + SET_SPEED_DIFF_MAX;
+            } else if (setPow < prevPow) {
+                return prevPow - SET_SPEED_DIFF_MAX;
+            } else {
+                return prevPow;
+            }
+        } else {
+            return prevPow;
+        }
     }
 }
