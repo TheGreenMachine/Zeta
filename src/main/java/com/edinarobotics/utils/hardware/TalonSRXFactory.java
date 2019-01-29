@@ -5,6 +5,10 @@ import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+/**
+ * A class to create Talon and Ghost Talon objects.
+ * Based on FRC Team 254 The Cheesy Poof's 2018 TalonSRXFactory.
+ */
 public class TalonSRXFactory {
     private final static int kTimeoutMs = 100;
 
