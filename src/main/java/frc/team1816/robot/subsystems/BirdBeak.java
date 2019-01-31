@@ -4,75 +4,67 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class BirdBeak extends Subsystem {
 
-    //TODO: Tune timer delays
-
     private Solenoid beak;
-    private Solenoid hatchEjector;
-    private Solenoid hatchArm;
+    private Solenoid hatchPuncher;
+    private Solenoid intakeArm;
+
     private TalonSRX hatchIntake;
 
-    private boolean intake;
+    private double intakePow;
+
+    private boolean beakOpen;
+    private boolean armDown;
+    private boolean puncherOut;
     private boolean outputsChanged = false;
 
     public BirdBeak(int beakOpenerId, int hatchEjectorId, int hatchArmId, int hatchIntakeId) {
         super("BirdBeak");
         this.beak = new Solenoid(beakOpenerId);
-        this.hatchEjector = new Solenoid(hatchEjectorId);
-        this.hatchArm = new Solenoid(hatchArmId);
+        this.hatchPuncher = new Solenoid(hatchEjectorId);
+        this.intakeArm = new Solenoid(hatchArmId);
         this.hatchIntake = new TalonSRX(hatchIntakeId);
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void ejectHatch() {
-        intake = false;
+    public void setBeak(boolean open) {
+        beakOpen = open;
         outputsChanged = true;
     }
 
-    public void pickUpHatch() {
-        intake = true;
+    public void setPuncher(boolean out) {
+        puncherOut = out;
         outputsChanged = true;
     }
 
-    private void setIntake(boolean on) {
-        hatchArm.set(on);
-        Timer.delay(0.25);
-        hatchEjector.set(!on);
-        Timer.delay(0.5);
-        beak.set(!on);
-        Timer.delay(0.5);
-        if(on) {
-            hatchIntake.set(ControlMode.PercentOutput, 0.25);
-            Timer.delay(1);
-            hatchIntake.set(ControlMode.PercentOutput, 0);
-            beak.set(true);
-            Timer.delay(0.5);
-            hatchArm.set(false);
-        } else {
-            hatchEjector.set(true);
-        }
+    public void setArm(boolean down) {
+        armDown = down;
+        outputsChanged = true;
     }
 
-    public boolean getIntake() {
-        return hatchArm.get();
+    public void setIntake(double power) {
+        intakePow = power;
+        outputsChanged = true;
     }
 
     public boolean getBeakState() {
         return beak.get();
     }
 
-    public boolean getEjectorState() {
-        return hatchEjector.get();
+    public boolean getPuncherState() {
+        return hatchPuncher.get();
     }
 
-    public double getIntakeMotorPower() {
-        return hatchIntake.getOutputCurrent();
+    public boolean getArmState() {
+        return intakeArm.get();
     }
 
+    public double getIntakePow() {
+        return intakePow;
+    }
 
     @Override
     protected void initDefaultCommand() { }
@@ -80,8 +72,12 @@ public class BirdBeak extends Subsystem {
     @Override
     public void periodic() {
         if(outputsChanged) {
-            setIntake(intake);
+            beak.set(beakOpen);
+            hatchPuncher.set(puncherOut);
+            intakeArm.set(armDown);
+            hatchIntake.set(ControlMode.PercentOutput, intakePow);
+
+            outputsChanged = false;
         }
-        outputsChanged = false;
     }
 }
