@@ -21,7 +21,7 @@ public class Drivetrain extends Subsystem {
     private double leftPower;
     private double rightPower;
 
-    private boolean isPercentOut; //TODO: Add encoders
+    private boolean isPercentOut;
 
     public Drivetrain(
             int pigeonId,
