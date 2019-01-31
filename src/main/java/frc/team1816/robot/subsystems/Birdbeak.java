@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class BirdBeak extends Subsystem {
+public class Birdbeak extends Subsystem {
 
     private Solenoid beak;
     private Solenoid hatchPuncher;
@@ -21,7 +21,7 @@ public class BirdBeak extends Subsystem {
     private boolean puncherOut;
     private boolean outputsChanged = false;
 
-    public BirdBeak(int pcmId, int beakId, int puncherId, int armId, int intakeId) {
+    public Birdbeak(int pcmId, int beakId, int puncherId, int armId, int intakeId) {
         super("birdbeak");
         this.beak = new Solenoid(pcmId, beakId);
         this.hatchPuncher = new Solenoid(pcmId, puncherId);
