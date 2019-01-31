@@ -2,6 +2,7 @@ package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
@@ -57,6 +58,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightMain.setInverted(true);
         this.rightSlaveOne.setInverted(true);
         this.rightSlaveTwo.setInverted(true);
+
+        this.leftMain.setNeutralMode(NeutralMode.Brake);
+        this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
+        this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
+
+        this.rightMain.setNeutralMode(NeutralMode.Brake);
+        this.rightSlaveOne.setNeutralMode(NeutralMode.Brake);
+        this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
 
         System.out.println("NavX Active: " + getGyroStatus());
     }
