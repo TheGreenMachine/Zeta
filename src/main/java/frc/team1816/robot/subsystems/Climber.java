@@ -1,14 +1,17 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
 public class Climber extends Subsystem {
+    private static final String SUBSYSTEM = "climber";
 
-    private TalonSRX climbMaster;
-    private TalonSRX climbSlave;
+    private IMotorController climbMaster;
+    private IMotorController climbSlave;
 
     private DoubleSolenoid habPiston;
     private DoubleSolenoid.Value habPistonState;
@@ -17,15 +20,15 @@ public class Climber extends Subsystem {
 
     private boolean outputsChanged = false;
 
-    public Climber(int climbMasterId, int climbSlaveId, int pcmId, int pistonFwdId, int pistonOutId) {
+    public Climber(int pcmId, int pistonFwdId, int pistonOutId) {
         super("climber");
+        RobotFactory factory = Robot.FACTORY;
 
-        this.climbMaster = new TalonSRX(climbMasterId);
-        this.climbSlave = new TalonSRX(climbSlaveId);
+        this.climbMaster = factory.getMotor(SUBSYSTEM, "climbMaster");
+        this.climbSlave = factory.getMotor(SUBSYSTEM, "climbSlave", "climbMaster");
         this.habPiston = new DoubleSolenoid(pcmId, pistonFwdId, pistonOutId);
 
         this.climbMaster.setInverted(true); // TODO: check which motor should be inverted
-        this.climbSlave.set(ControlMode.Follower, climbMasterId);
     }
 
     public void setClimberPower(double motorPow) {

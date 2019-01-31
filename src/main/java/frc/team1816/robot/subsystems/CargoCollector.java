@@ -1,24 +1,28 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
 public class CargoCollector extends Subsystem {
+    private static final String SUBSYSTEM = "cargocollector";
 
     private Solenoid armPiston;
-    private TalonSRX intake;
+    private IMotorController intake;
 
     private double intakePow;
 
     private boolean armDown;
     private static boolean outputsChanged = false;
 
-    public CargoCollector(int pcmId, int solenoidId, int intakeId) {
-        super("cargocollector");
+    public CargoCollector(int pcmId, int solenoidId) {
+        super(SUBSYSTEM);
+        RobotFactory factory = Robot.FACTORY;
 
-        this.intake = new TalonSRX(intakeId);
+        this.intake = factory.getMotor(SUBSYSTEM, "intake");
         this.armPiston = new Solenoid(pcmId, solenoidId);
     }
 

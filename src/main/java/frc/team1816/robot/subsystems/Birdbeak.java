@@ -1,18 +1,21 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
 public class Birdbeak extends Subsystem {
+    private final static String SUBSYSTEM = "birdbeak";
 
     private Solenoid beak;
     private Solenoid hatchPuncher;
     private Solenoid intakeArm;
 
-    private TalonSRX hatchIntake;
+    private IMotorController hatchIntake;
 
     private double intakePow;
 
@@ -21,13 +24,15 @@ public class Birdbeak extends Subsystem {
     private boolean puncherOut;
     private boolean outputsChanged = false;
 
-    public Birdbeak(int pcmId, int beakId, int puncherId, int armId, int intakeId) {
-        super("birdbeak");
+    public Birdbeak(int pcmId, int beakId, int puncherId, int armId) {
+        super(SUBSYSTEM);
+        RobotFactory factory = Robot.FACTORY;
+
         this.beak = new Solenoid(pcmId, beakId);
         this.hatchPuncher = new Solenoid(pcmId, puncherId);
         this.intakeArm = new Solenoid(pcmId, armId);
-        this.hatchIntake = new TalonSRX(intakeId);
-        
+        this.hatchIntake = factory.getMotor(SUBSYSTEM, "hatchIntake");
+
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 

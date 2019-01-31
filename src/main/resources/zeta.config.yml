@@ -12,4 +12,15 @@ subsystems:
   climber:
     implemented: false
     talons:
-      one: 8
+      climbMaster: -1
+      climbSlave: -1
+  cargocollector:
+    implemented: false
+    talons:
+      intake: -1
+  birdbeak:
+    implemented: false
+    talons:
+      hatchIntake: -1
+
+
