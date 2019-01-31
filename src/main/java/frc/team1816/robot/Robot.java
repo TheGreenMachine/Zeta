@@ -5,15 +5,11 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1816.robot.commands.GamepadDriveCommand;
+import frc.team1816.robot.subsystems.Drivetrain;
 
-/**
- * The main robot class.
- *
- * <p>This class contains procedures for initialization as well as
- * methods to be called once and repeatedly for the autonomous,
- * teleop, and testing states of the robot.</p>
- */
 public class Robot extends TimedRobot {
+
+    private Drivetrain drivetrain;
 
     public static final RobotFactory FACTORY = new RobotFactory(
             System.getenv("ROBOT_NAME") != null
@@ -24,6 +20,8 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
+
+        drivetrain = Components.getInstance().drivetrain;
 
         Components.getInstance();
         Controls.getInstance();
@@ -46,16 +44,27 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic() { }
+    public void disabledPeriodic() {
+        periodic();
+    }
     
     @Override
-    public void autonomousPeriodic() { }
+    public void autonomousPeriodic() {
+        periodic();
+    }
 
     @Override
     public void teleopPeriodic() {
+        periodic();
         Scheduler.getInstance().run();
     }
 
     @Override
-    public void testPeriodic() { }
+    public void testPeriodic() {
+        periodic();
+    }
+
+    private void periodic() {
+        System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
+    }
 }
