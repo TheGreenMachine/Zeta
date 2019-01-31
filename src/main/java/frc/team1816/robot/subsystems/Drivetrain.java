@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 import com.edinarobotics.utils.hardware.RobotFactory;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.I2C;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
@@ -19,7 +21,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
     private static final double SLOW_MOD_ROT = 0.8;
 
-    private PigeonIMU gyro;
+    private AHRS navX;
 
     private IMotorControllerEnhanced rightMain;
     private IMotorControllerEnhanced rightSlaveOne;
@@ -32,6 +34,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPower;
     private double rightPower;
     private double rotation;
+
+    private double gyroAngle;
 
     private boolean isPercentOut;
     private boolean isSlowMode;
@@ -50,15 +54,21 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveOne = factory.getTalon(NAME, "rightSlaveOne", "rightMain");
         this.rightSlaveTwo = factory.getTalon(NAME, "rightSlaveTwo", "rightMain");
 
-        this.gyro = new PigeonIMU((TalonSRX) this.leftSlaveTwo); // TODO: Determine whether using Talon breakout or CAN bus
+        navX = new AHRS(I2C.Port.kMXP);
 
         this.rightMain.setInverted(true);
         this.rightSlaveOne.setInverted(true);
         this.rightSlaveTwo.setInverted(true);
+
+        System.out.println("NavX Active: " + getGyroStatus());
     }
 
     public double getGyroAngle() {
-        return gyro.getFusedHeading(); // TODO: check this method
+        return gyroAngle;
+    }
+
+    public boolean getGyroStatus() {
+        return navX.isConnected();
     }
 
     public void setDrivetrainVelocity(double leftPower, double rightPower) {
@@ -111,6 +121,8 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
+        gyroAngle = navX.getAngle();
+
         if (outputsChanged) {
             if (isSlowMode) {
                 leftPower *= SLOW_MOD_THROTTLE;
@@ -145,7 +157,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     protected void initDefaultCommand() {
 
     }
-    
+
     @Override
     public boolean check() throws CheckFailException {
         setDrivetrainPercent(0.5, 0.5);
