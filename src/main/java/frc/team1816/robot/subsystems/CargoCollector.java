@@ -5,60 +5,49 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- * An example of a Subsystem.
- */
 public class CargoCollector extends Subsystem {
 
-    private TalonSRX intake;
-    private double power;
-
     private Solenoid armPiston;
-    private boolean pistonOn;
+    private TalonSRX intake;
 
+    private double intakePow;
+
+    private boolean armDown;
     private static boolean outputsChanged = false;
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
-    public CargoCollector(int intakeId, int pcmId, int solenoidId) {
-        super("CargoCollector");
+    public CargoCollector(int pcmId, int solenoidId, int intakeId) {
+        super("cargocollector");
 
         this.intake = new TalonSRX(intakeId);
         this.armPiston = new Solenoid(pcmId, solenoidId);
-
-        intake.set(ControlMode.PercentOutput, 0.0);
     }
 
-    public void setArmPiston(boolean on) {
-        this.pistonOn = on;
+    public void setArmPiston(boolean down) {
+        this.armDown = down;
+        outputsChanged = true;
+    }
+
+    public void setIntake(double intakePower) {
+        this.intakePow = intakePower;
         outputsChanged = true;
     }
 
     public boolean getArmPistonState() {
-        return pistonOn;
+        return armDown;
     }
 
-    public void setCargoCollectorIntake(double intakePower) {
-        this.power = intakePower;
-        outputsChanged = true;
-    }
-
-    public double getCargoCollectorIntake() {
-        return this.power;
+    public double getIntakePow() {
+        return this.intakePow;
     }
 
     @Override
     public void periodic() {
         if (outputsChanged) {
-            this.intake.set(ControlMode.PercentOutput, power);
-            this.armPiston.set(pistonOn);
+            this.intake.set(ControlMode.PercentOutput, intakePow);
+            this.armPiston.set(armDown);
             outputsChanged = false;
         }
     }
 
-    public void initDefaultCommand() {
-        // TODO: Set the default command, if any, for a subsystem here. Example:
-        //    setDefaultCommand(new MySpecialCommand());
-    }
+    public void initDefaultCommand() { }
 }

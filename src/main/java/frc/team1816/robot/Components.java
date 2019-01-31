@@ -11,7 +11,6 @@ public class Components {
 
     public Drivetrain drivetrain;
 
-    // These should be private
     //TODO: Talon IDs
     public static final int LEFT_MAIN = 1;
     public static final int LEFT_SLAVE_ONE = 2;
