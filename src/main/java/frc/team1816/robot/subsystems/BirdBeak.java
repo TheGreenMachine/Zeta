@@ -21,12 +21,13 @@ public class BirdBeak extends Subsystem {
     private boolean puncherOut;
     private boolean outputsChanged = false;
 
-    public BirdBeak(int beakOpenerId, int hatchEjectorId, int hatchArmId, int hatchIntakeId) {
-        super("BirdBeak");
-        this.beak = new Solenoid(beakOpenerId);
-        this.hatchPuncher = new Solenoid(hatchEjectorId);
-        this.intakeArm = new Solenoid(hatchArmId);
-        this.hatchIntake = new TalonSRX(hatchIntakeId);
+    public BirdBeak(int pcmId, int beakId, int puncherId, int armId, int intakeId) {
+        super("birdbeak");
+        this.beak = new Solenoid(pcmId, beakId);
+        this.hatchPuncher = new Solenoid(pcmId, puncherId);
+        this.intakeArm = new Solenoid(pcmId, armId);
+        this.hatchIntake = new TalonSRX(intakeId);
+        
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 
