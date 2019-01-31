@@ -6,12 +6,9 @@ import com.edinarobotics.utils.math.Math1816;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-/**
- * Subsystem for the cargo shooter.
- */
 public class CargoShooter extends Subsystem {
 
-    private static final String NAME = "CargoShooter";
+    private static final String NAME = "cargoshooter";
 
     private TalonSRX arm;
     private TalonSRX intake;
