@@ -30,9 +30,9 @@ public class RobotFactory {
             getSubsystem(subsystem).talons.get(name) != null &&
             getSubsystem(subsystem).talons.get(name) > -1
         ) {
-            return TalonSRXFactory.createDefaultTalon(getSubsystem(subsystem).talons.get(name));
+            return CtreMotorFactory.createDefaultTalon(getSubsystem(subsystem).talons.get(name));
         }
-        return TalonSRXFactory.createGhostTalon();
+        return CtreMotorFactory.createGhostTalon();
     }
 
     public IMotorControllerEnhanced getTalon(String subsystem, String name, String master) {
@@ -43,9 +43,9 @@ public class RobotFactory {
             getSubsystem(subsystem).talons.get(master) != null &&
             getSubsystem(subsystem).talons.get(master) > -1
         ) {
-            return TalonSRXFactory.createPermanentSlaveTalon(getSubsystem(subsystem).talons.get(name), getSubsystem(subsystem).talons.get(master));
+            return CtreMotorFactory.createPermanentSlaveTalon(getSubsystem(subsystem).talons.get(name), getSubsystem(subsystem).talons.get(master));
         }
-        return TalonSRXFactory.createGhostTalon();
+        return CtreMotorFactory.createGhostTalon();
     }
 
     public Configuration getConfig() {
