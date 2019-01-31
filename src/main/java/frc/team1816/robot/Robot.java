@@ -21,10 +21,10 @@ public class Robot extends TimedRobot {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
 
-        drivetrain = Components.getInstance().drivetrain;
-
         Components.getInstance();
         Controls.getInstance();
+
+        drivetrain = Components.getInstance().drivetrain;
     }
 
     @Override
@@ -65,6 +65,6 @@ public class Robot extends TimedRobot {
     }
 
     private void periodic() {
-        System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
+        // System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
     }
 }

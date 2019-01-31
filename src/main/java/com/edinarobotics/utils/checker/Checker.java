@@ -43,13 +43,13 @@ public class Checker {
 
         // Loop through every annotated class
         for (Class<?> cls : annotated) {
-            System.out.println(cls.getName());
             // Check if it implements Checkable
             if (Checkable.class.isAssignableFrom(cls)) {
                 // Find a components field where the type is of the current annotated class class
                 for (Field field : fields) {
                     if (cls.isAssignableFrom(field.getType())) {
                         try {
+                            System.out.println("Checking class " + cls.getName() + "...");
                             // Invoke its check method
                             field.getType().getDeclaredMethod("check").invoke(field.get(Components.getInstance()));
                         } catch (InvocationTargetException ite) {

@@ -1,18 +1,16 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1816.robot.Robot;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
@@ -23,13 +21,13 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private AHRS navX;
 
-    private IMotorControllerEnhanced rightMain;
-    private IMotorControllerEnhanced rightSlaveOne;
-    private IMotorControllerEnhanced rightSlaveTwo;
+    private IMotorController rightMain;
+    private IMotorController rightSlaveOne;
+    private IMotorController rightSlaveTwo;
 
-    private IMotorControllerEnhanced leftMain;
-    private IMotorControllerEnhanced leftSlaveOne;
-    private IMotorControllerEnhanced leftSlaveTwo;
+    private IMotorController leftMain;
+    private IMotorController leftSlaveOne;
+    private IMotorController leftSlaveTwo;
 
     private double leftPower;
     private double rightPower;
@@ -46,13 +44,13 @@ public class Drivetrain extends Subsystem implements Checkable {
         super(NAME);
         RobotFactory factory = Robot.FACTORY;
 
-        this.leftMain = factory.getTalon(NAME, "leftMain");
-        this.leftSlaveOne = factory.getTalon(NAME, "leftSlaveOne", "leftMain");
-        this.leftSlaveTwo = factory.getTalon(NAME, "leftSlaveTwo", "leftMain");
+        this.leftMain = factory.getMotor(NAME, "leftMain");
+        this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", "leftMain");
+        this.leftSlaveTwo = factory.getMotor(NAME, "leftSlaveTwo", "leftMain");
 
-        this.rightMain = factory.getTalon(NAME, "rightMain");
-        this.rightSlaveOne = factory.getTalon(NAME, "rightSlaveOne", "rightMain");
-        this.rightSlaveTwo = factory.getTalon(NAME, "rightSlaveTwo", "rightMain");
+        this.rightMain = factory.getMotor(NAME, "rightMain");
+        this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", "rightMain");
+        this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", "rightMain");
 
         navX = new AHRS(I2C.Port.kMXP);
 
@@ -160,7 +158,12 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
+        System.out.println("Warning: Talons will move!");
         setDrivetrainPercent(0.5, 0.5);
+        Timer.delay(3);
+        setDrivetrainPercent(0, 0);
+        Timer.delay(0.5);
+        setDrivetrainPercent(-0.5, -0.5);
         Timer.delay(3);
         setDrivetrainPercent(0, 0);
         return true;

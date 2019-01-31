@@ -4,10 +4,11 @@ subsystems:
     talons:
       leftMain: 14
       leftSlaveOne: 13
-      leftSlaveTwo: 15
       rightMain: 1
-      rightSlaveOne: 0
-      rightSlaveTwo: 2
+      rightSlaveOne: 2
+    victors:
+      rightSlaveTwo: 0
+      leftSlaveTwo: 15
   climber:
     implemented: false
     talons:
