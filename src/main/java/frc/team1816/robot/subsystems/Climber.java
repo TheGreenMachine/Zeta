@@ -7,10 +7,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Climber extends Subsystem {
 
-    //TODO: Renaming variables
-
-    private TalonSRX climbMotorMaster;
-    private TalonSRX climbMotorSlave;
+    private TalonSRX climbMaster;
+    private TalonSRX climbSlave;
 
     private DoubleSolenoid habPiston;
     private DoubleSolenoid.Value habPistonState;
@@ -19,36 +17,30 @@ public class Climber extends Subsystem {
 
     private boolean outputsChanged = false;
 
-    public Climber(int cmIdMaster, int cmIdSlave, int hpcId, int hppPortId) {
-        super("Climber");
+    public Climber(int climbMasterId, int climbSlaveId, int pcmId, int pistonFwdId, int pistonOutId) {
+        super("climber");
 
-        this.climbMotorMaster = new TalonSRX(cmIdMaster);
-        this.climbMotorSlave = new TalonSRX(cmIdSlave);
-        this.habPiston = new DoubleSolenoid(hpcId, hppPortId);
+        this.climbMaster = new TalonSRX(climbMasterId);
+        this.climbSlave = new TalonSRX(climbSlaveId);
+        this.habPiston = new DoubleSolenoid(pcmId, pistonFwdId, pistonOutId);
 
-        this.habPistonState = DoubleSolenoid.Value.kOff;
-
-        this.climbMotorMaster.setInverted(true);
-        this.climbMotorSlave.set(ControlMode.Follower, cmIdMaster);
-
-        this.habPiston.set(habPistonState);
+        this.climbMaster.setInverted(true); // TODO: check which motor should be inverted
+        this.climbSlave.set(ControlMode.Follower, climbMasterId);
     }
 
-    //TODO: Check if call to periodic() method is necessary
-
-    public void setClimberPower(double MotorPower) {
-        this.motorPower = MotorPower;
+    public void setClimberPower(double motorPow) {
+        this.motorPower = motorPow;
         outputsChanged = true;
         periodic();
     }
 
-    public void setHabPistonState(DoubleSolenoid.Value state) {
+    public void setHabPiston(DoubleSolenoid.Value state) {
         this.habPistonState = state;
         periodic();
     }
 
-    public DoubleSolenoid.Value getHabPistonState() {
-        return habPistonState;
+    public String getHabPistonState() {
+        return habPistonState.toString();
     }
 
     public double getMotorPower() {
@@ -58,17 +50,11 @@ public class Climber extends Subsystem {
     @Override
     public void periodic() {
         if (outputsChanged) {
-            this.climbMotorMaster.set(ControlMode.PercentOutput, motorPower);
+            climbMaster.set(ControlMode.PercentOutput, motorPower);
             habPiston.set(habPistonState);
             outputsChanged = false;
         }
     }
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
-    public void initDefaultCommand() {
-        // TODO: Set the default command, if any, for a subsystem here. Example:
-        //    setDefaultCommand(new MySpecialCommand());
-    }
+    public void initDefaultCommand() { }
 }
