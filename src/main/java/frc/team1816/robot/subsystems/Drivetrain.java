@@ -40,6 +40,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPower;
     private double rightPower;
     private double rotation;
+    private double leftVel;
+    private double rightVel;
 
     private double gyroAngle;
 
@@ -180,8 +182,8 @@ public class Drivetrain extends Subsystem implements Checkable {
             leftPower += rotation * .55;
             rightPower -= rotation * .55;
 
-            double leftVel = leftPower;
-            double rightVel = rightPower; // TODO: Add velocity conversion factors.
+            leftVel = leftPower * MAX_VEL_TICKS_PER_100MS;
+            rightVel = rightPower * MAX_VEL_TICKS_PER_100MS;
 
             if (isPercentOut) {
                 this.leftMain.set(ControlMode.PercentOutput, leftPower);
