@@ -86,7 +86,9 @@ public class RobotFactory {
             subsystemConfig.talons.get(master) > -1
         ) {
             // Talons must be following another Talon, cannot follow a Victor.
-            return CtreMotorFactory.createDefaultTalon(subsystemConfig.talons.get(name));
+            return CtreMotorFactory.createPermanentSlaveTalon(
+                    subsystemConfig.talons.get(name), subsystemConfig.talons.get(master)
+            );
         } else if (
             subsystemConfig.victors.get(name) != null &&
             subsystemConfig.victors.get(name) > -1
