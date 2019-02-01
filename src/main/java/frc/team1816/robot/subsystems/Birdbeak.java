@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 public class Birdbeak extends Subsystem {
-    private final static String SUBSYSTEM = "birdbeak";
+    private static final String NAME = "birdbeak";
 
     private Solenoid beak;
     private Solenoid hatchPuncher;
@@ -24,14 +24,14 @@ public class Birdbeak extends Subsystem {
     private boolean puncherOut;
     private boolean outputsChanged = false;
 
-    public Birdbeak(int pcmId, int beakId, int puncherId, int armId) {
-        super(SUBSYSTEM);
+    public Birdbeak() {
+        super(NAME);
         RobotFactory factory = Robot.FACTORY;
 
-        this.beak = new Solenoid(pcmId, beakId);
-        this.hatchPuncher = new Solenoid(pcmId, puncherId);
-        this.intakeArm = new Solenoid(pcmId, armId);
-        this.hatchIntake = factory.getMotor(SUBSYSTEM, "hatchIntake");
+        this.beak = factory.getSolenoid(NAME, "beak");
+        this.hatchPuncher = factory.getSolenoid(NAME, "puncher");
+        this.intakeArm = factory.getSolenoid(NAME, "arm");
+        this.hatchIntake = factory.getMotor(NAME, "hatchIntake");
 
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
@@ -77,7 +77,7 @@ public class Birdbeak extends Subsystem {
 
     @Override
     public void periodic() {
-        if(outputsChanged) {
+        if (outputsChanged) {
             beak.set(beakOpen);
             hatchPuncher.set(puncherOut);
             intakeArm.set(armDown);

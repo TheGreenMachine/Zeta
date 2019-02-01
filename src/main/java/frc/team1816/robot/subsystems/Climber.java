@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 public class Climber extends Subsystem {
-    private static final String SUBSYSTEM = "climber";
+    private static final String NAME = "climber";
 
     private IMotorController climbMaster;
     private IMotorController climbSlave;
@@ -20,13 +20,13 @@ public class Climber extends Subsystem {
 
     private boolean outputsChanged = false;
 
-    public Climber(int pcmId, int pistonFwdId, int pistonOutId) {
-        super("climber");
+    public Climber() {
+        super(NAME);
         RobotFactory factory = Robot.FACTORY;
 
-        this.climbMaster = factory.getMotor(SUBSYSTEM, "climbMaster");
-        this.climbSlave = factory.getMotor(SUBSYSTEM, "climbSlave", "climbMaster");
-        this.habPiston = new DoubleSolenoid(pcmId, pistonFwdId, pistonOutId);
+        this.climbMaster = factory.getMotor(NAME, "climbMaster");
+        this.climbSlave = factory.getMotor(NAME, "climbSlave", "climbMaster");
+        this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
 
         this.climbMaster.setInverted(true); // TODO: check which motor should be inverted
     }

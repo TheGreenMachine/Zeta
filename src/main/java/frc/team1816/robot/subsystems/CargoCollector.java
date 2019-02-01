@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 public class CargoCollector extends Subsystem {
-    private static final String SUBSYSTEM = "cargocollector";
+    private static final String NAME = "cargocollector";
 
     private Solenoid armPiston;
     private IMotorController intake;
@@ -18,12 +18,12 @@ public class CargoCollector extends Subsystem {
     private boolean armDown;
     private static boolean outputsChanged = false;
 
-    public CargoCollector(int pcmId, int solenoidId) {
-        super(SUBSYSTEM);
+    public CargoCollector() {
+        super(NAME);
         RobotFactory factory = Robot.FACTORY;
 
-        this.intake = factory.getMotor(SUBSYSTEM, "intake");
-        this.armPiston = new Solenoid(pcmId, solenoidId);
+        this.intake = factory.getMotor(NAME, "intake");
+        this.armPiston = factory.getSolenoid(NAME, "arm");
     }
 
     public void setArmPiston(boolean down) {
