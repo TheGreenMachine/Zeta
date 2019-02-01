@@ -1,0 +1,39 @@
+subsystems:
+  drivetrain:
+    implemented: true
+    talons:
+      leftMain: 14
+      leftSlaveOne: 13
+      rightMain: 1
+      rightSlaveOne: 2
+    victors:
+      rightSlaveTwo: 0
+      leftSlaveTwo: 15
+  climber:
+    implemented: false
+    talons:
+      climbMaster: -1
+      climbSlave: -1
+    doubleSolenoids:
+      habPiston:
+        forward: 0
+        reverse: 1
+  cargocollector:
+    implemented: false
+    talons:
+      intake: -1
+    solenoids:
+      arm: 2
+  birdbeak:
+    implemented: false
+    talons:
+      hatchIntake: -1
+    solenoids:
+      beak: 3
+      puncher: 4
+      arm: 5
+pcm: 17
+wheelbase: 25
+ticksPerRev: 1025
+ticksPerIn: 50
+maxVel: 800
