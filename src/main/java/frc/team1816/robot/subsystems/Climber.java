@@ -68,7 +68,8 @@ public class Climber extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
-        System.out.println("Warning: Talons and Solenoids will move!");
+        System.out.println("Warning: Motors and Pistons will move!");
+        Timer.delay(3);
         setClimberPower(0.5);
         Timer.delay(3);
         setClimberPower(0);
