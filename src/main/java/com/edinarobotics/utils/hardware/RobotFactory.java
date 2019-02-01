@@ -142,6 +142,10 @@ public class RobotFactory {
     public static class Configuration {
         public Map<String, SubsystemConfig> subsystems;
         public int pcm;
+        public double wheelbase;
+        public int ticksPerRev;
+        public double ticksPerIn;
+        public int maxVel;
 
         public static class SubsystemConfig {
             public boolean implemented = false;

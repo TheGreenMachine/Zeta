@@ -20,6 +20,13 @@ public class Drivetrain extends Subsystem implements Checkable {
     private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
     private static final double SLOW_MOD_ROT = 0.8;
 
+    private static double TICKS_PER_REV;
+    private static double TICKS_PER_INCH;
+    private static double WHEELBASE;
+    private static double MAX_VEL_TICKS_PER_100MS;
+
+    private static double INCHES_PER_REV;
+
     private AHRS navX;
 
     private IMotorController rightMain;
@@ -45,6 +52,12 @@ public class Drivetrain extends Subsystem implements Checkable {
         super(NAME);
         RobotFactory factory = Robot.FACTORY;
 
+        TICKS_PER_REV = factory.getConfig().ticksPerRev;
+        TICKS_PER_INCH = factory.getConfig().ticksPerIn;
+        WHEELBASE = factory.getConfig().wheelbase;
+        MAX_VEL_TICKS_PER_100MS = factory.getConfig().maxVel;
+        INCHES_PER_REV = TICKS_PER_REV / TICKS_PER_INCH;
+
         this.leftMain = factory.getMotor(NAME, "leftMain");
         this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", "leftMain");
         this.leftSlaveTwo = factory.getMotor(NAME, "leftSlaveTwo", "leftMain");
@@ -53,12 +66,26 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", "rightMain");
         this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", "rightMain");
 
+        invertTalons(true);
+        setBrakeMode();
+
         navX = new AHRS(I2C.Port.kMXP);
+        System.out.println("NavX Active: " + getGyroStatus());
+    }
 
-        this.rightMain.setInverted(true);
-        this.rightSlaveOne.setInverted(true);
-        this.rightSlaveTwo.setInverted(true);
+    public void invertTalons(boolean invertRight) {
+        if(invertRight) {
+            this.rightMain.setInverted(true);
+            this.rightSlaveOne.setInverted(true);
+            this.rightSlaveTwo.setInverted(true);
+        } else {
+            this.leftMain.setInverted(true);
+            this.leftSlaveOne.setInverted(true);
+            this.leftSlaveTwo.setInverted(true);
+        }
+    }
 
+    public void setBrakeMode() {
         this.leftMain.setNeutralMode(NeutralMode.Brake);
         this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
         this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
@@ -66,8 +93,16 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightMain.setNeutralMode(NeutralMode.Brake);
         this.rightSlaveOne.setNeutralMode(NeutralMode.Brake);
         this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
+    }
 
-        System.out.println("NavX Active: " + getGyroStatus());
+    public void setCoastMode() {
+        this.leftMain.setNeutralMode(NeutralMode.Coast);
+        this.leftSlaveOne.setNeutralMode(NeutralMode.Coast);
+        this.leftSlaveTwo.setNeutralMode(NeutralMode.Coast);
+
+        this.rightMain.setNeutralMode(NeutralMode.Coast);
+        this.rightSlaveOne.setNeutralMode(NeutralMode.Coast);
+        this.rightSlaveTwo.setNeutralMode(NeutralMode.Coast);
     }
 
     public double getGyroAngle() {
