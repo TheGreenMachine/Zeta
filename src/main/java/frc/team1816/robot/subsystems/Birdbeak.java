@@ -3,12 +3,17 @@ package frc.team1816.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
-public class Birdbeak extends Subsystem {
+@RunTest
+public class Birdbeak extends Subsystem implements Checkable {
     private static final String NAME = "birdbeak";
 
     private Solenoid beak;
@@ -85,5 +90,30 @@ public class Birdbeak extends Subsystem {
 
             outputsChanged = false;
         }
+    }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: Talons and Solenoids will move.");
+        setIntake(0.5);
+        Timer.delay(3);
+        setIntake(0);
+        Timer.delay(0.5);
+        setIntake(-0.5);
+        Timer.delay(3);
+        setIntake(0);
+        Timer.delay(0.5);
+        setBeak(true);
+        Timer.delay(3);
+        setBeak(false);
+        Timer.delay(3);
+        setPuncher(true);
+        Timer.delay(3);
+        setPuncher(false);
+        Timer.delay(3);
+        setArm(true);
+        Timer.delay(3);
+        setArm(false);
+        return true;
     }
 }

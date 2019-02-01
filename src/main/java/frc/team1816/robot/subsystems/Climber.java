@@ -2,12 +2,15 @@ package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.Timer;
 import frc.team1816.robot.Robot;
 
-public class Climber extends Subsystem {
+public class Climber extends Subsystem implements Checkable {
     private static final String NAME = "climber";
 
     private IMotorController climbMaster;
@@ -60,4 +63,23 @@ public class Climber extends Subsystem {
     }
 
     public void initDefaultCommand() { }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: Talons and Solenoids will move!");
+        setClimberPower(0.5);
+        Timer.delay(3);
+        setClimberPower(0);
+        Timer.delay(0.5);
+        setClimberPower(-0.5);
+        Timer.delay(3);
+        setClimberPower(0);
+        Timer.delay(3);
+        setHabPiston(DoubleSolenoid.Value.kForward);
+        Timer.delay(3);
+        setHabPiston(DoubleSolenoid.Value.kReverse);
+        Timer.delay(3);
+        setHabPiston(DoubleSolenoid.Value.kOff);
+        return true;
+    }
 }
