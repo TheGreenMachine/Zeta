@@ -14,13 +14,22 @@ subsystems:
     talons:
       climbMaster: -1
       climbSlave: -1
+    doubleSolenoids:
+      habPiston:
+        forward: 0
+        reverse: 1
   cargocollector:
     implemented: false
     talons:
       intake: -1
+    solenoids:
+      arm: 2
   birdbeak:
     implemented: false
     talons:
       hatchIntake: -1
-
-
+    solenoids:
+      beak: 3
+      puncher: 4
+      arm: 5
+pcm: 17

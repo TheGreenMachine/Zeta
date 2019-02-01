@@ -2,6 +2,8 @@ package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -113,6 +115,22 @@ public class RobotFactory {
         return CtreMotorFactory.createGhostTalon();
     }
 
+    public Solenoid getSolenoid(String subsystem, String name) {
+        Integer solenoidId = getSubsystem(subsystem).solenoids.get(name);
+        if (solenoidId != null) {
+            return new Solenoid(config.pcm, solenoidId);
+        }
+        return null;
+    }
+
+    public DoubleSolenoid getDoubleSolenoid(String subsystem, String name) {
+        Configuration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
+        if (solenoidConfig != null) {
+            return new DoubleSolenoid(config.pcm, solenoidConfig.forward, solenoidConfig.reverse);
+        }
+        return null;
+    }
+
     public Configuration getConfig() {
         return config;
     }
@@ -123,11 +141,14 @@ public class RobotFactory {
 
     public static class Configuration {
         public Map<String, SubsystemConfig> subsystems;
+        public int pcm;
 
         public static class SubsystemConfig {
             public boolean implemented = false;
             public Map<String, Integer> talons = new HashMap<>();
             public Map<String, Integer> victors = new HashMap<>();
+            public Map<String, Integer> solenoids = new HashMap<>();
+            public Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
 
             @Override
             public String toString() {
@@ -135,13 +156,26 @@ public class RobotFactory {
                         "  implemented = " + implemented + ",\n" +
                         "  talons = " + talons.toString() + ",\n" +
                         "  victors = " + victors.toString() + ",\n" +
+                        "  solenoids = " + solenoids.toString() + ",\n" +
+                        "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
                         "}";
+            }
+        }
+
+        public static class DoubleSolenoidConfig {
+            public int forward;
+            public int reverse;
+
+            @Override
+            public String toString() {
+                return String.format("{ forward: %d, reverse: %d }", forward, reverse);
             }
         }
 
         @Override
         public String toString() {
-            return "Configuration {\n  subsystems = " + subsystems.toString() + "\n}";
+            return "Configuration {\n  subsystems = " + subsystems.toString() +
+                    "\n pcm = " + pcm + "\n}";
         }
     }
 }
