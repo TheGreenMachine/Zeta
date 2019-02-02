@@ -25,7 +25,7 @@ public class CargoCollector extends Subsystem implements Checkable {
 
     public CargoCollector() {
         super(NAME);
-        RobotFactory factory = Robot.FACTORY;
+        RobotFactory factory = Robot.factory;
 
         this.intake = factory.getMotor(NAME, "intake");
         this.armPiston = factory.getSolenoid(NAME, "arm");

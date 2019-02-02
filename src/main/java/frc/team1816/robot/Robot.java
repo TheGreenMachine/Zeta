@@ -11,7 +11,12 @@ public class Robot extends TimedRobot {
 
     private Drivetrain drivetrain;
 
-    public static final RobotFactory FACTORY = new RobotFactory(
+    /*
+     * Constants are defined as static final deeply immutable types (e.g. String)
+     * Since the factory is not deeply immutable, we use regular variable case.
+     * See Google Java Style Guide.
+     */
+    public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null
                     ? System.getenv("ROBOT_NAME") : "zeta"
     );
@@ -40,7 +45,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        Checker.runTests(FACTORY::isImplemented);
+        Checker.runTests(factory::isImplemented);
     }
 
     @Override

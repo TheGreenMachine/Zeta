@@ -53,7 +53,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     public Drivetrain() {
         super(NAME);
-        RobotFactory factory = Robot.FACTORY;
+        RobotFactory factory = Robot.factory;
         YamlConfiguration config = factory.getConfig();
 
         TICKS_PER_REV = config.ticksPerRev;

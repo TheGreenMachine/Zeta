@@ -27,7 +27,7 @@ public class Climber extends Subsystem implements Checkable {
 
     public Climber() {
         super(NAME);
-        RobotFactory factory = Robot.FACTORY;
+        RobotFactory factory = Robot.factory;
 
         this.climbMaster = factory.getMotor(NAME, "climbMaster");
         this.climbSlave = factory.getMotor(NAME, "climbSlave", "climbMaster");
