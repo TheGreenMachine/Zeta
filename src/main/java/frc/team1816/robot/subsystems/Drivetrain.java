@@ -1,5 +1,6 @@
 package frc.team1816.robot.subsystems;
 
+import badlog.lib.BadLog;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -7,10 +8,7 @@ import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
-import com.edinarobotics.utils.hardware.RobotFactory.YamlConfiguration;
 import com.kauailabs.navx.frc.AHRS;
-
-import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;

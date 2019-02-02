@@ -12,7 +12,7 @@ import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
-    BadLog logger;
+    private BadLog logger;
     private long startTime;
 
     private Drivetrain drivetrain;
