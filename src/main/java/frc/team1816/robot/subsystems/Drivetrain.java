@@ -9,6 +9,8 @@ import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.edinarobotics.utils.hardware.RobotFactory.YamlConfiguration;
 import com.kauailabs.navx.frc.AHRS;
+
+import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -74,9 +76,11 @@ public class Drivetrain extends Subsystem implements Checkable {
 
         navX = new AHRS(I2C.Port.kMXP);
         System.out.println("NavX Active: " + getGyroStatus());
+
+        initDrivetrainLog();
     }
 
-    public void invertTalons(boolean invertRight) {
+    private void invertTalons(boolean invertRight) {
         if(invertRight) {
             this.rightMain.setInverted(true);
             this.rightSlaveOne.setInverted(true);
@@ -106,6 +110,19 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightMain.setNeutralMode(NeutralMode.Coast);
         this.rightSlaveOne.setNeutralMode(NeutralMode.Coast);
         this.rightSlaveTwo.setNeutralMode(NeutralMode.Coast);
+    }
+
+    private void initDrivetrainLog() {
+        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS, () -> this.leftMain.getMotorOutputPercent(), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> this.rightMain.getMotorOutputPercent(), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS, () -> (double) this.leftMain.getSelectedSensorVelocity(0), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS, () -> (double) this.rightMain.getSelectedSensorVelocity(0), 
+            "hide", "join:Drivetrain/Output Percents");
+
+        BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
     }
 
     public double getGyroAngle() {
