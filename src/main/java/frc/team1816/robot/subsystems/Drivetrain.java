@@ -7,7 +7,7 @@ import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
-import com.edinarobotics.utils.hardware.RobotFactory.Configuration;
+import com.edinarobotics.utils.hardware.RobotFactory.YamlConfiguration;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
@@ -54,7 +54,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.FACTORY;
-        Configuration config = factory.getConfig();
+        YamlConfiguration config = factory.getConfig();
 
         TICKS_PER_REV = config.ticksPerRev;
         TICKS_PER_INCH = config.ticksPerIn;
