@@ -2,8 +2,6 @@ package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.edinarobotics.utils.hardware.GhostTalonSRX;
-import com.edinarobotics.utils.hardware.RobotFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -94,5 +92,12 @@ class RobotFactoryTest {
                 talon instanceof GhostTalonSRX,
                 "Talon undefined in unimplemented subsystem does not return GhostTalonSRX"
         );
+    }
+
+    @Test
+    void getConstant_notNull_zetaTicksPerRev() {
+        Double ticksPerRev = robotFactory.getConstant("ticksPerRev");
+        System.out.println(ticksPerRev);
+        assertNotNull(ticksPerRev);
     }
 }
