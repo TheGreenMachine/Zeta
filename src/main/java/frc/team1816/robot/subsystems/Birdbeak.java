@@ -31,7 +31,7 @@ public class Birdbeak extends Subsystem implements Checkable {
 
     public Birdbeak() {
         super(NAME);
-        RobotFactory factory = Robot.FACTORY;
+        RobotFactory factory = Robot.factory;
 
         this.beak = factory.getSolenoid(NAME, "beak");
         this.hatchPuncher = factory.getSolenoid(NAME, "puncher");
