@@ -119,9 +119,9 @@ public class Drivetrain extends Subsystem implements Checkable {
         BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> this.rightMain.getMotorOutputPercent(), 
             "hide", "join:Drivetrain/Output Percents");
         BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS, () -> (double) this.leftMain.getSelectedSensorVelocity(0), 
-            "hide", "join:Drivetrain/Output Percents");
+            "hide", "join:Drivetrain/Output Velocities");
         BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS, () -> (double) this.rightMain.getSelectedSensorVelocity(0), 
-            "hide", "join:Drivetrain/Output Percents");
+            "hide", "join:Drivetrain/Output Velocities");
 
         BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
     }
