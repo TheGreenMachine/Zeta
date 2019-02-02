@@ -1,25 +1,34 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
-public class CargoCollector extends Subsystem {
+@RunTest
+public class CargoCollector extends Subsystem implements Checkable {
+    private static final String NAME = "cargocollector";
 
     private Solenoid armPiston;
-    private TalonSRX intake;
+    private IMotorController intake;
 
     private double intakePow;
 
     private boolean armDown;
-    private static boolean outputsChanged = false;
+    private boolean outputsChanged = false;
 
-    public CargoCollector(int pcmId, int solenoidId, int intakeId) {
-        super("cargocollector");
+    public CargoCollector() {
+        super(NAME);
+        RobotFactory factory = Robot.factory;
 
-        this.intake = new TalonSRX(intakeId);
-        this.armPiston = new Solenoid(pcmId, solenoidId);
+        this.intake = factory.getMotor(NAME, "intake");
+        this.armPiston = factory.getSolenoid(NAME, "arm");
     }
 
     public void setArmPiston(boolean down) {
@@ -50,4 +59,22 @@ public class CargoCollector extends Subsystem {
     }
 
     public void initDefaultCommand() { }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: mechanisms will move!");
+        Timer.delay(3);
+        setIntake(0.5);
+        Timer.delay(3);
+        setIntake(0);
+        Timer.delay(0.5);
+        setIntake(-0.5);
+        Timer.delay(3);
+        setIntake(0);
+        Timer.delay(0.5);
+        setArmPiston(true);
+        Timer.delay(3);
+        setArmPiston(false);
+        return true;
+    }
 }

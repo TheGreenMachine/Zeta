@@ -6,6 +6,7 @@ import org.reflections.Reflections;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * A utility class to run tests and check {@link Checkable}s.
@@ -34,6 +35,15 @@ public class Checker {
      * and calls their check() methods.
      */
     public static void runTests() {
+        runTests((name) -> true);
+    }
+
+    /**
+     * Finds all classes in the {@link frc.team1816.robot} package that
+     * implement {@link Checkable} annotated with the {@link RunTest} annotation
+     * and calls their check() methods.
+     */
+    public static void runTests(Predicate<String> preTestCondition) {
         // Get all declared fields of the components class
         Field[] fields = Components.class.getDeclaredFields();
 
@@ -47,7 +57,10 @@ public class Checker {
             if (Checkable.class.isAssignableFrom(cls)) {
                 // Find a components field where the type is of the current annotated class class
                 for (Field field : fields) {
-                    if (cls.isAssignableFrom(field.getType())) {
+                    if (
+                            cls.isAssignableFrom(field.getType())
+                            && preTestCondition.test(cls.getSimpleName().toLowerCase())
+                    ) {
                         try {
                             System.out.println("Checking class " + cls.getName() + "...");
                             // Invoke its check method

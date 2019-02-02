@@ -2,11 +2,15 @@ package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
+import com.edinarobotics.utils.hardware.RobotFactory.YamlConfiguration;
 import com.kauailabs.navx.frc.AHRS;
+
+import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,6 +22,13 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
     private static final double SLOW_MOD_ROT = 0.8;
+
+    private static double TICKS_PER_REV;
+    private static double TICKS_PER_INCH;
+    private static double WHEELBASE;
+    private static double MAX_VEL_TICKS_PER_100MS;
+
+    private static double INCHES_PER_REV;
 
     private AHRS navX;
 
@@ -32,6 +43,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPower;
     private double rightPower;
     private double rotation;
+    private double leftVel;
+    private double rightVel;
 
     private double gyroAngle;
 
@@ -42,7 +55,14 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     public Drivetrain() {
         super(NAME);
-        RobotFactory factory = Robot.FACTORY;
+        RobotFactory factory = Robot.factory;
+        YamlConfiguration config = factory.getConfig();
+
+        TICKS_PER_REV = config.ticksPerRev;
+        TICKS_PER_INCH = config.ticksPerIn;
+        WHEELBASE = config.wheelbase;
+        MAX_VEL_TICKS_PER_100MS = config.maxVel;
+        INCHES_PER_REV = TICKS_PER_REV / TICKS_PER_INCH;
 
         this.leftMain = factory.getMotor(NAME, "leftMain");
         this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", "leftMain");
@@ -52,13 +72,58 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", "rightMain");
         this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", "rightMain");
 
+        invertTalons(true);
+        setBrakeMode();
+
         navX = new AHRS(I2C.Port.kMXP);
-
-        this.rightMain.setInverted(true);
-        this.rightSlaveOne.setInverted(true);
-        this.rightSlaveTwo.setInverted(true);
-
         System.out.println("NavX Active: " + getGyroStatus());
+
+        initDrivetrainLog();
+    }
+
+    private void invertTalons(boolean invertRight) {
+        if(invertRight) {
+            this.rightMain.setInverted(true);
+            this.rightSlaveOne.setInverted(true);
+            this.rightSlaveTwo.setInverted(true);
+        } else {
+            this.leftMain.setInverted(true);
+            this.leftSlaveOne.setInverted(true);
+            this.leftSlaveTwo.setInverted(true);
+        }
+    }
+
+    public void setBrakeMode() {
+        this.leftMain.setNeutralMode(NeutralMode.Brake);
+        this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
+        this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
+
+        this.rightMain.setNeutralMode(NeutralMode.Brake);
+        this.rightSlaveOne.setNeutralMode(NeutralMode.Brake);
+        this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
+    }
+
+    public void setCoastMode() {
+        this.leftMain.setNeutralMode(NeutralMode.Coast);
+        this.leftSlaveOne.setNeutralMode(NeutralMode.Coast);
+        this.leftSlaveTwo.setNeutralMode(NeutralMode.Coast);
+
+        this.rightMain.setNeutralMode(NeutralMode.Coast);
+        this.rightSlaveOne.setNeutralMode(NeutralMode.Coast);
+        this.rightSlaveTwo.setNeutralMode(NeutralMode.Coast);
+    }
+
+    private void initDrivetrainLog() {
+        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS, () -> this.leftMain.getMotorOutputPercent(), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> this.rightMain.getMotorOutputPercent(), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS, () -> (double) this.leftMain.getSelectedSensorVelocity(0), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS, () -> (double) this.rightMain.getSelectedSensorVelocity(0), 
+            "hide", "join:Drivetrain/Output Percents");
+
+        BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
     }
 
     public double getGyroAngle() {
@@ -136,8 +201,8 @@ public class Drivetrain extends Subsystem implements Checkable {
             leftPower += rotation * .55;
             rightPower -= rotation * .55;
 
-            double leftVel = leftPower;
-            double rightVel = rightPower; // TODO: Add velocity conversion factors.
+            leftVel = leftPower * MAX_VEL_TICKS_PER_100MS;
+            rightVel = rightPower * MAX_VEL_TICKS_PER_100MS;
 
             if (isPercentOut) {
                 this.leftMain.set(ControlMode.PercentOutput, leftPower);
@@ -158,7 +223,8 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
-        System.out.println("Warning: Talons will move!");
+        System.out.println("Warning: mechanisms will move!");
+        Timer.delay(3);
         setDrivetrainPercent(0.5, 0.5);
         Timer.delay(3);
         setDrivetrainPercent(0, 0);

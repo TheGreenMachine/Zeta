@@ -1,18 +1,26 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
-public class Birdbeak extends Subsystem {
+@RunTest
+public class Birdbeak extends Subsystem implements Checkable {
+    private static final String NAME = "birdbeak";
 
     private Solenoid beak;
     private Solenoid hatchPuncher;
     private Solenoid intakeArm;
 
-    private TalonSRX hatchIntake;
+    private IMotorController hatchIntake;
 
     private double intakePow;
 
@@ -21,13 +29,15 @@ public class Birdbeak extends Subsystem {
     private boolean puncherOut;
     private boolean outputsChanged = false;
 
-    public Birdbeak(int pcmId, int beakId, int puncherId, int armId, int intakeId) {
-        super("birdbeak");
-        this.beak = new Solenoid(pcmId, beakId);
-        this.hatchPuncher = new Solenoid(pcmId, puncherId);
-        this.intakeArm = new Solenoid(pcmId, armId);
-        this.hatchIntake = new TalonSRX(intakeId);
-        
+    public Birdbeak() {
+        super(NAME);
+        RobotFactory factory = Robot.factory;
+
+        this.beak = factory.getSolenoid(NAME, "beak");
+        this.hatchPuncher = factory.getSolenoid(NAME, "puncher");
+        this.intakeArm = factory.getSolenoid(NAME, "arm");
+        this.hatchIntake = factory.getMotor(NAME, "hatchIntake");
+
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 
@@ -72,7 +82,7 @@ public class Birdbeak extends Subsystem {
 
     @Override
     public void periodic() {
-        if(outputsChanged) {
+        if (outputsChanged) {
             beak.set(beakOpen);
             hatchPuncher.set(puncherOut);
             intakeArm.set(armDown);
@@ -80,5 +90,31 @@ public class Birdbeak extends Subsystem {
 
             outputsChanged = false;
         }
+    }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: mechanisms will move!");
+        Timer.delay(3);
+        setIntake(0.5);
+        Timer.delay(3);
+        setIntake(0);
+        Timer.delay(0.5);
+        setIntake(-0.5);
+        Timer.delay(3);
+        setIntake(0);
+        Timer.delay(0.5);
+        setBeak(true);
+        Timer.delay(3);
+        setBeak(false);
+        Timer.delay(3);
+        setPuncher(true);
+        Timer.delay(3);
+        setPuncher(false);
+        Timer.delay(3);
+        setArm(true);
+        Timer.delay(3);
+        setArm(false);
+        return true;
     }
 }

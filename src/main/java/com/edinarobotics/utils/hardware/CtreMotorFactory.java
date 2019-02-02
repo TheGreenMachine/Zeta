@@ -65,6 +65,7 @@ public class CtreMotorFactory {
 
     public static IMotorControllerEnhanced createPermanentSlaveTalon(int id, int master_id) {
         final IMotorControllerEnhanced talon = createTalon(id, kSlaveConfiguration);
+        System.out.println("Slaving talon on " + id + " to talon on " + master_id);
         talon.set(ControlMode.Follower, master_id);
         return talon;
     }
@@ -102,6 +103,7 @@ public class CtreMotorFactory {
 
     public static IMotorController createPermanentSlaveVictor(int id, int masterId) {
         final IMotorController victor = createVictor(id, kSlaveConfiguration);
+        System.out.println("Slaving victor on " + id + " to talon on " + masterId);
         victor.set(ControlMode.Follower, masterId);
         return victor;
     }

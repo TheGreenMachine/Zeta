@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,10 +19,13 @@ class RobotFactoryTest {
 
     @Test
     void streamExists_zeta() throws IOException {
-        InputStream is = RobotFactory.class.getClassLoader().getResourceAsStream("zeta.config.yml");
-        byte[] read = is.readAllBytes();
-        System.out.println(read);
-        assertTrue(read.length > 0);
+        try (InputStream is = RobotFactory.class
+                .getClassLoader().getResourceAsStream("zeta.config.yml")) {
+            assertNotNull(is);
+            byte[] read = is.readAllBytes();
+            System.out.println(Arrays.toString(read).substring(0, 100) + "...]");
+            assertTrue(read.length > 0);
+        }
     }
 
     @Test

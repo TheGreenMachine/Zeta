@@ -1,14 +1,22 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
+import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.Timer;
+import frc.team1816.robot.Robot;
 
-public class Climber extends Subsystem {
+@RunTest
+public class Climber extends Subsystem implements Checkable {
+    private static final String NAME = "climber";
 
-    private TalonSRX climbMaster;
-    private TalonSRX climbSlave;
+    private IMotorController climbMaster;
+    private IMotorController climbSlave;
 
     private DoubleSolenoid habPiston;
     private DoubleSolenoid.Value habPistonState;
@@ -17,15 +25,15 @@ public class Climber extends Subsystem {
 
     private boolean outputsChanged = false;
 
-    public Climber(int climbMasterId, int climbSlaveId, int pcmId, int pistonFwdId, int pistonOutId) {
-        super("climber");
+    public Climber() {
+        super(NAME);
+        RobotFactory factory = Robot.factory;
 
-        this.climbMaster = new TalonSRX(climbMasterId);
-        this.climbSlave = new TalonSRX(climbSlaveId);
-        this.habPiston = new DoubleSolenoid(pcmId, pistonFwdId, pistonOutId);
+        this.climbMaster = factory.getMotor(NAME, "climbMaster");
+        this.climbSlave = factory.getMotor(NAME, "climbSlave", "climbMaster");
+        this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
 
         this.climbMaster.setInverted(true); // TODO: check which motor should be inverted
-        this.climbSlave.set(ControlMode.Follower, climbMasterId);
     }
 
     public void setClimberPower(double motorPow) {
@@ -57,4 +65,24 @@ public class Climber extends Subsystem {
     }
 
     public void initDefaultCommand() { }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: mechanisms will move!");
+        Timer.delay(3);
+        setClimberPower(0.5);
+        Timer.delay(3);
+        setClimberPower(0);
+        Timer.delay(0.5);
+        setClimberPower(-0.5);
+        Timer.delay(3);
+        setClimberPower(0);
+        Timer.delay(3);
+        setHabPiston(DoubleSolenoid.Value.kForward);
+        Timer.delay(3);
+        setHabPiston(DoubleSolenoid.Value.kReverse);
+        Timer.delay(3);
+        setHabPiston(DoubleSolenoid.Value.kOff);
+        return true;
+    }
 }

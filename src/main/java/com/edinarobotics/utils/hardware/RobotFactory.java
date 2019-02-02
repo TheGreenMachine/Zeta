@@ -2,6 +2,8 @@ package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -10,10 +12,10 @@ import java.util.Map;
 
 public class RobotFactory {
 
-    private Configuration config;
+    private YamlConfiguration config;
 
     public RobotFactory(String configName) {
-        Yaml yaml = new Yaml(new Constructor(Configuration.class));
+        Yaml yaml = new Yaml(new Constructor(YamlConfiguration.class));
         config = yaml.load(
             this.getClass()
                 .getClassLoader()
@@ -61,7 +63,7 @@ public class RobotFactory {
 
     public IMotorController getMotor(String subsystem, String name) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
-        Configuration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
+        YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
         if (
             subsystemConfig.talons.get(name) != null &&
             subsystemConfig.talons.get(name) > -1
@@ -78,7 +80,7 @@ public class RobotFactory {
 
     public IMotorController getMotor(String subsystem, String name, String master) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
-        Configuration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
+        YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
         if (
             subsystemConfig.talons.get(name) != null &&
             subsystemConfig.talons.get(name) > -1 &&
@@ -86,7 +88,9 @@ public class RobotFactory {
             subsystemConfig.talons.get(master) > -1
         ) {
             // Talons must be following another Talon, cannot follow a Victor.
-            return CtreMotorFactory.createDefaultTalon(subsystemConfig.talons.get(name));
+            return CtreMotorFactory.createPermanentSlaveTalon(
+                    subsystemConfig.talons.get(name), subsystemConfig.talons.get(master)
+            );
         } else if (
             subsystemConfig.victors.get(name) != null &&
             subsystemConfig.victors.get(name) > -1
@@ -111,21 +115,44 @@ public class RobotFactory {
         return CtreMotorFactory.createGhostTalon();
     }
 
-    public Configuration getConfig() {
+    public Solenoid getSolenoid(String subsystem, String name) {
+        Integer solenoidId = getSubsystem(subsystem).solenoids.get(name);
+        if (solenoidId != null) {
+            return new Solenoid(config.pcm, solenoidId);
+        }
+        return null;
+    }
+
+    public DoubleSolenoid getDoubleSolenoid(String subsystem, String name) {
+        YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
+        if (solenoidConfig != null) {
+            return new DoubleSolenoid(config.pcm, solenoidConfig.forward, solenoidConfig.reverse);
+        }
+        return null;
+    }
+
+    public YamlConfiguration getConfig() {
         return config;
     }
 
-    public Configuration.SubsystemConfig getSubsystem(String subsystem) {
+    public YamlConfiguration.SubsystemConfig getSubsystem(String subsystem) {
         return config.subsystems.get(subsystem);
     }
 
-    public static class Configuration {
+    public static class YamlConfiguration {
         public Map<String, SubsystemConfig> subsystems;
+        public int pcm;
+        public double wheelbase;
+        public int ticksPerRev;
+        public double ticksPerIn;
+        public int maxVel;
 
         public static class SubsystemConfig {
             public boolean implemented = false;
             public Map<String, Integer> talons = new HashMap<>();
             public Map<String, Integer> victors = new HashMap<>();
+            public Map<String, Integer> solenoids = new HashMap<>();
+            public Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
 
             @Override
             public String toString() {
@@ -133,13 +160,26 @@ public class RobotFactory {
                         "  implemented = " + implemented + ",\n" +
                         "  talons = " + talons.toString() + ",\n" +
                         "  victors = " + victors.toString() + ",\n" +
+                        "  solenoids = " + solenoids.toString() + ",\n" +
+                        "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
                         "}";
+            }
+        }
+
+        public static class DoubleSolenoidConfig {
+            public int forward;
+            public int reverse;
+
+            @Override
+            public String toString() {
+                return String.format("{ forward: %d, reverse: %d }", forward, reverse);
             }
         }
 
         @Override
         public String toString() {
-            return "Configuration {\n  subsystems = " + subsystems.toString() + "\n}";
+            return "Configuration {\n  subsystems = " + subsystems.toString() +
+                    "\n pcm = " + pcm + "\n}";
         }
     }
 }
