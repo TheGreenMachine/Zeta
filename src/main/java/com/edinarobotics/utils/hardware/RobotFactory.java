@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class RobotFactory {
 
-    private Configuration config;
+    private YamlConfiguration config;
 
     public RobotFactory(String configName) {
-        Yaml yaml = new Yaml(new Constructor(Configuration.class));
+        Yaml yaml = new Yaml(new Constructor(YamlConfiguration.class));
         config = yaml.load(
             this.getClass()
                 .getClassLoader()
@@ -63,7 +63,7 @@ public class RobotFactory {
 
     public IMotorController getMotor(String subsystem, String name) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
-        Configuration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
+        YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
         if (
             subsystemConfig.talons.get(name) != null &&
             subsystemConfig.talons.get(name) > -1
@@ -80,7 +80,7 @@ public class RobotFactory {
 
     public IMotorController getMotor(String subsystem, String name, String master) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
-        Configuration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
+        YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
         if (
             subsystemConfig.talons.get(name) != null &&
             subsystemConfig.talons.get(name) > -1 &&
@@ -124,22 +124,22 @@ public class RobotFactory {
     }
 
     public DoubleSolenoid getDoubleSolenoid(String subsystem, String name) {
-        Configuration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
+        YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
         if (solenoidConfig != null) {
             return new DoubleSolenoid(config.pcm, solenoidConfig.forward, solenoidConfig.reverse);
         }
         return null;
     }
 
-    public Configuration getConfig() {
+    public YamlConfiguration getConfig() {
         return config;
     }
 
-    public Configuration.SubsystemConfig getSubsystem(String subsystem) {
+    public YamlConfiguration.SubsystemConfig getSubsystem(String subsystem) {
         return config.subsystems.get(subsystem);
     }
 
-    public static class Configuration {
+    public static class YamlConfiguration {
         public Map<String, SubsystemConfig> subsystems;
         public int pcm;
         public double wheelbase;
