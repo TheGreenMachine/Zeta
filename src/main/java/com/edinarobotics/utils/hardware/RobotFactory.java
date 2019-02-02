@@ -131,6 +131,10 @@ public class RobotFactory {
         return null;
     }
 
+    public Double getConstant(String name) {
+        return config.constants.get(name);
+    }
+
     public YamlConfiguration getConfig() {
         return config;
     }
@@ -141,11 +145,8 @@ public class RobotFactory {
 
     public static class YamlConfiguration {
         public Map<String, SubsystemConfig> subsystems;
+        public Map<String, Double> constants = new HashMap<>();
         public int pcm;
-        public double wheelbase;
-        public int ticksPerRev;
-        public double ticksPerIn;
-        public int maxVel;
 
         public static class SubsystemConfig {
             public boolean implemented = false;
