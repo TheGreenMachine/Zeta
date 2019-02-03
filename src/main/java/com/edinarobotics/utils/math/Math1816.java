@@ -121,5 +121,4 @@ public final class Math1816 {
             return atanApprox(num , Math.sqrt(1 - num * num));
         }
     }
-
 }
