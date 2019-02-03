@@ -12,3 +12,8 @@ subsystems:
     implemented: false
     talons:
       one: 8
+  cargoshooter:
+    implemented: false
+    talons:
+      arm: -1
+      intake: -1

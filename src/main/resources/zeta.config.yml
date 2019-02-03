@@ -32,6 +32,11 @@ subsystems:
       beak: 3
       puncher: 4
       arm: 5
+  cargoshooter:
+    implemented: false
+    talons:
+      arm: -1
+      intake: -1
 pcm: 17
 constants:
   wheelbase: 25
