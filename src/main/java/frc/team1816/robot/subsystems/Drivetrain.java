@@ -43,6 +43,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double rotation;
     private double leftVel;
     private double rightVel;
+    private double leftPos;
+    private double rightPos;
 
     private double gyroAngle;
 
@@ -131,6 +133,26 @@ public class Drivetrain extends Subsystem implements Checkable {
         return navX.isConnected();
     }
 
+    public double getLeftPosTicks() {
+        return leftPos;
+    }
+
+    public double getRightPosTicks() {
+        return rightPos;
+    }
+
+    public double getLeftPosInches() {
+        return ticksToInches(leftPos);
+    }
+
+    public double getRightPosInches() {
+        return ticksToInches(rightPos);
+    }
+
+    public double ticksToInches(double ticks) {
+        return ticks * (1 / TICKS_PER_REV) * INCHES_PER_REV;
+    }
+
     public void setDrivetrainVelocity(double leftPower, double rightPower) {
         setDrivetrainVelocity(leftPower, rightPower, 0);
     }
@@ -182,6 +204,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     @Override
     public void periodic() {
         gyroAngle = navX.getAngle();
+        leftPos = leftMain.getSelectedSensorPosition(0);
+        rightPos = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
             if (isSlowMode) {
