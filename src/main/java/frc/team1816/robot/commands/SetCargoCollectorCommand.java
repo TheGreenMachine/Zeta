@@ -12,6 +12,7 @@ public class SetCargoCollectorCommand extends Command {
         super("setcargocollectorcommand");
         collector = Components.getInstance().collector;
         this.isDown = down;
+        requires(collector);
     }
 
     @Override

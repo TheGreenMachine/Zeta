@@ -13,6 +13,7 @@ public class SetCargoShooterPositionCommand extends Command {
         super("setcargoshooterpositioncommand");
         shooter = Components.getInstance().shooter;
         this.position = pos;
+        requires(shooter);
     }
 
     @Override

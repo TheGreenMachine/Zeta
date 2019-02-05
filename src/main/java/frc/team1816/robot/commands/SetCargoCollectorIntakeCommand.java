@@ -12,6 +12,7 @@ public class SetCargoCollectorIntakeCommand extends Command {
         super("setcargocollectorintakecommand");
         collector = Components.getInstance().collector;
         this.power = pow;
+        requires(collector);
     }
 
     @Override

@@ -12,6 +12,7 @@ public class SetBeakIntakeCommand extends Command {
         super("setbeakintakecommand");
         birdbeak = Components.getInstance().birdbeak;
         this.power = power;
+        requires(birdbeak);
     }
 
     @Override

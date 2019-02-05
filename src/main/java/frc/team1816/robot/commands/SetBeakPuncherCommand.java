@@ -12,6 +12,7 @@ public class SetBeakPuncherCommand extends Command {
         super("setbeakpunchercommand");
         birdbeak = Components.getInstance().birdbeak;
         this.isOut = out;
+        requires(birdbeak);
     }
 
     @Override

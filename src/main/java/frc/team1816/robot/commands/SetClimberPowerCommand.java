@@ -12,6 +12,7 @@ public class SetClimberPowerCommand extends Command {
         super("setclimberpowercommand");
         climber = Components.getInstance().climber;
         this.power = power;
+        requires(climber);
     }
 
     @Override

@@ -12,6 +12,7 @@ public class SetCargoShooterCommand extends Command {
         super("setcargoshootercommand");
         shooter = Components.getInstance().shooter;
         this.power = power;
+        requires(shooter);
     }
 
     @Override

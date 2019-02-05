@@ -12,6 +12,7 @@ public class SetBeakCollectorArmCommand extends Command {
         super("setbeakcollectorarmcommand");
         birdbeak = Components.getInstance().birdbeak;
         this.isDown = down;
+        requires(birdbeak);
     }
 
     @Override

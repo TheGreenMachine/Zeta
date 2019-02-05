@@ -13,6 +13,7 @@ public class SetClimberPistonCommand extends Command {
         super("setclimberpistoncommand");
         climber = Components.getInstance().climber;
         this.value = value;
+        requires(climber);
     }
 
     @Override

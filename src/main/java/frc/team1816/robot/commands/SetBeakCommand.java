@@ -12,6 +12,7 @@ public class SetBeakCommand extends Command {
         super("setbeakcommand");
         birdbeak = Components.getInstance().birdbeak;
         this.isOpen = open;
+        requires(birdbeak);
     }
 
     @Override
