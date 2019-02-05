@@ -11,10 +11,12 @@ import frc.team1816.robot.commands.ToggleSlowModeCommand;
 public class Controls {
     private static Controls instance;
 
-    public Gamepad gamepadDriver;
+    private Gamepad gamepadDriver;
+    private Gamepad gamepadOperator;
 
     private Controls() {
         gamepadDriver = new Gamepad(0);
+        gamepadOperator = new Gamepad(1);
 
         gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(true));
         gamepadDriver.leftBumper().whenReleased(new ToggleSlowModeCommand(false));
@@ -28,6 +30,10 @@ public class Controls {
 
     public double getDriveTurn() {
         return gamepadDriver.getRightX();
+    }
+
+    public double getClimbThrottle() {
+        return gamepadOperator.getLeftY();
     }
 
     /**
