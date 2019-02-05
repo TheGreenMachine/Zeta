@@ -14,10 +14,10 @@ public class Components {
     private static Components instance;
 
     public Birdbeak birdbeak;
-    public Drivetrain drivetrain;
-    public CargoCollector collector;
-    public CargoShooter shooter;
     public Climber climber;
+    public CargoCollector collector;
+    public Drivetrain drivetrain;
+    public CargoShooter shooter;
 
     private Components() {
         birdbeak = new Birdbeak();

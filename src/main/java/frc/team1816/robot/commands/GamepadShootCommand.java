@@ -5,11 +5,11 @@ import frc.team1816.robot.Components;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.CargoShooter;
 
-public class GamepadCargoCommand extends Command {
+public class GamepadShootCommand extends Command {
     private CargoShooter shooter;
 
-    public GamepadCargoCommand() {
-        super("gamepadcargocommand");
+    public GamepadShootCommand() {
+        super("gamepadshootcommand");
         this.shooter = Components.getInstance().shooter;
         requires(shooter);
     }

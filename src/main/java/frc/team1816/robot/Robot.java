@@ -10,13 +10,23 @@ import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
+import frc.team1816.robot.commands.GamepadShootCommand;
+import frc.team1816.robot.subsystems.Birdbeak;
+import frc.team1816.robot.subsystems.CargoCollector;
+import frc.team1816.robot.subsystems.CargoShooter;
+import frc.team1816.robot.subsystems.Climber;
 import frc.team1816.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
     BadLog logger;
 
-    private Drivetrain drivetrain;
+    public Birdbeak birdbeak;
+    public Climber climber;
+    public CargoCollector collector;
+    public Drivetrain drivetrain;
+    public CargoShooter shooter;
 
     /*
      * Constants are defined as static final deeply immutable types (e.g. String)
@@ -38,7 +48,11 @@ public class Robot extends TimedRobot {
         Components.getInstance();
         Controls.getInstance();
 
+        birdbeak = Components.getInstance().birdbeak;
+        climber = Components.getInstance().climber;
+        collector = Components.getInstance().collector;
         drivetrain = Components.getInstance().drivetrain;
+        shooter = Components.getInstance().shooter;
 
         logger.finishInitialization();
     }
@@ -51,7 +65,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        Components.getInstance().drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        climber.setDefaultCommand(new GamepadClimbCommand());
+        drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        shooter.setDefaultCommand(new GamepadShootCommand());
     }
 
     @Override
