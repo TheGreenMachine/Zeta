@@ -4,20 +4,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 
-public class SetPuncherCommand extends Command {
+public class SetBeakIntakeCommand extends Command {
     private Birdbeak birdbeak;
-    private boolean out;
+    private double power;
 
-    public SetPuncherCommand(boolean out) {
-        super("setpunchercommand");
+    public SetBeakIntakeCommand(double power) {
+        super("setbeakintakecommand");
         birdbeak = Components.getInstance().birdbeak;
-        this.out = out;
+        this.power = power;
     }
 
     @Override
     protected void execute() {
-        if (birdbeak.getPuncherState() != out)
-            birdbeak.setPuncher(out);
+        birdbeak.setIntake(power);
     }
 
     @Override

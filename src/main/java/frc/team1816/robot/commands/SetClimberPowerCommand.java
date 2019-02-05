@@ -16,8 +16,7 @@ public class SetClimberPowerCommand extends Command {
 
     @Override
     protected void execute() {
-        if (climber.getMotorPower() != power)
-            climber.setClimberPower(power);
+        climber.setClimberPower(power);
     }
 
     @Override

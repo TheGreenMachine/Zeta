@@ -17,8 +17,7 @@ public class SetClimberPistonCommand extends Command {
 
     @Override
     protected void execute() {
-        if (!climber.getHabPistonState().equals(value.toString()))
-            climber.setHabPiston(value);
+        climber.setHabPiston(value);
     }
 
     @Override

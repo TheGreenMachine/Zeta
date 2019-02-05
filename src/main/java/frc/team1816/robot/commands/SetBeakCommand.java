@@ -16,8 +16,7 @@ public class SetBeakCommand extends Command {
 
     @Override
     protected void execute() {
-        if (birdbeak.getBeakState() != open)
-            birdbeak.setBeak(open);
+        birdbeak.setBeak(open);
     }
 
     @Override
