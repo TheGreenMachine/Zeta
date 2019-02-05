@@ -78,7 +78,8 @@ public class Birdbeak extends Subsystem implements Checkable {
     }
 
     @Override
-    protected void initDefaultCommand() { }
+    protected void initDefaultCommand() {
+    }
 
     @Override
     public void periodic() {
