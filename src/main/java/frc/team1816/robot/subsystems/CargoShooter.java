@@ -98,9 +98,9 @@ public class CargoShooter extends Subsystem {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty(NAME + "/ArmPosition",
+        builder.addDoubleProperty("ArmPosition",
                 this::getArmPosition, this::setArmPosition);
-        builder.addDoubleProperty(NAME + "/IntakeVelocity",
+        builder.addDoubleProperty("IntakeVelocity",
                 this::getIntakeVelocity, this::setIntakeVelocity);
     }
 }
