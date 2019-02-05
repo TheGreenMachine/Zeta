@@ -40,8 +40,7 @@ class RobotFactoryTest {
     @Test
     void talonsDefined_zetaDrivetrain() {
         assertTrue(
-                robotFactory.getConfig().subsystems
-                        .get("drivetrain").talons.values().size() > 0
+                robotFactory.getSubsystem("drivetrain").talons.values().size() > 0
         );
     }
 
