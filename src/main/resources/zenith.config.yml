@@ -17,3 +17,10 @@ subsystems:
     talons:
       arm: -1
       intake: -1
+  constants:
+    kP: 5.0
+    kI: 0
+    kD: 1.0
+    kF: 0
+    maxPos: 1475
+    minPos: 915
