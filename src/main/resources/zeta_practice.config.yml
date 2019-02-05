@@ -38,7 +38,8 @@ subsystems:
       arm: -1
       intake: -1
 pcm: 17
-wheelbase: 25
-ticksPerRev: 1025
-ticksPerIn: 50
-maxVel: 800
+constants:
+  wheelbase: 25
+  ticksPerRev: 1025
+  ticksPerIn: 50
+  maxVel: 800
