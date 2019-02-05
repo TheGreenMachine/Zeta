@@ -5,7 +5,10 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.hardware.RobotFactory;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import frc.team1816.robot.Robot;
@@ -13,7 +16,7 @@ import frc.team1816.robot.Robot;
 /**
  * Subsystem for the cargo shooter.
  */
-public class CargoShooter extends Subsystem {
+public class CargoShooter extends Subsystem implements Checkable {
     private static final String NAME = "cargoshooter";
 
     private IMotorControllerEnhanced arm;
@@ -198,5 +201,16 @@ public class CargoShooter extends Subsystem {
         builder.addBooleanProperty("Busy", this::isBusy, null);
         builder.addDoubleProperty("IntakeVelocity",
                 this::getIntakeVelocity, this::setIntakeVelocity);
+    }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: motors will move!");
+        setArmPosition(ARM_POSITION_MIN);
+        Timer.delay(5);
+        setArmPosition(ARM_POSITION_MIN);
+        Timer.delay(5);
+        setArmVelocity(0);
+        return true;
     }
 }
