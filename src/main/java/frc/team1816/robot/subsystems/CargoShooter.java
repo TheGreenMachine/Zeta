@@ -205,10 +205,10 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
-        System.out.println("Warning: motors will move!");
-        setArmPosition(ARM_POSITION_MIN);
+        System.out.println("Warning: mechanisms will move!");
+        setArmPosition(0);
         Timer.delay(5);
-        setArmPosition(ARM_POSITION_MIN);
+        setArmPosition(1);
         Timer.delay(5);
         setArmVelocity(0);
         return true;
