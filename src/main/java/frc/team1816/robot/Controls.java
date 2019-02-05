@@ -49,6 +49,10 @@ public class Controls {
         return gamepadOperator.getLeftY();
     }
 
+    public double getShooterArmThrottle() {
+        return gamepadOperator.getRightY();
+    }
+
     /**
      * Returns the current singleton instance of Controls.
      * It will initialize the singleton instance if there is none.
