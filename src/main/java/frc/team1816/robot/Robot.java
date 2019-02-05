@@ -1,10 +1,12 @@
 package frc.team1816.robot;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
 import badlog.lib.BadLog;
-import badlog.lib.DataInferMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -13,7 +15,6 @@ import frc.team1816.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
     BadLog logger;
-    private long startTime;
 
     private Drivetrain drivetrain;
 
@@ -32,13 +33,14 @@ public class Robot extends TimedRobot {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
 
-        startTime = System.currentTimeMillis();
         initLog();
 
         Components.getInstance();
         Controls.getInstance();
 
         drivetrain = Components.getInstance().drivetrain;
+
+        logger.finishInitialization();
     }
 
     @Override
@@ -81,23 +83,19 @@ public class Robot extends TimedRobot {
         // System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
 
-        logTime();
         logger.updateTopics();
         if (!DriverStation.getInstance().isDisabled()) {
             logger.log();
         }
     }
 
-    private void logTime() {
-        double currentTime = ((double) (System.currentTimeMillis() - startTime)) / 1_000d;
-        BadLog.publish("Time", currentTime);
-    }
-
     private void initLog() {
-        logger = BadLog.init("Zeta.bag");
+        var timestamp = new SimpleDateFormat("DDD.HH.mm").format(new Date());
+        String path = "/home/lvuser/";
+        logger = BadLog.init(path + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
+
         BadLog.createValue("Match Type", DriverStation.getInstance().getMatchType().toString());
         BadLog.createValue("Match Number", "" + DriverStation.getInstance().getMatchNumber());
         BadLog.createTopic("Match Time", "s", () -> DriverStation.getInstance().getMatchTime());
-        BadLog.createTopicSubscriber("Time", "s", DataInferMode.DEFAULT, "hide", "delta", "xaxis");
     }
 }
