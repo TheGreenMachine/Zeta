@@ -10,7 +10,7 @@ subsystems:
       rightSlaveTwo: 0
       leftSlaveTwo: 15
   climber:
-    implemented: false
+    implemented: true
     talons:
       climbMaster: -1
       climbSlave: -1
@@ -19,13 +19,13 @@ subsystems:
         forward: 0
         reverse: 1
   cargocollector:
-    implemented: false
+    implemented: true
     talons:
       intake: -1
     solenoids:
       arm: 2
   birdbeak:
-    implemented: false
+    implemented: true
     talons:
       hatchIntake: -1
     solenoids:
@@ -33,7 +33,7 @@ subsystems:
       puncher: 4
       arm: 5
   cargoshooter:
-    implemented: false
+    implemented: true
     talons:
       arm: -1
       intake: -1

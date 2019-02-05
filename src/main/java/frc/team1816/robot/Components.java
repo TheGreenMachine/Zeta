@@ -1,6 +1,8 @@
 package frc.team1816.robot;
 
 import frc.team1816.robot.subsystems.Birdbeak;
+import frc.team1816.robot.subsystems.CargoCollector;
+import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.Climber;
 import frc.team1816.robot.subsystems.Drivetrain;
 
@@ -11,14 +13,18 @@ import frc.team1816.robot.subsystems.Drivetrain;
 public class Components {
     private static Components instance;
 
-    public Drivetrain drivetrain;
-    public Climber climber;
     public Birdbeak birdbeak;
+    public Drivetrain drivetrain;
+    public CargoCollector collector;
+    public CargoShooter shooter;
+    public Climber climber;
 
     private Components() {
-        drivetrain = new Drivetrain();
-        climber = new Climber();
         birdbeak = new Birdbeak();
+        climber = new Climber();
+        collector = new CargoCollector();
+        drivetrain = new Drivetrain();
+        shooter = new CargoShooter();
     }
 
     /**
