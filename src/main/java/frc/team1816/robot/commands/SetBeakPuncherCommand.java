@@ -6,17 +6,17 @@ import frc.team1816.robot.subsystems.Birdbeak;
 
 public class SetBeakPuncherCommand extends Command {
     private Birdbeak birdbeak;
-    private boolean out;
+    private boolean isOut;
 
     public SetBeakPuncherCommand(boolean out) {
         super("setbeakpunchercommand");
         birdbeak = Components.getInstance().birdbeak;
-        this.out = out;
+        this.isOut = out;
     }
 
     @Override
     protected void execute() {
-        birdbeak.setPuncher(out);
+        birdbeak.setPuncher(isOut);
     }
 
     @Override
