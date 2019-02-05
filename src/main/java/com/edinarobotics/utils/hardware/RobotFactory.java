@@ -185,8 +185,8 @@ public class RobotFactory {
 
         @Override
         public String toString() {
-            return "Configuration {\n  subsystems = " + subsystems.toString() +
-                    "\n pcm = " + pcm + "\n}";
+            return "YamlConfiguration {\n  subsystems = " + subsystems.toString() +
+                    "\n  pcm = " + pcm + "\n  constants = " + constants.toString( )+ "\n}";
         }
     }
 }
