@@ -163,7 +163,6 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rotation = rotation;
         isPercentOut = false;
         outputsChanged = true;
-        periodic();
     }
 
     public void setDrivetrainPercent(double leftPower, double rightPower) {
@@ -176,13 +175,11 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rotation = rotation;
         isPercentOut = true;
         outputsChanged = true;
-        periodic();
     }
 
     public void setSlowMode(boolean slowMode) {
         this.isSlowMode = slowMode;
         outputsChanged = true;
-        periodic();
     }
 
     public boolean isReverseMode() {
@@ -192,13 +189,11 @@ public class Drivetrain extends Subsystem implements Checkable {
     public void setReverseMode(boolean reverseMode) {
         this.isReverseMode = reverseMode;
         outputsChanged = true;
-        periodic();
     }
 
     public void toggleReverseMode() {
         this.isReverseMode = !this.isReverseMode;
         outputsChanged = true;
-        periodic();
     }
 
     @Override
