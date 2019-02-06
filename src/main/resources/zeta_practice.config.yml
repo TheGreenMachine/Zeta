@@ -16,8 +16,8 @@ subsystems:
       climbSlave: 12
     doubleSolenoids:
       habPiston:
-        forward: 4
-        reverse: 5
+        forward: 5
+        reverse: 6
   cargocollector:
     implemented: false
     talons:
@@ -29,9 +29,9 @@ subsystems:
     talons:
       hatchIntake: 4
     solenoids:
-      beak: 0
-      puncher: 2
-      arm: 3
+      beak: 1
+      puncher: 3
+      arm: 4
   cargoshooter:
     implemented: false
     talons:
@@ -43,6 +43,7 @@ subsystems:
       kD: 1.0
       kF: 0
       maxPos: 1475
+      midPos: 1195
       minPos: 915
 pcm: 17
 constants:
