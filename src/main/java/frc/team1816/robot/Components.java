@@ -26,14 +26,11 @@ public class Components {
 
     private Components() {
         birdbeak = new Birdbeak();
-<<<<<<< HEAD
         ledManager = new LEDManager(CANIFIER_ID);
-=======
         climber = new Climber();
         collector = new CargoCollector();
         drivetrain = new Drivetrain();
         shooter = new CargoShooter();
->>>>>>> dddadea16dfbdf3f5b1675b3b632aa28b0615f64
     }
 
     /**
