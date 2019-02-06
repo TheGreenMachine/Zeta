@@ -76,7 +76,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.armPositionTicks = getArmPositionAbsolute();
         // FIXME: absolutePosition ≠ getArmPositionAbsolute() - potential issue with masking?
 
-        arm.configOpenloopRamp(2.0, 0);
+        arm.configOpenloopRamp(2.0, 0); // TODO: tune ramp value
         System.out.println("post:\t abs: " + getArmPositionAbsolute() + " rel: " + getArmEncoderPosition());
     }
 
@@ -140,6 +140,7 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public int getArmPositionAbsolute() {
+        // FIXME: potentially need to mask input here
         return arm.getSensorCollection().getPulseWidthPosition();
     }
 
