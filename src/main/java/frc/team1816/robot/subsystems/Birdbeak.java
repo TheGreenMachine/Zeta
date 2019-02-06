@@ -14,7 +14,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class Birdbeak extends Subsystem implements Checkable {
-    private static final String NAME = "birdbeak";
+    public static final String NAME = "birdbeak";
 
     private Solenoid beak;
     private Solenoid hatchPuncher;

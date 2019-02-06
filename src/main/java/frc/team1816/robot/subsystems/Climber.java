@@ -13,7 +13,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class Climber extends Subsystem implements Checkable {
-    private static final String NAME = "climber";
+    public static final String NAME = "climber";
 
     private IMotorController climbMaster;
     private IMotorController climbSlave;

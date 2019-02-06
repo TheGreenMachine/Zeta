@@ -13,7 +13,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class CargoCollector extends Subsystem implements Checkable {
-    private static final String NAME = "cargocollector";
+    public static final String NAME = "cargocollector";
 
     private Solenoid armPiston;
     private IMotorController intake;

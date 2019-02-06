@@ -17,7 +17,7 @@ import frc.team1816.robot.Robot;
  * Subsystem for the cargo shooter.
  */
 public class CargoShooter extends Subsystem implements Checkable {
-    private static final String NAME = "cargoshooter";
+    public static final String NAME = "cargoshooter";
 
     private IMotorControllerEnhanced arm;
     private IMotorController intake;

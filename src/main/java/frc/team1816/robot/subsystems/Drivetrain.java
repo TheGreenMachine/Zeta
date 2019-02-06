@@ -18,7 +18,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
-    private static final String NAME = "drivetrain";
+    public static final String NAME = "drivetrain";
 
     private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
     private static final double SLOW_MOD_ROT = 0.8;

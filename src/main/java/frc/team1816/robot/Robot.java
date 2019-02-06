@@ -30,13 +30,11 @@ public class Robot extends TimedRobot {
 
     /*
      * Constants are defined as static final deeply immutable types (e.g. String)
-     * Since the factory is not deeply immutable, we use regular variable case.
-     * See Google Java Style Guide.
+     * Since the factory is not deeply immutable, we use regular variable case. See
+     * Google Java Style Guide.
      */
     public static final RobotFactory factory = new RobotFactory(
-            System.getenv("ROBOT_NAME") != null
-                    ? System.getenv("ROBOT_NAME") : "zeta"
-    );
+            System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
     @Override
     public void robotInit() {
@@ -58,16 +56,24 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledInit() { }
+    public void disabledInit() {
+    }
 
     @Override
-    public void autonomousInit() { }
+    public void autonomousInit() {
+    }
 
     @Override
     public void teleopInit() {
-        climber.setDefaultCommand(new GamepadClimbCommand());
-        drivetrain.setDefaultCommand(new GamepadDriveCommand());
-        shooter.setDefaultCommand(new GamepadShootCommand());
+        if (climber != null) {
+            climber.setDefaultCommand(new GamepadClimbCommand());
+        }
+        if (drivetrain != null) {
+            drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        }
+        if (shooter != null) {
+            shooter.setDefaultCommand(new GamepadShootCommand());
+        }
     }
 
     @Override
@@ -79,7 +85,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         periodic();
     }
-    
+
     @Override
     public void autonomousPeriodic() {
         periodic();
