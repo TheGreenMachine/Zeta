@@ -13,12 +13,12 @@ public class SetClimberPistonCommand extends Command {
         super("setclimberpistoncommand");
         climber = Components.getInstance().climber;
         this.value = value;
+        requires(climber);
     }
 
     @Override
     protected void execute() {
-        if (!climber.getHabPistonState().equals(value.toString()))
-            climber.setHabPiston(value);
+        climber.setHabPiston(value);
     }
 
     @Override

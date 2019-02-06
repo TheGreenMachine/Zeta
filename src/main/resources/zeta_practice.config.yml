@@ -12,33 +12,42 @@ subsystems:
   climber:
     implemented: false
     talons:
-      climbMaster: -1
-      climbSlave: -1
+      climbMaster: 3
+      climbSlave: 12
     doubleSolenoids:
       habPiston:
-        forward: 0
-        reverse: 1
+        forward: 5
+        reverse: 6
   cargocollector:
     implemented: false
     talons:
-      intake: -1
+      intake: 11
     solenoids:
       arm: 2
   birdbeak:
     implemented: false
     talons:
-      hatchIntake: -1
+      hatchIntake: 4
     solenoids:
-      beak: 3
-      puncher: 4
-      arm: 5
+      beak: 1
+      puncher: 3
+      arm: 4
   cargoshooter:
     implemented: false
     talons:
-      arm: -1
-      intake: -1
+      arm: 5
+      intake: 10
+    constants:
+    kP: 5.0
+      kI: 0
+      kD: 1.0
+      kF: 0
+      maxPos: 1475
+      midPos: 1195
+      minPos: 915
 pcm: 17
-wheelbase: 25
-ticksPerRev: 1025
-ticksPerIn: 50
-maxVel: 800
+constants:
+  wheelbase: 25
+  ticksPerRev: 1025
+  ticksPerIn: 50
+  maxVel: 800

@@ -4,20 +4,20 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 
-public class SetArmCommand extends Command {
+public class SetBeakCollectorArmCommand extends Command {
     private Birdbeak birdbeak;
-    private boolean down;
+    private boolean isDown;
 
-    public SetArmCommand(boolean down) {
-        super("setarmcommand");
+    public SetBeakCollectorArmCommand(boolean down) {
+        super("setbeakcollectorarmcommand");
         birdbeak = Components.getInstance().birdbeak;
-        this.down = down;
+        this.isDown = down;
+        requires(birdbeak);
     }
 
     @Override
     protected void execute() {
-        if (birdbeak.getArmState() != down)
-            birdbeak.setArm(down);
+        birdbeak.setArm(isDown);
     }
 
     @Override

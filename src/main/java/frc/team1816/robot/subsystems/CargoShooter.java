@@ -22,13 +22,17 @@ public class CargoShooter extends Subsystem implements Checkable {
     private IMotorControllerEnhanced arm;
     private IMotorController intake;
 
-    private double armPosition;
-    private double armVelocity;
-    private double intakeVelocity;
+    private ArmPosition armPosition;
+
+    private double armPositionTicks;
+    private double armPower;
+    private double intakePower;
 
     // TODO: Measure true min and max
     public static final int ARM_POSITION_MIN =
             Robot.factory.getConstant(NAME, "minPos").intValue();
+    public static final int ARM_POSITION_MID =
+            Robot.factory.getConstant(NAME, "midPos").intValue();
     public static final int ARM_POSITION_MAX =
             Robot.factory.getConstant(NAME, "maxPos").intValue();
     private static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
@@ -50,8 +54,8 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         this.arm = (IMotorControllerEnhanced) factory.getMotor(NAME, "arm");
         this.intake = factory.getMotor(NAME, "intake");
-        this.armVelocity = 0;
-        this.intakeVelocity = 0;
+        this.armPower = 0;
+        this.intakePower = 0;
         this.outputsChanged = true;
         this.isPercentOutput = true;
 
@@ -68,7 +72,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         absolutePosition &= 0xFFF;
         /* Set the quadrature (relative) sensor to match absolute */
         this.arm.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
-        this.armPosition = getArmPositionAbsolute();
+        this.armPositionTicks = getArmPositionAbsolute();
 
         arm.set(ControlMode.PercentOutput, 0.0);
         intake.set(ControlMode.PercentOutput, 0.0);
@@ -110,13 +114,28 @@ public class CargoShooter extends Subsystem implements Checkable {
         arm.config_kD(kPIDLoopIdx, kD, kTimeoutMs);
     }
 
-    public void setArmPosition(double armPosition) {
-        this.armPosition = armPosition;
+    public enum ArmPosition {
+        DOWN(ARM_POSITION_MIN),
+        ROCKET(ARM_POSITION_MID),
+        UP(ARM_POSITION_MAX);
+
+        private double armPos;
+        ArmPosition(double pos) {
+            this.armPos = pos;
+        }
+
+        public double getPos() {
+            return armPos;
+        }
+    }
+
+    public void setArmPosition(ArmPosition pos) {
+        this.armPosition = pos;
         outputsChanged = true;
         isPercentOutput = false;
     }
 
-    public double getArmPosition() {
+    public ArmPosition getArmPosition() {
         return armPosition;
     }
 
@@ -135,23 +154,23 @@ public class CargoShooter extends Subsystem implements Checkable {
         return false;
     }
 
-    public void setArmVelocity(double armVelocity) {
-        this.armVelocity = armVelocity;
+    public void setArmPower(double armPow) {
+        this.armPower = armPow;
         outputsChanged = true;
         isPercentOutput = true;
     }
 
-    public double getArmVelocity() {
-        return armVelocity;
+    public double getArmPower() {
+        return armPower;
     }
 
-    public void setIntakeVelocity(double intakeVelocity) {
-        this.intakeVelocity = intakeVelocity;
+    public void setIntakePower(double intakePow) {
+        this.intakePower = intakePow;
         outputsChanged = true;
     }
 
-    public double getIntakeVelocity() {
-        return intakeVelocity;
+    public double getIntakePower() {
+        return intakePower;
     }
 
     public boolean isPercentOutput() {
@@ -162,19 +181,11 @@ public class CargoShooter extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             if (isPercentOutput) {
-                arm.set(ControlMode.PercentOutput, armVelocity);
+                arm.set(ControlMode.PercentOutput, armPower);
             } else {
-                // armPosition is a number from [0.0, 1.0] representing a
-                // proportion of the total rotational range of the arm.
-                int armEncoderTicks =
-                        (int) (
-                            armPosition
-                            * (ARM_POSITION_MAX - ARM_POSITION_MIN)
-                            + ARM_POSITION_MIN
-                        );
-                arm.set(ControlMode.Position, armEncoderTicks);
+                arm.set(ControlMode.Position, armPosition.getPos());
             }
-            intake.set(ControlMode.PercentOutput, intakeVelocity);
+            intake.set(ControlMode.PercentOutput, intakePower);
             outputsChanged = false;
         }
     }
@@ -199,18 +210,22 @@ public class CargoShooter extends Subsystem implements Checkable {
         ), null);
         builder.addDoubleProperty("MotorOutput", arm::getMotorOutputPercent, null);
         builder.addBooleanProperty("Busy", this::isBusy, null);
-        builder.addDoubleProperty("IntakeVelocity",
-                this::getIntakeVelocity, this::setIntakeVelocity);
+        builder.addDoubleProperty("IntakePower",
+                this::getIntakePower, this::setIntakePower);
     }
 
     @Override
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
-        setArmPosition(0);
+        setArmPosition(ArmPosition.DOWN);
         Timer.delay(5);
-        setArmPosition(1);
+        setArmPosition(ArmPosition.UP);
         Timer.delay(5);
-        setArmVelocity(0);
+        setIntakePower(1);
+        Timer.delay(5);
+        setIntakePower(0);
+        Timer.delay(5);
+        setArmPosition(ArmPosition.DOWN);
         return true;
     }
 }

@@ -1,6 +1,8 @@
 package frc.team1816.robot;
 
 import frc.team1816.robot.subsystems.Birdbeak;
+import frc.team1816.robot.subsystems.CargoCollector;
+import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.Climber;
 import frc.team1816.robot.subsystems.Drivetrain;
 import frc.team1816.robot.subsystems.LEDManager;
@@ -12,19 +14,26 @@ import frc.team1816.robot.subsystems.LEDManager;
 public class Components {
     private static Components instance;
 
-    public Drivetrain drivetrain;
-    public Climber climber;
     public Birdbeak birdbeak;
     public LEDManager ledManager;
 
     // TODO: CANifier ID
     public static final int CANIFIER_ID = 8;
+    public Climber climber;
+    public CargoCollector collector;
+    public Drivetrain drivetrain;
+    public CargoShooter shooter;
 
     private Components() {
-        drivetrain = new Drivetrain();
-        climber = new Climber();
         birdbeak = new Birdbeak();
+<<<<<<< HEAD
         ledManager = new LEDManager(CANIFIER_ID);
+=======
+        climber = new Climber();
+        collector = new CargoCollector();
+        drivetrain = new Drivetrain();
+        shooter = new CargoShooter();
+>>>>>>> dddadea16dfbdf3f5b1675b3b632aa28b0615f64
     }
 
     /**

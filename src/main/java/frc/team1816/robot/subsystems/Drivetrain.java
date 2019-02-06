@@ -9,6 +9,8 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -46,14 +48,32 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPos;
     private double rightPos;
 
+    private NetworkTable positions = NetworkTableInstance.getDefault().getTable("positions");
+
     private double gyroAngle;
+    private double leftTalonVelocity;
+    private double rightTalonVelocity;
+    private double talonPositionLeft;
+    private double talonPositionRight;
+
+    private final double initTime;
+    private double initX;
+    private double initY;
+    private double xPos;
+    private double yPos;
+    private double prevInches;
+    private double prevX;
+    private double prevY;
+    private double prevLeftInches;
+    private double prevRightInches;
+    private double initAngle;
 
     private boolean isPercentOut;
     private boolean isSlowMode;
     private boolean isReverseMode;
     private boolean outputsChanged = false;
 
-    public Drivetrain() {
+    public Drivetrain() { //TODO: consider calls to periodic
         super(NAME);
         RobotFactory factory = Robot.factory;
 
@@ -77,11 +97,15 @@ public class Drivetrain extends Subsystem implements Checkable {
         navX = new AHRS(I2C.Port.kMXP);
         System.out.println("NavX Active: " + getGyroStatus());
 
+        this.initTime = System.currentTimeMillis();
+        initCoordinateTracking();
+
+
         initDrivetrainLog();
     }
 
     private void invertTalons(boolean invertRight) {
-        if(invertRight) {
+        if (invertRight) {
             this.rightMain.setInverted(true);
             this.rightSlaveOne.setInverted(true);
             this.rightSlaveTwo.setInverted(true);
@@ -113,16 +137,31 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS, () -> this.leftMain.getMotorOutputPercent(), 
-            "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> this.rightMain.getMotorOutputPercent(), 
-            "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS, () -> (double) this.leftMain.getSelectedSensorVelocity(0), 
-            "hide", "join:Drivetrain/Output Velocities");
-        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS, () -> (double) this.rightMain.getSelectedSensorVelocity(0), 
-            "hide", "join:Drivetrain/Output Velocities");
-
+        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS, () -> this.leftMain.getMotorOutputPercent(),
+                "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> this.rightMain.getMotorOutputPercent(),
+                "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS, () -> (double) this.leftMain.getSelectedSensorVelocity(0),
+                "hide", "join:Drivetrain/Output Velocities");
+        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS, () -> (double) this.rightMain.getSelectedSensorVelocity(0),
+                "hide", "join:Drivetrain/Output Velocities");
         BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
+
+        //TODO: consider creating a BadLog topic for right and left talon inches?
+    }
+
+    public void initCoordinateTracking() {
+        this.initX = 0;
+        this.initY = 0;
+        this.xPos = 0;
+        this.yPos = 0;
+        this.prevRightInches = 0.0;
+        this.prevLeftInches = 0.0;
+        this.prevInches = 0;
+        this.prevX = 0;
+        this.prevY = 0;
+        this.initAngle = navX.getAngle();
+        System.out.println(initAngle);
     }
 
     public double getGyroAngle() {
@@ -141,16 +180,16 @@ public class Drivetrain extends Subsystem implements Checkable {
         return rightPos;
     }
 
+    public double ticksToInches(double ticks) {
+        return ticks * (1 / TICKS_PER_REV) * INCHES_PER_REV;
+    }
+
     public double getLeftPosInches() {
-        return ticksToInches(leftPos);
+        return ticksToInches(this.leftPos);
     }
 
     public double getRightPosInches() {
-        return ticksToInches(rightPos);
-    }
-
-    public double ticksToInches(double ticks) {
-        return ticks * (1 / TICKS_PER_REV) * INCHES_PER_REV;
+        return ticksToInches(this.rightPos);
     }
 
     public void setDrivetrainVelocity(double leftPower, double rightPower) {
@@ -198,9 +237,12 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
-        gyroAngle = navX.getAngle();
-        leftPos = leftMain.getSelectedSensorPosition(0);
-        rightPos = rightMain.getSelectedSensorPosition(0);
+        this.gyroAngle = navX.getAngle();
+        this.leftPos = leftMain.getSelectedSensorPosition(0);
+        this.rightPos = rightMain.getSelectedSensorPosition(0);
+
+        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0); //TODO: get proper pidIdx
+        this.talonPositionRight = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
             if (isSlowMode) {
@@ -230,11 +272,31 @@ public class Drivetrain extends Subsystem implements Checkable {
 
             outputsChanged = false;
         }
+
+        coordinateTracking();
+    }
+
+    public void coordinateTracking() {
+        double currLeftInches = getLeftPosInches();
+        double currRightInches = getRightPosInches();
+        double avgDistance = ((currLeftInches - prevLeftInches) + (currRightInches - prevRightInches)) / 2;
+        double theta = (Math.toRadians(initAngle - gyroAngle) + Math.PI / 2);
+
+        xPos = avgDistance * Math.cos(theta) + prevX;
+        yPos = avgDistance * Math.sin(theta) + prevY;
+
+        positions.getEntry("xPos").setDouble(xPos);
+        positions.getEntry("yPos").setDouble(yPos);
+
+        prevX = xPos;
+        prevY = yPos;
+        prevLeftInches = currLeftInches;
+        prevRightInches = currRightInches;
     }
 
     @Override
     protected void initDefaultCommand() {
-
+        //TODO: add commands here
     }
 
     @Override
@@ -251,3 +313,4 @@ public class Drivetrain extends Subsystem implements Checkable {
         return true;
     }
 }
+
