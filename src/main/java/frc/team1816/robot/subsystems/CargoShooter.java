@@ -74,18 +74,16 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.arm.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
         this.armPositionTicks = getArmPositionAbsolute();
 
-        arm.set(ControlMode.PercentOutput, 0.0);
-        intake.set(ControlMode.PercentOutput, 0.0);
         arm.configOpenloopRamp(6.0, 0);
     }
 
     private void configureTalon() {
         arm.setNeutralMode(NeutralMode.Brake);
-        arm.setInverted(true);
+        arm.setInverted(false);
+        arm.setSensorPhase(false);
         arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
                 kPIDLoopIdx, kTimeoutMs);
 
-        arm.setSensorPhase(true);
 
         /* Config the peak and nominal outputs, 12V means full */
         arm.configNominalOutputForward(0, kTimeoutMs);
@@ -101,7 +99,6 @@ public class CargoShooter extends Subsystem implements Checkable {
         arm.configReverseSoftLimitEnable(true, kTimeoutMs);
         arm.configForwardSoftLimitThreshold(ARM_POSITION_MAX, kTimeoutMs);
         arm.configReverseSoftLimitThreshold(ARM_POSITION_MIN, kTimeoutMs);
-        arm.set(ControlMode.PercentOutput, 0.0);
     }
 
     public void setPid(double kP, double kI, double kD) {
@@ -181,6 +178,7 @@ public class CargoShooter extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             if (isPercentOutput) {
+                System.out.println("Setting Arm Pow: " + armPower);
                 arm.set(ControlMode.PercentOutput, armPower);
             } else {
                 arm.set(ControlMode.Position, armPosition.getPos());

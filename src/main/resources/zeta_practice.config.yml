@@ -33,18 +33,18 @@ subsystems:
       puncher: 3
       arm: 4
   cargoshooter:
-    implemented: false
+    implemented: true
     talons:
       arm: 5
       intake: 10
     constants:
-    kP: 5.0
+      kP: 5.0
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 1475
-      midPos: 1195
-      minPos: 915
+      maxPos: 2000
+      midPos: 1000
+      minPos: 600
 pcm: 17
 constants:
   wheelbase: 25

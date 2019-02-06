@@ -18,6 +18,7 @@ public class SetCargoShooterPositionCommand extends Command {
 
     @Override
     protected void execute() {
+        System.out.println("Setting Shooter Position: " + position.toString());
         shooter.setArmPosition(position);
     }
 

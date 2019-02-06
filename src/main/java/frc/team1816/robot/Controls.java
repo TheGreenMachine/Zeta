@@ -9,8 +9,11 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
+
+import frc.team1816.robot.commands.SetCargoShooterPositionCommand;
 import frc.team1816.robot.commands.ToggleReverseModeCommand;
 import frc.team1816.robot.commands.ToggleSlowModeCommand;
+import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
 /**
  * Contains all control inputs of the robot.
@@ -35,6 +38,10 @@ public class Controls {
         gamepadDriver.leftBumper().whenReleased(new ToggleSlowModeCommand(false));
 
         gamepadDriver.rightBumper().whenPressed(new ToggleReverseModeCommand());
+
+        // gamepadOperator.diamondUp().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.UP));
+        // gamepadOperator.diamondRight().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.ROCKET));
+        // gamepadOperator.diamondDown().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.DOWN));
     }
 
     public double getDriveThrottle() {
