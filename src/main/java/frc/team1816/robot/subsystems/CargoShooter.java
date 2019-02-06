@@ -71,10 +71,13 @@ public class CargoShooter extends Subsystem implements Checkable {
         /* Mask out overflows, keep bottom 12 bits */
         absolutePosition &= 0xFFF;
         /* Set the quadrature (relative) sensor to match absolute */
+        System.out.println("init:\t abs: " + absolutePosition + " rel: " + getArmEncoderPosition());
         this.arm.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
         this.armPositionTicks = getArmPositionAbsolute();
+        // FIXME: absolutePosition ≠ getArmPositionAbsolute() - potential issue with masking?
 
-        arm.configOpenloopRamp(6.0, 0);
+        arm.configOpenloopRamp(2.0, 0);
+        System.out.println("post:\t abs: " + getArmPositionAbsolute() + " rel: " + getArmEncoderPosition());
     }
 
     private void configureTalon() {
@@ -178,7 +181,6 @@ public class CargoShooter extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             if (isPercentOutput) {
-                System.out.println("Setting Arm Pow: " + armPower);
                 arm.set(ControlMode.PercentOutput, armPower);
             } else {
                 arm.set(ControlMode.Position, armPosition.getPos());
