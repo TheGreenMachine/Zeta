@@ -165,7 +165,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         return armPower;
     }
 
-    public void setIntakePower(double intakePow) {
+    public void setIntake(double intakePow) {
         this.intakePower = intakePow;
         outputsChanged = true;
     }
@@ -212,7 +212,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         builder.addDoubleProperty("MotorOutput", arm::getMotorOutputPercent, null);
         builder.addBooleanProperty("Busy", this::isBusy, null);
         builder.addDoubleProperty("IntakePower",
-                this::getIntakePower, this::setIntakePower);
+                this::getIntakePower, this::setIntake);
     }
 
     @Override
@@ -222,9 +222,9 @@ public class CargoShooter extends Subsystem implements Checkable {
         Timer.delay(5);
         setArmPosition(ArmPosition.UP);
         Timer.delay(5);
-        setIntakePower(1);
+        setIntake(1);
         Timer.delay(5);
-        setIntakePower(0);
+        setIntake(0);
         Timer.delay(5);
         setArmPosition(ArmPosition.DOWN);
         return true;

@@ -60,6 +60,14 @@ public class Controls {
         return gamepadOperator.getRightY();
     }
 
+    public boolean getOperatorLeftTrigger() {
+        return gamepadOperator.leftTrigger().get();
+    }
+
+    public boolean getOperatorRightTrigger() {
+        return gamepadOperator.rightTrigger().get();
+    }
+
     /**
      * Returns the current singleton instance of Controls.
      * It will initialize the singleton instance if there is none.

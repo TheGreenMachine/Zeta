@@ -31,7 +31,7 @@ public class CargoCollector extends Subsystem implements Checkable {
         this.armPiston = factory.getSolenoid(NAME, "arm");
     }
 
-    public void setArmPiston(boolean down) {
+    public void setArm(boolean down) {
         this.armDown = down;
         outputsChanged = true;
     }
@@ -72,9 +72,9 @@ public class CargoCollector extends Subsystem implements Checkable {
         Timer.delay(3);
         setIntake(0);
         Timer.delay(0.5);
-        setArmPiston(true);
+        setArm(true);
         Timer.delay(3);
-        setArmPiston(false);
+        setArm(false);
         return true;
     }
 }

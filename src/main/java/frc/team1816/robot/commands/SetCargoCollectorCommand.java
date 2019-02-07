@@ -17,7 +17,7 @@ public class SetCargoCollectorCommand extends Command {
 
     @Override
     protected void execute() {
-        collector.setArmPiston(isDown);
+        collector.setArm(isDown);
     }
 
     @Override
