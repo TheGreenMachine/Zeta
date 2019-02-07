@@ -21,7 +21,6 @@ public class Controls {
     private Gamepad gamepadDriver;
     private Gamepad gamepadOperator;
 
-
     private Controls() {
         List<GamepadFilter> gamepadFilter = new ArrayList<>();
         gamepadFilter.add(new DeadzoneFilter(0.05));
@@ -41,11 +40,10 @@ public class Controls {
 //         gamepadOperator.diamondDown().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.DOWN));
 
         gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
+        gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
+
         gamepadOperator.diamondRight().whenPressed(new SetBeakPuncherCommand(true));
-
-        gamepadOperator.diamondRight().whenReleased(new SetBeakCommand(false));
         gamepadOperator.diamondRight().whenReleased(new SetBeakPuncherCommand(false));
-
     }
 
     public double getDriveThrottle() {

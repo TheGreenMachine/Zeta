@@ -33,7 +33,7 @@ public class Climber extends Subsystem implements Checkable {
         this.climbSlave = factory.getMotor(NAME, "climbSlave", "climbMaster");
         // this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston"); // TODO: wire
 
-        this.climbSlave.setInverted(true); // TODO: check which motor should be inverted
+        this.climbSlave.setInverted(true);
     }
 
     public void setClimberPower(double motorPow) {
@@ -64,7 +64,8 @@ public class Climber extends Subsystem implements Checkable {
         }
     }
 
-    public void initDefaultCommand() { }
+    public void initDefaultCommand() {
+    }
 
     @Override
     public boolean check() throws CheckFailException {

@@ -154,11 +154,13 @@ public class CargoShooter extends Subsystem implements Checkable {
         isPercentOutput = true;
         if (((getArmPositionAbsolute() < ARM_POSITION_MIN) && (armPow < 0))
                 || ((getArmPositionAbsolute() > ARM_POSITION_MAX) && (armPow > 0))) {
-            System.out.println("Limit hit\tAttempted set: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute() + "Arm Pos Rel: " + getArmEncoderPosition());
+            System.out.println("Limit hit\tAttempted set: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
+                    + "Arm Pos Rel: " + getArmEncoderPosition());
             this.armPower = 0;
             outputsChanged = true;
         } else {
-            System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute() + "Arm Pos Rel: " + getArmEncoderPosition());
+            System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
+                    + "Arm Pos Rel: " + getArmEncoderPosition());
             this.armPower = armPow;
             outputsChanged = true;
         }

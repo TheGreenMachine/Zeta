@@ -73,7 +73,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isReverseMode;
     private boolean outputsChanged = false;
 
-    public Drivetrain() { //TODO: consider calls to periodic
+    public Drivetrain() { // TODO: consider calls to periodic
         super(NAME);
         RobotFactory factory = Robot.factory;
 
@@ -99,7 +99,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
         this.initTime = System.currentTimeMillis();
         initCoordinateTracking();
-
 
         initDrivetrainLog();
     }
@@ -137,17 +136,18 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS, () -> this.leftMain.getMotorOutputPercent(),
-                "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> this.rightMain.getMotorOutputPercent(),
-                "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS, () -> (double) this.leftMain.getSelectedSensorVelocity(0),
-                "hide", "join:Drivetrain/Output Velocities");
-        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS, () -> (double) this.rightMain.getSelectedSensorVelocity(0),
-                "hide", "join:Drivetrain/Output Velocities");
+        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS,
+                () -> this.leftMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS,
+                () -> this.rightMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS,
+                () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Output Velocities");
+        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS,
+                () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide",
+                "join:Drivetrain/Output Velocities");
         BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
 
-        //TODO: consider creating a BadLog topic for right and left talon inches?
+        // TODO: consider creating a BadLog topic for right and left talon inches?
     }
 
     public void initCoordinateTracking() {
@@ -241,7 +241,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.leftPos = leftMain.getSelectedSensorPosition(0);
         this.rightPos = rightMain.getSelectedSensorPosition(0);
 
-        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0); //TODO: get proper pidIdx
+        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0); // TODO: get proper pidIdx
         this.talonPositionRight = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
@@ -296,7 +296,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     protected void initDefaultCommand() {
-        //TODO: add commands here
+        // TODO: add commands here
     }
 
     @Override
@@ -313,4 +313,3 @@ public class Drivetrain extends Subsystem implements Checkable {
         return true;
     }
 }
-

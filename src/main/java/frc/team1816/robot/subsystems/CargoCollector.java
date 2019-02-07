@@ -58,7 +58,8 @@ public class CargoCollector extends Subsystem implements Checkable {
         }
     }
 
-    public void initDefaultCommand() { }
+    public void initDefaultCommand() {
+    }
 
     @Override
     public boolean check() throws CheckFailException {
