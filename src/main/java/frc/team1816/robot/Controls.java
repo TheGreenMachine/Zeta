@@ -1,19 +1,15 @@
 package frc.team1816.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
+import frc.team1816.robot.commands.*;
 
-import frc.team1816.robot.commands.SetCargoShooterPositionCommand;
-import frc.team1816.robot.commands.ToggleReverseModeCommand;
-import frc.team1816.robot.commands.ToggleSlowModeCommand;
-import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains all control inputs of the robot.
@@ -24,6 +20,7 @@ public class Controls {
 
     private Gamepad gamepadDriver;
     private Gamepad gamepadOperator;
+
 
     private Controls() {
         List<GamepadFilter> gamepadFilter = new ArrayList<>();
@@ -39,9 +36,16 @@ public class Controls {
 
         gamepadDriver.rightBumper().whenPressed(new ToggleReverseModeCommand());
 
-        // gamepadOperator.diamondUp().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.UP));
-        // gamepadOperator.diamondRight().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.ROCKET));
-        // gamepadOperator.diamondDown().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.DOWN));
+//         gamepadOperator.diamondUp().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.UP));
+//         gamepadOperator.diamondRight().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.ROCKET));
+//         gamepadOperator.diamondDown().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.DOWN));
+
+        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
+        gamepadOperator.diamondRight().whenPressed(new SetBeakPuncherCommand(true));
+
+        gamepadOperator.diamondRight().whenReleased(new SetBeakCommand(false));
+        gamepadOperator.diamondRight().whenReleased(new SetBeakPuncherCommand(false));
+
     }
 
     public double getDriveThrottle() {

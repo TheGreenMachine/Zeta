@@ -10,7 +10,7 @@ subsystems:
       rightSlaveTwo: 0
       leftSlaveTwo: 15
   climber:
-    implemented: false
+    implemented: true
     talons:
       climbMaster: 3
       climbSlave: 12
@@ -42,9 +42,9 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 2000
-      midPos: 1000
-      minPos: 600
+      maxPos: 3210
+      midPos: 2582
+      minPos: 1955
 pcm: 17
 constants:
   wheelbase: 25

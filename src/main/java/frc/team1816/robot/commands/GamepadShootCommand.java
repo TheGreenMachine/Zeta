@@ -33,6 +33,8 @@ public class GamepadShootCommand extends Command {
 
         shooter.setIntake(intakePower);
         shooter.setArmPower(armPower);
+
+
     }
 
     @Override

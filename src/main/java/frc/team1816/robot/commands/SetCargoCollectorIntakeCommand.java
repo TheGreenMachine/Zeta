@@ -17,6 +17,7 @@ public class SetCargoCollectorIntakeCommand extends Command {
 
     @Override
     protected void execute() {
+
         collector.setIntake(power);
     }
 

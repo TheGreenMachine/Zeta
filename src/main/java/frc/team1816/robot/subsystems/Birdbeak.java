@@ -39,6 +39,7 @@ public class Birdbeak extends Subsystem implements Checkable {
         this.hatchIntake = factory.getMotor(NAME, "hatchIntake");
 
         hatchIntake.setNeutralMode(NeutralMode.Brake);
+
     }
 
     public void setBeak(boolean gripped) {

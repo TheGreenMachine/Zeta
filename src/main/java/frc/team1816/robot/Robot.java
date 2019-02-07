@@ -1,23 +1,18 @@
 package frc.team1816.robot;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import badlog.lib.BadLog;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
-
-import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.commands.GamepadShootCommand;
-import frc.team1816.robot.subsystems.Birdbeak;
-import frc.team1816.robot.subsystems.CargoCollector;
-import frc.team1816.robot.subsystems.CargoShooter;
-import frc.team1816.robot.subsystems.Climber;
-import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Robot extends TimedRobot {
     BadLog logger;

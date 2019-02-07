@@ -1,16 +1,13 @@
 package frc.team1816.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.IMotorController;
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.Robot;
 
 /**
@@ -98,6 +95,10 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         arm.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
 
+        //FIXME: testing
+        arm.overrideLimitSwitchesEnable(true);
+        arm.overrideSoftLimitsEnable(false);
+
         arm.configForwardSoftLimitEnable(true, kTimeoutMs);
         arm.configReverseSoftLimitEnable(true, kTimeoutMs);
         arm.configForwardSoftLimitThreshold(ARM_POSITION_MAX, kTimeoutMs);
@@ -156,9 +157,13 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public void setArmPower(double armPow) {
-        this.armPower = armPow;
-        outputsChanged = true;
-        isPercentOutput = true;
+        if (((getArmPositionAbsolute() < ARM_POSITION_MIN) && (armPow < 0)) || (getArmPositionAbsolute() > ARM_POSITION_MAX && (armPow > 0))) {
+            this.armPower = 0;
+        } else {
+            this.armPower = armPow;
+            outputsChanged = true;
+            isPercentOutput = true;
+        }
     }
 
     public double getArmPower() {
@@ -183,12 +188,15 @@ public class CargoShooter extends Subsystem implements Checkable {
         if (outputsChanged) {
             if (isPercentOutput) {
                 arm.set(ControlMode.PercentOutput, armPower);
+                System.out.println("Arm is being controlled @ power: " + armPower);
             } else {
                 arm.set(ControlMode.Position, armPosition.getPos());
             }
             intake.set(ControlMode.PercentOutput, intakePower);
             outputsChanged = false;
         }
+
+        System.out.println("post:\t abs: " + getArmPositionAbsolute() + " rel: " + getArmEncoderPosition());
     }
 
     @Override
@@ -213,6 +221,9 @@ public class CargoShooter extends Subsystem implements Checkable {
         builder.addBooleanProperty("Busy", this::isBusy, null);
         builder.addDoubleProperty("IntakePower",
                 this::getIntakePower, this::setIntake);
+        builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);
+        SmartDashboard.putNumber("max_thresh", ARM_POSITION_MAX);
+        SmartDashboard.putNumber("min_thresh", ARM_POSITION_MIN);
     }
 
     @Override
