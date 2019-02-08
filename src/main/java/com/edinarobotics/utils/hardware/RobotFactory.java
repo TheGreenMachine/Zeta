@@ -159,6 +159,7 @@ public class RobotFactory {
             public Map<String, Integer> solenoids = new HashMap<>();
             public Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
             public Map<String, Double> constants = new HashMap<>();
+            public Integer canifier;
 
             @Override
             public String toString() {
@@ -168,6 +169,7 @@ public class RobotFactory {
                         "  victors = " + victors.toString() + ",\n" +
                         "  solenoids = " + solenoids.toString() + ",\n" +
                         "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
+                        "  canifier = " + canifier + ",\n" +
                         "  constants = " + constants.toString() + ",\n" +
                         "}";
             }

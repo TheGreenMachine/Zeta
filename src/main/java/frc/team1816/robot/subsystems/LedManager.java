@@ -6,16 +6,18 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1816.robot.Components;
 
 @RunTest
-public class LEDManager extends Subsystem implements Checkable {
+public class LedManager extends Subsystem implements Checkable {
     private CANifier canifier;
     private boolean outputsChanged = true;
-    private int ledR, ledG, ledB;
 
-    public LEDManager(int canifierId) {
-        super("LEDManager");
+    private int ledR;
+    private int ledG;
+    private int ledB;
+
+    public LedManager(int canifierId) {
+        super("ledmanager");
         this.canifier = new CANifier(canifierId);
         this.ledR = 0;
         this.ledG = 0;
@@ -31,7 +33,7 @@ public class LEDManager extends Subsystem implements Checkable {
 
     public void indicateStatus(RobotStatus status) {
         System.out.println("Robot Status: " + status.name());
-        setLedColor(status.getR(), status.getG(), status.getB());
+        setLedColor(status.getRed(), status.getGreen(), status.getBlue());
     }
 
     @Override
@@ -71,16 +73,18 @@ public class LEDManager extends Subsystem implements Checkable {
         FAILURE(255, 0, 0),
         WARNING(255, 128, 0);
 
-        int r, g, b;
+        int red;
+        int green;
+        int blue;
 
         RobotStatus(int r, int g, int b) {
-            this.r = r;
-            this.g = g;
-            this.b = b;
+            this.red = r;
+            this.green = g;
+            this.blue = b;
         }
 
-        public int getR() { return r; }
-        public int getG() { return g; }
-        public int getB() { return b; }
+        public int getRed() { return red; }
+        public int getGreen() { return green; }
+        public int getBlue() { return blue; }
     }
 }
