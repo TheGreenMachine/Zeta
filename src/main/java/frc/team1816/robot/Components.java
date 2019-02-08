@@ -52,17 +52,17 @@ public class Components {
         // server = CameraServer.getInstance().getServer();
     }
 
-    // public void toggleCamera() {
-    //     if(isFrontCam) {
-    //         System.out.println("Activating Rear Cam");
-    //         server.setSource(camRear);
-    //         isFrontCam = false;
-    //     } else {
-    //         System.out.println("Activating Front Cam");
-    //         server.setSource(camFront);
-    //         isFrontCam = true;
-    //     }
-    // }
+    public void toggleCamera() {
+        if(isFrontCam) {
+            System.out.println("Activating Rear Cam");
+            server.setSource(camRear);
+            isFrontCam = false;
+        } else {
+            System.out.println("Activating Front Cam");
+            server.setSource(camFront);
+            isFrontCam = true;
+        }
+    }
 
     /**
      * Returns the singleton instance of Components. Initializes it if there is no

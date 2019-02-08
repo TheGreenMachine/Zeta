@@ -55,6 +55,7 @@ public class Controls {
 
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
+        gamepadOperator.leftTrigger().whenPressed(new SetCargoCollectorArmCommand(true));
 
         gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(false));
         gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true));
