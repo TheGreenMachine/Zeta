@@ -48,10 +48,10 @@ public class Controls {
         gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
 
-        gamepadOperator.diamondDown().whenPressed(new SubsystemHatchFireCommand());
-        gamepadOperator.diamondDown().whenReleased(new SubsystemHatchUnfireCommand());
-        gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(true));
-        gamepadOperator.diamondUp().whenReleased(new SetBeakCommand(false));
+        gamepadOperator.diamondUp().whenPressed(new SubsystemHatchFireCommand());
+        gamepadOperator.diamondUp().whenReleased(new SubsystemHatchUnfireCommand());
+        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
+        gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
 
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
