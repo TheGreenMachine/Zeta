@@ -38,6 +38,7 @@ public class Controls {
         gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
         gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
 
+        gamepadDriver.rightTrigger().whenPressed(new ToggleCameraCommand());
         gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
         gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 

@@ -3,6 +3,7 @@ package frc.team1816.robot;
 import badlog.lib.BadLog;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -23,11 +24,6 @@ public class Robot extends TimedRobot {
     public Drivetrain drivetrain;
     public CargoShooter shooter;
 
-    /*
-     * Constants are defined as static final deeply immutable types (e.g. String)
-     * Since the factory is not deeply immutable, we use regular variable case. See
-     * Google Java Style Guide.
-     */
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
