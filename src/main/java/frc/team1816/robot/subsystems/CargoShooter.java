@@ -59,7 +59,8 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.kF = factory.getConstant(NAME, "kF");
 
         this.intakeMotor.setInverted(true);
-        configureTalon();
+        
+        configureArmTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
         // int absolutePosition = getArmPositionAbsolute();
@@ -73,7 +74,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
     }
 
-    private void configureTalon() {
+    private void configureArmTalon() {
         armTalon.setNeutralMode(NeutralMode.Brake);
         armTalon.setInverted(false);
         armTalon.setSensorPhase(false);
