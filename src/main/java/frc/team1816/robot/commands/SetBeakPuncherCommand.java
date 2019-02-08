@@ -17,6 +17,7 @@ public class SetBeakPuncherCommand extends Command {
 
     @Override
     protected void execute() {
+        System.out.println("Setting Puncher: " + isOut);
         birdbeak.setPuncher(isOut);
     }
 

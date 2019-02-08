@@ -14,7 +14,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class Birdbeak extends Subsystem implements Checkable {
-    private static final String NAME = "birdbeak";
+    public static final String NAME = "birdbeak";
 
     private Solenoid beak;
     private Solenoid hatchPuncher;
@@ -24,7 +24,7 @@ public class Birdbeak extends Subsystem implements Checkable {
 
     private double intakePow;
 
-    private boolean beakOpen;
+    private boolean beakNotGripped;
     private boolean armDown;
     private boolean puncherOut;
     private boolean outputsChanged = false;
@@ -41,8 +41,8 @@ public class Birdbeak extends Subsystem implements Checkable {
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setBeak(boolean open) {
-        beakOpen = open;
+    public void setBeak(boolean notGripped) {
+        beakNotGripped = notGripped;
         outputsChanged = true;
     }
 
@@ -84,7 +84,7 @@ public class Birdbeak extends Subsystem implements Checkable {
     @Override
     public void periodic() {
         if (outputsChanged) {
-            beak.set(beakOpen);
+            beak.set(beakNotGripped);
             hatchPuncher.set(puncherOut);
             intakeArm.set(armDown);
             hatchIntake.set(ControlMode.PercentOutput, intakePow);
