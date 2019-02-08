@@ -15,11 +15,13 @@ public class ToggleReverseModeCommand extends Command {
 
     @Override
     protected void initialize() {
-        drivetrain.toggleReverseMode();
     }
 
     @Override
-    protected void execute() { }
+    protected void execute() {
+        System.out.println("Reversing Drivetrain");
+        drivetrain.toggleReverseMode();
+    }
 
     @Override
     protected boolean isFinished() {

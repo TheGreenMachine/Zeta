@@ -19,13 +19,13 @@ subsystems:
         forward: 5
         reverse: 6
   cargocollector:
-    implemented: false
+    implemented: true
     talons:
       intake: 11
     solenoids:
       arm: 2
   birdbeak:
-    implemented: false
+    implemented: true
     talons:
       hatchIntake: 4
     solenoids:
@@ -42,9 +42,9 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 3210
-      midPos: 2582
-      minPos: 1955
+      maxPos: 2800
+      midPos: 1000
+      minPos: 700
 pcm: 17
 constants:
   wheelbase: 25

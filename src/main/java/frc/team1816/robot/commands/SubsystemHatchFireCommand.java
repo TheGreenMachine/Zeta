@@ -22,8 +22,8 @@ public class SubsystemHatchFireCommand extends Command {
     @Override
     protected void execute() {
         birdbeak.setPuncher(true);
-        Timer.delay(0.5); // TODO: tune delay timing
-        birdbeak.setBeak(false);
+        Timer.delay(0.1); // TODO: tune delay timing
+        birdbeak.setBeak(true);
     }
 
     @Override

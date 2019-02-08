@@ -23,8 +23,8 @@ public class SubsystemHatchIntakeUpCommand extends Command {
     protected void execute() {
         birdbeak.setIntake(0);
         birdbeak.setArm(false);
-        Timer.delay(0.5); // TODO: tune delay timing OR use sensor feedback
-        birdbeak.setBeak(false);
+        Timer.delay(2); // TODO: tune delay timing OR use sensor feedback
+        birdbeak.setBeak(true);
     }
 
     @Override

@@ -6,18 +6,19 @@ import frc.team1816.robot.subsystems.Birdbeak;
 
 public class SetBeakCommand extends Command {
     private Birdbeak birdbeak;
-    private boolean isOpen;
+    private boolean beakNotGripped;
 
-    public SetBeakCommand(boolean open) {
+    public SetBeakCommand(boolean notGripped) {
         super("setbeakcommand");
         birdbeak = Components.getInstance().birdbeak;
-        this.isOpen = open;
+        this.beakNotGripped = notGripped;
         requires(birdbeak);
     }
 
     @Override
     protected void execute() {
-        birdbeak.setBeak(isOpen);
+        System.out.println("Setting Beak: " + beakNotGripped);
+        birdbeak.setBeak(beakNotGripped);
     }
 
     @Override

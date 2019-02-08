@@ -20,7 +20,7 @@ public class SubsystemHatchUnfireCommand extends Command {
 
     @Override
     protected void execute() {
-        birdbeak.setBeak(true);
+        birdbeak.setBeak(false);
         birdbeak.setPuncher(false);
     }
 

@@ -7,6 +7,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 import frc.team1816.robot.commands.*;
+import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +31,37 @@ public class Controls {
         gamepadDriver = new FilteredGamepad(0, filterSet);
         gamepadOperator = new FilteredGamepad(1, filterSet);
 
-        gamepadDriver.leftBumper().whenPressed(new ToggleSlowModeCommand(true));
-        gamepadDriver.leftBumper().whenReleased(new ToggleSlowModeCommand(false));
+        gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
 
-        gamepadDriver.rightBumper().whenPressed(new ToggleReverseModeCommand());
+        gamepadDriver.leftBumper().whenPressed(new SubsystemHatchFireCommand());
+        gamepadDriver.leftBumper().whenReleased(new SubsystemHatchUnfireCommand());
+        gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
+        gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
 
-//         gamepadOperator.diamondUp().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.UP));
-//         gamepadOperator.diamondRight().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.ROCKET));
-//         gamepadOperator.diamondDown().whenPressed(new SetCargoShooterPositionCommand(CargoShooter.ArmPosition.DOWN));
+        gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
+        gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
-        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
-        gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
+        gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
+        gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
+        gamepadDriver.dPadDown().whenPressed(new SetClimberPowerCommand(-1.0));
+        gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
-        gamepadOperator.diamondRight().whenPressed(new SetBeakPuncherCommand(true));
-        gamepadOperator.diamondRight().whenReleased(new SetBeakPuncherCommand(false));
+
+        gamepadOperator.diamondDown().whenPressed(new SubsystemHatchFireCommand());
+        gamepadOperator.diamondDown().whenReleased(new SubsystemHatchUnfireCommand());
+        gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(true));
+        gamepadOperator.diamondUp().whenReleased(new SetBeakCommand(false));
+
+        gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
+        gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
+
+        gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(false));
+        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true));
+
+        gamepadOperator.dPadUp().whenPressed(new SetCargoCollectorIntakeCommand(0.6));
+        gamepadOperator.dPadUp().whenReleased(new SetCargoCollectorIntakeCommand(0));
+        gamepadOperator.dPadDown().whenPressed(new SetCargoCollectorIntakeCommand(-0.6));
+        gamepadOperator.dPadDown().whenReleased(new SetCargoCollectorIntakeCommand(0));
     }
 
     public double getDriveThrottle() {
@@ -58,9 +76,18 @@ public class Controls {
         return gamepadOperator.getLeftY();
     }
 
+    public boolean getDriverClimbUp() {
+        return gamepadDriver.dPadUp().get();
+    }
+
+    public boolean getDriverClimbDown() {
+        return gamepadDriver.dPadDown().get();
+    }
+
     public double getShooterArmThrottle() {
         return gamepadOperator.getRightY();
     }
+
 
     public boolean getOperatorLeftTrigger() {
         return gamepadOperator.leftTrigger().get();

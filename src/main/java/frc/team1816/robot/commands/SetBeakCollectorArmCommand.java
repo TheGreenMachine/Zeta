@@ -17,6 +17,7 @@ public class SetBeakCollectorArmCommand extends Command {
 
     @Override
     protected void execute() {
+        System.out.println("Setting Hatch Arm\t Down: " + isDown);
         birdbeak.setArm(isDown);
     }
 

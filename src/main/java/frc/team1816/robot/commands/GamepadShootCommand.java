@@ -23,15 +23,6 @@ public class GamepadShootCommand extends Command {
         double armPower = Controls.getInstance().getShooterArmThrottle();
         double intakePower;
 
-        if(Controls.getInstance().getOperatorLeftTrigger()) {
-            intakePower = 0.6;
-        } else if(Controls.getInstance().getOperatorRightTrigger()) {
-            intakePower = -0.6;
-        } else {
-            intakePower = 0;
-        }
-
-        shooter.setIntake(intakePower);
         shooter.setArmPower(armPower);
 
 

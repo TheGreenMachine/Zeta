@@ -24,7 +24,7 @@ public class Birdbeak extends Subsystem implements Checkable {
 
     private double intakePow;
 
-    private boolean beakGripped;
+    private boolean beakNotGripped;
     private boolean armDown;
     private boolean puncherOut;
     private boolean outputsChanged = false;
@@ -41,8 +41,8 @@ public class Birdbeak extends Subsystem implements Checkable {
         hatchIntake.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setBeak(boolean gripped) {
-        beakGripped = gripped;
+    public void setBeak(boolean notGripped) {
+        beakNotGripped = notGripped;
         outputsChanged = true;
     }
 
@@ -84,7 +84,7 @@ public class Birdbeak extends Subsystem implements Checkable {
     @Override
     public void periodic() {
         if (outputsChanged) {
-            beak.set(beakGripped);
+            beak.set(beakNotGripped);
             hatchPuncher.set(puncherOut);
             intakeArm.set(armDown);
             hatchIntake.set(ControlMode.PercentOutput, intakePow);

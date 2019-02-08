@@ -16,8 +16,8 @@ import frc.team1816.robot.Robot;
 public class CargoShooter extends Subsystem implements Checkable {
     public static final String NAME = "cargoshooter";
 
-    private IMotorControllerEnhanced arm;
-    private IMotorController intake;
+    private IMotorControllerEnhanced armTalon;
+    private IMotorController intakeMotor;
 
     private ArmPosition armPosition;
 
@@ -46,8 +46,8 @@ public class CargoShooter extends Subsystem implements Checkable {
         super(NAME);
         RobotFactory factory = Robot.factory;
 
-        this.arm = (IMotorControllerEnhanced) factory.getMotor(NAME, "arm");
-        this.intake = factory.getMotor(NAME, "intake");
+        this.armTalon = (IMotorControllerEnhanced) factory.getMotor(NAME, "arm");
+        this.intakeMotor = factory.getMotor(NAME, "intake");
         this.armPower = 0;
         this.intakePower = 0;
         this.outputsChanged = true;
@@ -58,57 +58,55 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.kD = factory.getConstant(NAME, "kD");
         this.kF = factory.getConstant(NAME, "kF");
 
+        this.intakeMotor.setInverted(true);
         configureTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
-        int absolutePosition = getArmPositionAbsolute();
+        // int absolutePosition = getArmPositionAbsolute();
         /* Mask out overflows, keep bottom 12 bits */
-        absolutePosition &= 0xFFF;
-        /* Set the quadrature (relative) sensor to match absolute */
-        System.out.println("init:\t abs: " + absolutePosition + " rel: " + getArmEncoderPosition());
-        this.arm.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
-        this.armPositionTicks = getArmPositionAbsolute();
-        // FIXME: absolutePosition ≠ getArmPositionAbsolute() - potential issue with m
-        // sking?
+        // absolutePosition &= 0xFFF;
 
-        arm.configOpenloopRamp(2.0, 0); // TODO: tune ramp value
-        System.out.println("post:\t abs: " + getArmPositionAbsolute() + " rel: " + getArmEncoderPosition());
+        /* Set the quadrature (relative) sensor to match absolute */
+        this.armTalon.setSelectedSensorPosition(getArmPositionAbsolute(), kPIDLoopIdx, kTimeoutMs);
+        this.armPositionTicks = getArmPositionAbsolute();
+
+        armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
     }
 
     private void configureTalon() {
-        arm.setNeutralMode(NeutralMode.Brake);
-        arm.setInverted(false);
-        arm.setSensorPhase(false);
-        arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
+        armTalon.setNeutralMode(NeutralMode.Brake);
+        armTalon.setInverted(false);
+        armTalon.setSensorPhase(false);
+        armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
         /* Config the peak and nominal outputs, 12V means full */
-        arm.configNominalOutputForward(0, kTimeoutMs);
-        arm.configNominalOutputReverse(0, kTimeoutMs);
-        arm.configPeakOutputForward(1, kTimeoutMs);
-        arm.configPeakOutputReverse(-1, kTimeoutMs);
+        armTalon.configNominalOutputForward(0, kTimeoutMs);
+        armTalon.configNominalOutputReverse(0, kTimeoutMs);
+        armTalon.configPeakOutputForward(1, kTimeoutMs);
+        armTalon.configPeakOutputReverse(-1, kTimeoutMs);
 
         this.setPid(kP, kI, kD);
 
-        arm.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
+        armTalon.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
 
         // FIXME: testing
-        arm.overrideLimitSwitchesEnable(true);
-        arm.overrideSoftLimitsEnable(false);
+        armTalon.overrideLimitSwitchesEnable(true);
+        armTalon.overrideSoftLimitsEnable(false);
 
-        arm.configForwardSoftLimitEnable(true, kTimeoutMs);
-        arm.configReverseSoftLimitEnable(true, kTimeoutMs);
-        arm.configForwardSoftLimitThreshold(ARM_POSITION_MAX, kTimeoutMs);
-        arm.configReverseSoftLimitThreshold(ARM_POSITION_MIN, kTimeoutMs);
+        armTalon.configForwardSoftLimitEnable(true, kTimeoutMs);
+        armTalon.configReverseSoftLimitEnable(true, kTimeoutMs);
+        armTalon.configForwardSoftLimitThreshold(ARM_POSITION_MAX, kTimeoutMs);
+        armTalon.configReverseSoftLimitThreshold(ARM_POSITION_MIN, kTimeoutMs);
     }
 
     public void setPid(double kP, double kI, double kD) {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
-        arm.config_kF(kPIDLoopIdx, kF, kTimeoutMs);
-        arm.config_kP(kPIDLoopIdx, kP, kTimeoutMs);
-        arm.config_kI(kPIDLoopIdx, kI, kTimeoutMs);
-        arm.config_kD(kPIDLoopIdx, kD, kTimeoutMs);
+        armTalon.config_kF(kPIDLoopIdx, kF, kTimeoutMs);
+        armTalon.config_kP(kPIDLoopIdx, kP, kTimeoutMs);
+        armTalon.config_kI(kPIDLoopIdx, kI, kTimeoutMs);
+        armTalon.config_kD(kPIDLoopIdx, kD, kTimeoutMs);
     }
 
     public enum ArmPosition {
@@ -136,16 +134,16 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public int getArmPositionAbsolute() {
-        return arm.getSensorCollection().getPulseWidthPosition();
+        return armTalon.getSensorCollection().getPulseWidthPosition();
     }
 
     public double getArmEncoderPosition() {
-        return arm.getSelectedSensorPosition(kPIDLoopIdx);
+        return armTalon.getSelectedSensorPosition(kPIDLoopIdx);
     }
 
     public boolean isBusy() {
-        if (arm.getControlMode() == ControlMode.Position) {
-            return (arm.getClosedLoopError(kPIDLoopIdx) <= ALLOWABLE_CLOSED_LOOP_ERROR);
+        if (armTalon.getControlMode() == ControlMode.Position) {
+            return (armTalon.getClosedLoopError(kPIDLoopIdx) <= ALLOWABLE_CLOSED_LOOP_ERROR);
         }
         return false;
     }
@@ -156,12 +154,14 @@ public class CargoShooter extends Subsystem implements Checkable {
                 || ((getArmPositionAbsolute() > ARM_POSITION_MAX) && (armPow > 0))) {
             System.out.println("Limit hit\tAttempted set: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
                     + "Arm Pos Rel: " + getArmEncoderPosition());
+            
             this.armPower = 0;
             outputsChanged = true;
         } else {
             System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
                     + "Arm Pos Rel: " + getArmEncoderPosition());
-            this.armPower = armPow;
+            
+            this.armPower = armPow * 0.25;
             outputsChanged = true;
         }
     }
@@ -187,12 +187,12 @@ public class CargoShooter extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             if (isPercentOutput) {
-                arm.set(ControlMode.PercentOutput, armPower);
+                armTalon.set(ControlMode.PercentOutput, armPower);
             } else {
                 System.out.println("Setting Arm to " + armPosition.getPos() + "...");
-                arm.set(ControlMode.Position, armPosition.getPos());
+                armTalon.set(ControlMode.Position, armPosition.getPos());
             }
-            intake.set(ControlMode.PercentOutput, intakePower);
+            intakeMotor.set(ControlMode.PercentOutput, intakePower);
             outputsChanged = false;
         }
     }
@@ -204,13 +204,13 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addStringProperty("ControlMode", () -> arm.getControlMode().toString(), null);
+        builder.addStringProperty("ControlMode", () -> armTalon.getControlMode().toString(), null);
         builder.addDoubleProperty("CurrentPosition", this::getArmEncoderPosition, null);
         builder.addDoubleProperty("ClosedLoop/TargetPosition",
-                () -> (arm.getControlMode() == ControlMode.Position ? arm.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
+                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
         builder.addDoubleProperty("ClosedLoop/Error",
-                () -> (arm.getControlMode() == ControlMode.Position ? arm.getClosedLoopError(kPIDLoopIdx) : 0), null);
-        builder.addDoubleProperty("MotorOutput", arm::getMotorOutputPercent, null);
+                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopError(kPIDLoopIdx) : 0), null);
+        builder.addDoubleProperty("MotorOutput", armTalon::getMotorOutputPercent, null);
         builder.addBooleanProperty("Busy", this::isBusy, null);
         builder.addDoubleProperty("IntakePower", this::getIntakePower, this::setIntake);
         builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);

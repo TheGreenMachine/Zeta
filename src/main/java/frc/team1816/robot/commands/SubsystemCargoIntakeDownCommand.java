@@ -27,10 +27,10 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     @Override
     protected void execute() {
         collector.setArm(true);
-        collector.setIntake(0.6);
-        Timer.delay(0.5); // TODO: tune delay timing
-        shooter.setArmPosition(ArmPosition.DOWN);
-        shooter.setIntake(0.6);
+        collector.setIntake(-1.0);
+        // Timer.delay(0.5); // TODO: tune delay timing
+        // shooter.setArmPosition(ArmPosition.DOWN);
+        shooter.setIntake(-1.0);
     }
 
     @Override
