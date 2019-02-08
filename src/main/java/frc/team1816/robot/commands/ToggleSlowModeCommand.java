@@ -18,11 +18,13 @@ public class ToggleSlowModeCommand extends Command {
 
     @Override
     protected void initialize() {
-        drivetrain.setSlowMode(slowMode);
     }
 
     @Override
-    protected void execute() { }
+    protected void execute() {
+        System.out.println("Setting Slow Mode: " + slowMode);
+        drivetrain.setSlowMode(slowMode);
+    }
 
     @Override
     protected boolean isFinished() {

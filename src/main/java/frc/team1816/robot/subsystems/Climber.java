@@ -13,7 +13,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class Climber extends Subsystem implements Checkable {
-    private static final String NAME = "climber";
+    public static final String NAME = "climber";
 
     private IMotorController climbMaster;
     private IMotorController climbSlave;
@@ -31,9 +31,9 @@ public class Climber extends Subsystem implements Checkable {
 
         this.climbMaster = factory.getMotor(NAME, "climbMaster");
         this.climbSlave = factory.getMotor(NAME, "climbSlave", "climbMaster");
-        this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
+        // this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston"); // TODO: wire
 
-        this.climbMaster.setInverted(true); // TODO: check which motor should be inverted
+        this.climbSlave.setInverted(true);
     }
 
     public void setClimberPower(double motorPow) {
@@ -59,12 +59,13 @@ public class Climber extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             climbMaster.set(ControlMode.PercentOutput, motorPower);
-            habPiston.set(habPistonState);
+            // habPiston.set(habPistonState); // TODO: wire
             outputsChanged = false;
         }
     }
 
-    public void initDefaultCommand() { }
+    public void initDefaultCommand() {
+    }
 
     @Override
     public boolean check() throws CheckFailException {

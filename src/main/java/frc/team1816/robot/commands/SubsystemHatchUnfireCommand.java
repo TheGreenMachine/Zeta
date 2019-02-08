@@ -4,25 +4,36 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 
-public class SetBeakCollectorArmCommand extends Command {
+public class SubsystemHatchUnfireCommand extends Command {
     private Birdbeak birdbeak;
-    private boolean isDown;
 
-    public SetBeakCollectorArmCommand(boolean down) {
-        super("setbeakcollectorarmcommand");
+    public SubsystemHatchUnfireCommand() {
+        super("subsystemhatchunfirecommand");
         birdbeak = Components.getInstance().birdbeak;
-        this.isDown = down;
+
         requires(birdbeak);
     }
 
     @Override
+    protected void initialize() {
+    }
+
+    @Override
     protected void execute() {
-        System.out.println("Setting Hatch Arm\t Down: " + isDown);
-        birdbeak.setArm(isDown);
+        birdbeak.setBeak(false);
+        birdbeak.setPuncher(false);
     }
 
     @Override
     protected boolean isFinished() {
         return true;
+    }
+
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    protected void interrupted() {
     }
 }

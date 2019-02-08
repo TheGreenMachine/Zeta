@@ -13,7 +13,7 @@ import frc.team1816.robot.Robot;
 
 @RunTest
 public class CargoCollector extends Subsystem implements Checkable {
-    private static final String NAME = "cargocollector";
+    public static final String NAME = "cargocollector";
 
     private Solenoid armPiston;
     private IMotorController intake;
@@ -31,7 +31,7 @@ public class CargoCollector extends Subsystem implements Checkable {
         this.armPiston = factory.getSolenoid(NAME, "arm");
     }
 
-    public void setArmPiston(boolean down) {
+    public void setArm(boolean down) {
         this.armDown = down;
         outputsChanged = true;
     }
@@ -58,7 +58,8 @@ public class CargoCollector extends Subsystem implements Checkable {
         }
     }
 
-    public void initDefaultCommand() { }
+    public void initDefaultCommand() {
+    }
 
     @Override
     public boolean check() throws CheckFailException {
@@ -72,9 +73,9 @@ public class CargoCollector extends Subsystem implements Checkable {
         Timer.delay(3);
         setIntake(0);
         Timer.delay(0.5);
-        setArmPiston(true);
+        setArm(true);
         Timer.delay(3);
-        setArmPiston(false);
+        setArm(false);
         return true;
     }
 }

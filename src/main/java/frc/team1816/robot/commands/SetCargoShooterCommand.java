@@ -17,7 +17,7 @@ public class SetCargoShooterCommand extends Command {
 
     @Override
     protected void execute() {
-        shooter.setIntakePower(power);
+        shooter.setIntake(power);
     }
 
     @Override
