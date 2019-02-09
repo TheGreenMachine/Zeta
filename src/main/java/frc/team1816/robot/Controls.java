@@ -38,6 +38,7 @@ public class Controls {
         gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
         gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
 
+        // gamepadDriver.rightTrigger().whenPressed(new ToggleCameraCommand());
         gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
         gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
@@ -47,13 +48,14 @@ public class Controls {
         gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
 
-        gamepadOperator.diamondDown().whenPressed(new SubsystemHatchFireCommand());
-        gamepadOperator.diamondDown().whenReleased(new SubsystemHatchUnfireCommand());
-        gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(true));
-        gamepadOperator.diamondUp().whenReleased(new SetBeakCommand(false));
+        gamepadOperator.diamondUp().whenPressed(new SubsystemHatchFireCommand());
+        gamepadOperator.diamondUp().whenReleased(new SubsystemHatchUnfireCommand());
+        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
+        gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
 
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
+        gamepadOperator.leftTrigger().whenPressed(new SetCargoCollectorArmCommand(true));
 
         gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(false));
         gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true));

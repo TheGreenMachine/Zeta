@@ -59,7 +59,8 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.kF = factory.getConstant(NAME, "kF");
 
         this.intakeMotor.setInverted(true);
-        configureTalon();
+
+        configureArmTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
         // int absolutePosition = getArmPositionAbsolute();
@@ -73,7 +74,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
     }
 
-    private void configureTalon() {
+    private void configureArmTalon() {
         armTalon.setNeutralMode(NeutralMode.Brake);
         armTalon.setInverted(false);
         armTalon.setSensorPhase(false);
@@ -150,20 +151,21 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     public void setArmPower(double armPow) {
         isPercentOutput = true;
+
         if (((getArmPositionAbsolute() < ARM_POSITION_MIN) && (armPow < 0))
                 || ((getArmPositionAbsolute() > ARM_POSITION_MAX) && (armPow > 0))) {
             System.out.println("Limit hit\tAttempted set: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
                     + "Arm Pos Rel: " + getArmEncoderPosition());
             
             this.armPower = 0;
-            outputsChanged = true;
         } else {
             System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
                     + "Arm Pos Rel: " + getArmEncoderPosition());
             
             this.armPower = armPow * 0.25;
-            outputsChanged = true;
         }
+        
+        outputsChanged = true;
     }
 
     public double getArmPower() {
