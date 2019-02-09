@@ -7,7 +7,6 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 import frc.team1816.robot.commands.*;
-import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +63,9 @@ public class Controls {
         gamepadOperator.dPadUp().whenReleased(new SetCargoCollectorIntakeCommand(0));
         gamepadOperator.dPadDown().whenPressed(new SetCargoCollectorIntakeCommand(-0.6));
         gamepadOperator.dPadDown().whenReleased(new SetCargoCollectorIntakeCommand(0));
+
+        gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
+        gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0));
     }
 
     public double getDriveThrottle() {

@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoShooter;
 
-public class SetCargoShooterCommand extends Command {
+public class SetCargoShooterIntakeCommand extends Command {
     private CargoShooter shooter;
     private double power;
 
-    public SetCargoShooterCommand(double power) {
-        super("setcargoshootercommand");
+    public SetCargoShooterIntakeCommand(double power) {
+        super("setcargoshooterintakecommand");
         shooter = Components.getInstance().shooter;
         this.power = power;
         requires(shooter);
