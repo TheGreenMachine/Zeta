@@ -20,9 +20,6 @@ public class Components {
 
     public Birdbeak birdbeak;
     public LedManager ledManager;
-
-    // TODO: CANifier ID
-    public static final int CANIFIER_ID = 8;
     public Climber climber;
     public CargoCollector collector;
     public Drivetrain drivetrain;
@@ -49,6 +46,9 @@ public class Components {
         }
         if (factory.isImplemented(CargoShooter.NAME)) {
             shooter = new CargoShooter();
+        }
+        if (factory.isImplemented(LedManager.NAME)) {
+            ledManager = new LedManager();
         }
 
         // camFront = CameraServer.getInstance().startAutomaticCapture(0);

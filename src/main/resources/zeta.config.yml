@@ -45,6 +45,9 @@ subsystems:
       maxPos: 1475
       midPos: 1195
       minPos: 915
+  ledmanager:
+    implemented: true
+    canifier: 16
 pcm: 17
 constants:
   wheelbase: 25

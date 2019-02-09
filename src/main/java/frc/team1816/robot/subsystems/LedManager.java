@@ -6,9 +6,12 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Robot;
 
 @RunTest
 public class LedManager extends Subsystem implements Checkable {
+    public static final String NAME = "ledmanager";
+
     private CANifier canifier;
     private boolean outputsChanged = true;
 
@@ -16,9 +19,9 @@ public class LedManager extends Subsystem implements Checkable {
     private int ledG;
     private int ledB;
 
-    public LedManager(int canifierId) {
-        super("ledmanager");
-        this.canifier = new CANifier(canifierId);
+    public LedManager() {
+        super(NAME);
+        this.canifier = Robot.factory.getCanifier(NAME);
         this.ledR = 0;
         this.ledG = 0;
         this.ledB = 0;

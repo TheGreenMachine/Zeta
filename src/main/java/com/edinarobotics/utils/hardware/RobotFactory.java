@@ -1,5 +1,6 @@
 package com.edinarobotics.utils.hardware;
 
+import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -127,6 +128,13 @@ public class RobotFactory {
         YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
         if (solenoidConfig != null) {
             return new DoubleSolenoid(config.pcm, solenoidConfig.forward, solenoidConfig.reverse);
+        }
+        return null;
+    }
+
+    public CANifier getCanifier(String subsystem) {
+        if (getSubsystem(subsystem).canifier != null) {
+            return new CANifier(getSubsystem(subsystem).canifier);
         }
         return null;
     }
