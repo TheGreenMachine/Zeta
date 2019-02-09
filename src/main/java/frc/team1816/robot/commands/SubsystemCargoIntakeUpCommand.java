@@ -29,12 +29,7 @@ public class SubsystemCargoIntakeUpCommand extends Command {
         shooter.setIntake(0);
         collector.setIntake(0);
         // shooter.setArmPosition(ArmPosition.UP);
-
-        // int counter = 0;
-        // if(!shooter.getArmPosition().equals(ArmPosition.UP) || counter > 10) { // allow max delay of 1s
-        //     Timer.delay(0.1);
-        //     counter++;
-        // }
+        // Timer.delay(1);
         collector.setArm(false);
     }
 

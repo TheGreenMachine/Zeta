@@ -21,7 +21,7 @@ public class SubsystemHatchIntakeDownCommand extends Command {
     @Override
     protected void execute() {
         birdbeak.setArm(true);
-        birdbeak.setIntake(0.6);
+        birdbeak.setIntake(1);
         birdbeak.setBeak(true);
     }
 
