@@ -55,7 +55,8 @@ public class Controls {
 
         gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(true)); 
         gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
-        gamepadOperator.dPadUp().whenPressed(new SetBeakIntakeCommand(1.0));
+
+        gamepadOperator.dPadUp().whenPressed(new SetBeakIntakeCommand(1.0)); // necessary to have both?
         gamepadOperator.dPadUp().whenReleased(new SetBeakIntakeCommand(0.0));
         gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(-1.0));
         gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
