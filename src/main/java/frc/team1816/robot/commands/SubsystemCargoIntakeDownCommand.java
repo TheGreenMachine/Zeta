@@ -28,7 +28,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     protected void execute() {
         collector.setArm(true);
         collector.setIntake(-1.0);
-        Timer.delay(0.8); // TODO: tune delay timing
+        Timer.delay(0.8); // TODO: don't delay, use elapsed time
         shooter.setArmPosition(ArmPosition.DOWN);
         shooter.setIntake(-1.0);
     }

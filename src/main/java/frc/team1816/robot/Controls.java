@@ -53,21 +53,24 @@ public class Controls {
         gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
         gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
 
-        gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(true)); 
-        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
+        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); 
+        gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
 
-        gamepadOperator.dPadUp().whenPressed(new SetBeakIntakeCommand(1.0)); // necessary to have both?
-        gamepadOperator.dPadUp().whenReleased(new SetBeakIntakeCommand(0.0));
-        gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(-1.0));
+        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeDownCommand()); // TODO: testing only for the time being
+        gamepadOperator.dPadRight().whenReleased(new SubsystemHatchIntakeUpCommand());
+
+        gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0)); // TODO: confirm direction
         gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
 
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
-        gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
+        gamepadOperator.diamondRight().whenReleased(new SubsystemCargoIntakeUpCommand());
+        gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
         gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
-        gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeRocketCommand());
 
         gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
         gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0));
+        gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(-1.0));
+        gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(-1.0));
     }
 
     public double getDriveThrottle() {

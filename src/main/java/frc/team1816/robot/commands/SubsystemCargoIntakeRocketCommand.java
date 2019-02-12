@@ -29,7 +29,7 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
         collector.setIntake(0.0);
         shooter.setIntake(0.0);
         collector.setArm(true);
-        Timer.delay(0.8);
+        Timer.delay(0.8); // TODO: don't delay, use elapsed time
         shooter.setArmPosition(ArmPosition.ROCKET);
     }
 
