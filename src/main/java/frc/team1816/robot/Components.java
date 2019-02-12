@@ -47,7 +47,7 @@ public class Components {
             shooter = new CargoShooter();
         }
 
-        // camFront = CameraServer.getInstance().startAutomaticCapture(0);
+        camFront = CameraServer.getInstance().startAutomaticCapture(0);
         // camRear = CameraServer.getInstance().startAutomaticCapture(1);
         // server = CameraServer.getInstance().getServer();
     }

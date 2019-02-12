@@ -27,6 +27,10 @@ public class Robot extends TimedRobot {
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
+    public Robot() {
+        super(.04); // set loop timeout (s)
+    }
+    
     @Override
     public void robotInit() {
         System.out.println("Initializing robot!");
@@ -63,7 +67,7 @@ public class Robot extends TimedRobot {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
         }
         if (shooter != null) {
-            shooter.setDefaultCommand(new GamepadShootCommand());
+            // shooter.setDefaultCommand(new GamepadShootCommand());
         }
     }
 
@@ -96,10 +100,10 @@ public class Robot extends TimedRobot {
         // System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
 
-        logger.updateTopics();
-        if (!DriverStation.getInstance().isDisabled()) {
-            logger.log();
-        }
+        // logger.updateTopics();
+        // if (!DriverStation.getInstance().isDisabled()) {
+        //     logger.log();
+        // }
     }
 
     private void initLog() {

@@ -28,8 +28,8 @@ public class SubsystemCargoIntakeUpCommand extends Command {
     protected void execute() {
         shooter.setIntake(0);
         collector.setIntake(0);
-        // shooter.setArmPosition(ArmPosition.UP);
-        // Timer.delay(1);
+        shooter.setArmPosition(ArmPosition.UP);
+        Timer.delay(0.8); // TODO: tune delay
         collector.setArm(false);
     }
 

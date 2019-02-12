@@ -34,6 +34,7 @@ public class CargoCollector extends Subsystem implements Checkable {
     public void setArm(boolean down) {
         this.armDown = down;
         outputsChanged = true;
+        periodic();
     }
 
     public void setIntake(double intakePower) {

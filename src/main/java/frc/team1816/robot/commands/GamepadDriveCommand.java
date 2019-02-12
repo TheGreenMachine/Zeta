@@ -13,7 +13,7 @@ public class GamepadDriveCommand extends Command {
     private double prevPowLeft = 0;
     private double prevPowRight = 0;
 
-    public static final double SET_SPEED_DIFF_MAX = 0.04; // TODO: tune max percent velocity increase per 20ms
+    public static final double SET_SPEED_DIFF_MAX = 0.08; // TODO: tune max percent velocity increase per 20ms
 
     public GamepadDriveCommand() {
         super(NAME);

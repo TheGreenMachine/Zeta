@@ -65,6 +65,7 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         this.intakeMotor.setInverted(true);
 
+        this.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
         configureArmTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
@@ -116,7 +117,9 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MIN), ROCKET(ARM_POSITION_MID), UP(ARM_POSITION_MAX);
+        DOWN(ARM_POSITION_MIN), 
+        ROCKET(ARM_POSITION_MID), 
+        UP(ARM_POSITION_MAX);
 
         private double armPos;
 
@@ -133,6 +136,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.armPosition = pos;
         outputsChanged = true;
         isPercentOutput = false;
+        periodic();
     }
 
     public ArmPosition getArmPosition() {

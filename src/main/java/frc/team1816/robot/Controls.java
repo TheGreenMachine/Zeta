@@ -7,6 +7,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 import frc.team1816.robot.commands.*;
+import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,20 +53,24 @@ public class Controls {
         gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
         gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
 
+        gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(true)); 
+        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
+        gamepadOperator.dPadUp().whenPressed(new SetBeakIntakeCommand(1.0));
+        gamepadOperator.dPadUp().whenReleased(new SetBeakIntakeCommand(0.0));
+        gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(-1.0));
+        gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
+
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
-        gamepadOperator.leftTrigger().whenPressed(new SetCargoCollectorArmCommand(true));
+        gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
 
-        gamepadOperator.dPadRight().whenPressed(new SetBeakCollectorArmCommand(false));
-        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true));
-
-        gamepadOperator.dPadUp().whenPressed(new SetCargoCollectorIntakeCommand(0.6));
-        gamepadOperator.dPadUp().whenReleased(new SetCargoCollectorIntakeCommand(0));
-        gamepadOperator.dPadDown().whenPressed(new SetCargoCollectorIntakeCommand(-0.6));
-        gamepadOperator.dPadDown().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
         gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
         gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0));
+
+        gamepadDriver.diamondLeft().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.UP));
+        gamepadDriver.diamondRight().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.DOWN));
+        gamepadDriver.diamondDown().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.ROCKET));
     }
 
     public double getDriveThrottle() {
