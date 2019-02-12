@@ -34,10 +34,10 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     protected void execute() {
         collector.setArm(true);
         collector.setIntake(-1.0);
+        shooter.setIntake(-1.0);
         // Timer.delay(0.8);
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
             shooter.setArmPosition(ArmPosition.DOWN);
-            shooter.setIntake(-1.0);
         }
     }
 
@@ -48,9 +48,12 @@ public class SubsystemCargoIntakeDownCommand extends Command {
 
     @Override
     protected void end() {
+        collector.setIntake(0.0);
+        shooter.setIntake(0.0);
     }
 
     @Override
     protected void interrupted() {
+        end();
     }
 }

@@ -38,6 +38,7 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
         // Timer.delay(0.8);
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
             shooter.setArmPosition(ArmPosition.ROCKET);
+            collector.setArm(false);
         }
     }
 
@@ -48,9 +49,12 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
 
     @Override
     protected void end() {
+        collector.setIntake(0.0);
+        shooter.setIntake(0.0);
     }
 
     @Override
     protected void interrupted() {
+        end();
     }
 }
