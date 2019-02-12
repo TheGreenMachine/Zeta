@@ -35,8 +35,8 @@ public class Controls {
 
         gamepadDriver.leftBumper().whenPressed(new SubsystemHatchFireCommand());
         gamepadDriver.leftBumper().whenReleased(new SubsystemHatchUnfireCommand());
-        gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
-        gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
+        // gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
+        // gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
 
         // gamepadDriver.rightTrigger().whenPressed(new ToggleCameraCommand());
         gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
@@ -48,8 +48,8 @@ public class Controls {
         gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
 
-        gamepadOperator.diamondUp().whenPressed(new SubsystemHatchFireCommand());
-        gamepadOperator.diamondUp().whenReleased(new SubsystemHatchUnfireCommand());
+        // gamepadOperator.diamondUp().whenPressed(new SubsystemHatchFireCommand());
+        // gamepadOperator.diamondUp().whenReleased(new SubsystemHatchUnfireCommand());
         gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
         gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
 
@@ -63,14 +63,10 @@ public class Controls {
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
         gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
-
+        gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeRocketCommand());
 
         gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
         gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0));
-
-        gamepadDriver.diamondLeft().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.UP));
-        gamepadDriver.diamondRight().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.DOWN));
-        gamepadDriver.diamondDown().whenPressed(new SetCargoShooterPositionCommand(ArmPosition.ROCKET));
     }
 
     public double getDriveThrottle() {
