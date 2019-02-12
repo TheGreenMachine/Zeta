@@ -35,8 +35,6 @@ public class Controls {
 
         gamepadDriver.leftBumper().whenPressed(new SubsystemHatchFireCommand());
         gamepadDriver.leftBumper().whenReleased(new SubsystemHatchUnfireCommand());
-        // gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
-        // gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
 
         // gamepadDriver.rightTrigger().whenPressed(new ToggleCameraCommand());
         gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
@@ -48,10 +46,8 @@ public class Controls {
         gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
 
-        // gamepadOperator.diamondUp().whenPressed(new SubsystemHatchFireCommand());
-        // gamepadOperator.diamondUp().whenReleased(new SubsystemHatchUnfireCommand());
-        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
-        gamepadOperator.diamondDown().whenReleased(new SetBeakCommand(false));
+        gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(true));
+        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(false));
 
         gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); 
         gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
