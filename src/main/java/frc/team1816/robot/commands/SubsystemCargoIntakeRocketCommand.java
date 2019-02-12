@@ -11,10 +11,15 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
     private CargoCollector collector;
     private CargoShooter shooter;
 
+    private double initTime;
+    private double elapsedDelayMs;
+
     public SubsystemCargoIntakeRocketCommand() {
         super("subsystemcargointakerocketcommand");
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
+
+        elapsedDelayMs = 800;
 
         requires(collector);
         requires(shooter);
@@ -22,6 +27,7 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
 
     @Override
     protected void initialize() {
+        initTime = System.currentTimeMillis();
     }
 
     @Override
@@ -29,13 +35,15 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
         collector.setIntake(0.0);
         shooter.setIntake(0.0);
         collector.setArm(true);
-        Timer.delay(0.8); // TODO: don't delay, use elapsed time
-        shooter.setArmPosition(ArmPosition.ROCKET);
+        // Timer.delay(0.8);
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
+            shooter.setArmPosition(ArmPosition.ROCKET);
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
     }
 
     @Override
