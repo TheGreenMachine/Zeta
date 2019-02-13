@@ -42,7 +42,7 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 6700
+      maxPos: 7100
       midPos: 8500
       minPos: 2000
 pcm: 17
