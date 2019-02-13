@@ -42,9 +42,9 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 7000
-      midPos: 5200
-      minPos: 2000
+      maxPos: 9000
+      midPos: 8500
+      minPos: 3700
 pcm: 17
 constants:
   wheelbase: 25
