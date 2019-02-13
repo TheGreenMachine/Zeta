@@ -48,8 +48,6 @@ public class SubsystemCargoIntakeDownCommand extends Command {
 
     @Override
     protected void end() {
-        collector.setIntake(0.0);
-        shooter.setIntake(0.0);
     }
 
     @Override
