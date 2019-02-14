@@ -92,7 +92,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", rightMain);
 
         invertTalons(true);
-        setBrakeMode();
+        enableBrakeMode();
 
         navX = new AHRS(I2C.Port.kMXP);
         System.out.println("NavX Active: " + getGyroStatus());
@@ -115,7 +115,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         }
     }
 
-    public void setBrakeMode() {
+    public void enableBrakeMode() {
         this.leftMain.setNeutralMode(NeutralMode.Brake);
         this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
         this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
@@ -125,7 +125,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setCoastMode() {
+    public void enableCoastMode() {
         this.leftMain.setNeutralMode(NeutralMode.Coast);
         this.leftSlaveOne.setNeutralMode(NeutralMode.Coast);
         this.leftSlaveTwo.setNeutralMode(NeutralMode.Coast);
@@ -284,7 +284,7 @@ public class Drivetrain extends Subsystem implements Checkable {
             outputsChanged = false;
         }
 
-        // coordinateTracking();
+         coordinateTracking();
     }
 
     public void coordinateTracking() {

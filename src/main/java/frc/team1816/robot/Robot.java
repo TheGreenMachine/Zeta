@@ -6,6 +6,7 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1816.robot.commands.DriveToHatchCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.subsystems.*;
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        drivetrain.setDefaultCommand(new DriveToHatchCommand(0.5));
     }
 
     @Override
