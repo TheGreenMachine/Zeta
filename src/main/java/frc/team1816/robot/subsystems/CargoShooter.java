@@ -1,92 +1,201 @@
 package frc.team1816.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.IMotorController;
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
+import com.edinarobotics.utils.checker.CheckFailException;
+import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
-import com.edinarobotics.utils.math.Math1816;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.Robot;
 
 /**
  * Subsystem for the cargo shooter.
  */
-public class CargoShooter extends Subsystem {
-    private static final String NAME = "cargoshooter";
+@RunTest
+public class CargoShooter extends Subsystem implements Checkable {
+    public static final String NAME = "cargoshooter";
 
-    private IMotorControllerEnhanced arm;
-    private IMotorController intake;
+    private IMotorControllerEnhanced armTalon;
+    private IMotorController intakeMotor;
 
-    private double armPosition;
-    private double armVelocity;
-    private double intakeVelocity;
+    private ArmPosition armPosition;
+
+    private double armPositionTicks;
+    private double armPower;
+    private double intakePower;
+
+    private static final boolean kSensorPhase = false;
+    private static final boolean kMotorInverted = false;
 
     // TODO: Measure true min and max
-    public static final double ARM_POSITION_MIN = 0;
-    public static final double ARM_POSITION_MAX = 2048;
+    public static final int ARM_POSITION_MIN = Robot.factory.getConstant(NAME, "minPos").intValue();
+    public static final int ARM_POSITION_MID = Robot.factory.getConstant(NAME, "midPos").intValue();
+    public static final int ARM_POSITION_MAX = Robot.factory.getConstant(NAME, "maxPos").intValue();
+    private static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+
+    private static final int kPIDLoopIdx = 0;
+    private static final int kTimeoutMs = 30;
+
+    private double kP;
+    private double kI;
+    private double kD;
+    private double kF;
 
     private boolean outputsChanged;
+    private boolean isPercentOutput;
 
     public CargoShooter() {
         super(NAME);
         RobotFactory factory = Robot.factory;
 
-        this.arm = (IMotorControllerEnhanced) factory.getMotor(NAME, "arm");
-        this.intake = factory.getMotor(NAME, "intake");
-        this.armPosition = 0;
-        this.armVelocity = 0.5;
-        this.intakeVelocity = 0;
-        this.outputsChanged = false;
+        this.armTalon = (IMotorControllerEnhanced) factory.getMotor(NAME, "arm");
+        this.intakeMotor = factory.getMotor(NAME, "intake");
+        this.armPower = 0;
+        this.intakePower = 0;
+        this.outputsChanged = true;
+        this.isPercentOutput = true;
 
-        arm.set(ControlMode.Position, 0.0);
-        intake.set(ControlMode.PercentOutput, 0.0);
-        arm.configOpenloopRamp(6.0, 0);
+        this.kP = factory.getConstant(NAME, "kP");
+        this.kI = factory.getConstant(NAME, "kI");
+        this.kD = factory.getConstant(NAME, "kD");
+        this.kF = factory.getConstant(NAME, "kF");
+
+        this.intakeMotor.setInverted(true);
+
+        this.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+        configureArmTalon();
+
+        // Calibrate quadrature encoder with absolute mag encoder
+        int absolutePosition = getArmPositionAbsolute();
+        /* Mask out overflows, keep bottom 12 bits */
+        absolutePosition &= 0xFFF;
+
+        /* Set the quadrature (relative) sensor to match absolute */
+        this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
+        this.armPositionTicks = absolutePosition;
+
+        armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
     }
 
-    public void setArmPosition(double armPosition) {
-        this.armPosition = armPosition;
+    private void configureArmTalon() {
+        armTalon.setNeutralMode(NeutralMode.Brake);
+        armTalon.setInverted(kMotorInverted);
+        armTalon.setSensorPhase(kSensorPhase);
+        armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
+
+        /* Config the peak and nominal outputs, 12V means full */
+        armTalon.configNominalOutputForward(0, kTimeoutMs);
+        armTalon.configNominalOutputReverse(0, kTimeoutMs);
+        armTalon.configPeakOutputForward(1, kTimeoutMs);
+        armTalon.configPeakOutputReverse(-1, kTimeoutMs);
+
+        this.setPid(kP, kI, kD);
+
+        armTalon.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
+
+        // Both overrides must be true to enable soft limits
+        armTalon.overrideLimitSwitchesEnable(true);
+        armTalon.overrideSoftLimitsEnable(true);
+
+        armTalon.configForwardSoftLimitEnable(true, kTimeoutMs);
+        armTalon.configReverseSoftLimitEnable(true, kTimeoutMs);
+        armTalon.configForwardSoftLimitThreshold(ARM_POSITION_MAX, kTimeoutMs);
+        armTalon.configReverseSoftLimitThreshold(ARM_POSITION_MIN, kTimeoutMs);
+    }
+
+    public void setPid(double kP, double kI, double kD) {
+        this.kP = kP;
+        this.kI = kI;
+        this.kD = kD;
+        armTalon.config_kF(kPIDLoopIdx, kF, kTimeoutMs);
+        armTalon.config_kP(kPIDLoopIdx, kP, kTimeoutMs);
+        armTalon.config_kI(kPIDLoopIdx, kI, kTimeoutMs);
+        armTalon.config_kD(kPIDLoopIdx, kD, kTimeoutMs);
+    }
+
+    public enum ArmPosition {
+        DOWN(ARM_POSITION_MIN), 
+        ROCKET(ARM_POSITION_MID), 
+        UP(ARM_POSITION_MAX);
+
+        private double armPos;
+
+        ArmPosition(double pos) {
+            this.armPos = pos;
+        }
+
+        public double getPos() {
+            return armPos;
+        }
+    }
+
+    public void setArmPosition(ArmPosition pos) {
+        this.armPosition = pos;
         outputsChanged = true;
+        isPercentOutput = false;
+        periodic();
     }
 
-    public double getArmPosition() {
+    public ArmPosition getArmPosition() {
         return armPosition;
     }
 
+    public int getArmPositionAbsolute() {
+        return armTalon.getSensorCollection().getPulseWidthPosition();
+    }
+
     public double getArmEncoderPosition() {
-        return arm.getSensorCollection().getPulseWidthPosition();
+        return armTalon.getSelectedSensorPosition(kPIDLoopIdx);
     }
 
-    public void setArmVelocity(double armVelocity) {
-        this.armVelocity = armVelocity;
+    public boolean isBusy() {
+        if (armTalon.getControlMode() == ControlMode.Position) {
+            return (armTalon.getClosedLoopError(kPIDLoopIdx) <= ALLOWABLE_CLOSED_LOOP_ERROR);
+        }
+        return false;
+    }
+
+    public void setArmPower(double armPow) {
+        isPercentOutput = true;
+
+        System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
+                + "Arm Pos Rel: " + getArmEncoderPosition());
+
+            this.armPower = armPow * 0.50;
+
         outputsChanged = true;
     }
 
-    public double getArmVelocity() {
-        return armVelocity;
+    public double getArmPower() {
+        return armPower;
     }
 
-    public void setIntakeVelocity(double intakeVelocity) {
-        this.intakeVelocity = intakeVelocity;
+    public void setIntake(double intakePow) {
+        this.intakePower = intakePow;
         outputsChanged = true;
     }
 
-    public double getIntakeVelocity() {
-        return intakeVelocity;
+    public double getIntakePower() {
+        return intakePower;
+    }
+
+    public boolean isPercentOutput() {
+        return isPercentOutput;
     }
 
     @Override
     public void periodic() {
         if (outputsChanged) {
-            // armPosition is a number from [0.0, 1.0] representing a
-            // proportion of the total rotational range of the arm.
-            double armEncoderTicks = Math1816.coerceValue(
-                    ARM_POSITION_MAX,
-                    ARM_POSITION_MIN,
-                    armPosition * ARM_POSITION_MAX
-            );
-            arm.set(ControlMode.Position, armEncoderTicks);
-            intake.set(ControlMode.PercentOutput, intakeVelocity);
+            if (isPercentOutput) {
+                armTalon.set(ControlMode.PercentOutput, armPower);
+            } else {
+                System.out.println("Setting Arm to " + armPosition.getPos() + "...");
+                armTalon.set(ControlMode.Position, armPosition.getPos());
+            }
+            intakeMotor.set(ControlMode.PercentOutput, intakePower);
             outputsChanged = false;
         }
     }
@@ -98,9 +207,32 @@ public class CargoShooter extends Subsystem {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty(NAME + "/ArmPosition",
-                this::getArmPosition, this::setArmPosition);
-        builder.addDoubleProperty(NAME + "/IntakeVelocity",
-                this::getIntakeVelocity, this::setIntakeVelocity);
+        builder.addStringProperty("ControlMode", () -> armTalon.getControlMode().toString(), null);
+        builder.addDoubleProperty("CurrentPosition", this::getArmEncoderPosition, null);
+        builder.addDoubleProperty("ClosedLoop/TargetPosition",
+                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
+        builder.addDoubleProperty("ClosedLoop/Error",
+                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopError(kPIDLoopIdx) : 0), null);
+        builder.addDoubleProperty("MotorOutput", armTalon::getMotorOutputPercent, null);
+        builder.addBooleanProperty("Busy", this::isBusy, null);
+        builder.addDoubleProperty("IntakePower", this::getIntakePower, this::setIntake);
+        builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);
+        SmartDashboard.putNumber("max_thresh", ARM_POSITION_MAX);
+        SmartDashboard.putNumber("min_thresh", ARM_POSITION_MIN);
+    }
+
+    @Override
+    public boolean check() throws CheckFailException {
+        System.out.println("Warning: mechanisms will move!");
+        setArmPosition(ArmPosition.DOWN);
+        Timer.delay(5);
+        setArmPosition(ArmPosition.UP);
+        Timer.delay(5);
+        setIntake(1);
+        Timer.delay(5);
+        setIntake(0);
+        Timer.delay(5);
+        setArmPosition(ArmPosition.DOWN);
+        return true;
     }
 }

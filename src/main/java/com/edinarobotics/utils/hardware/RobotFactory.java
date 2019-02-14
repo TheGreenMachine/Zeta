@@ -135,6 +135,10 @@ public class RobotFactory {
         return config.constants.get(name);
     }
 
+    public Double getConstant(String subsystem, String name) {
+        return getSubsystem(subsystem).constants.get(name);
+    }
+
     public YamlConfiguration getConfig() {
         return config;
     }
@@ -154,6 +158,7 @@ public class RobotFactory {
             public Map<String, Integer> victors = new HashMap<>();
             public Map<String, Integer> solenoids = new HashMap<>();
             public Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
+            public Map<String, Double> constants = new HashMap<>();
 
             @Override
             public String toString() {
@@ -163,6 +168,7 @@ public class RobotFactory {
                         "  victors = " + victors.toString() + ",\n" +
                         "  solenoids = " + solenoids.toString() + ",\n" +
                         "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
+                        "  constants = " + constants.toString() + ",\n" +
                         "}";
             }
         }
@@ -179,8 +185,8 @@ public class RobotFactory {
 
         @Override
         public String toString() {
-            return "Configuration {\n  subsystems = " + subsystems.toString() +
-                    "\n pcm = " + pcm + "\n}";
+            return "YamlConfiguration {\n  subsystems = " + subsystems.toString() +
+                    "\n  pcm = " + pcm + "\n  constants = " + constants.toString( )+ "\n}";
         }
     }
 }

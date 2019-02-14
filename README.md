@@ -1,5 +1,3 @@
-<img src=".github/assets/greenmachine_gear_eyes.svg" height="100" alt="The Green Machine"/>
-
 # Zeta
 
 Zeta is FRC Team 1816's robot for the 2019 FRC season, *Destination: Deep Space*. This software uses Java 11, the [WPILib](https://github.com/wpilibsuite/allwpilib) library, and the [CTRE Phoenix](https://github.com/CrossTheRoadElec/Phoenix-api) library.

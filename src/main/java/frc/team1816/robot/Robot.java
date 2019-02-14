@@ -1,33 +1,36 @@
 package frc.team1816.robot;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import badlog.lib.BadLog;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
-import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
-import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.commands.GamepadShootCommand;
+import frc.team1816.robot.subsystems.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Robot extends TimedRobot {
     BadLog logger;
 
-    private Drivetrain drivetrain;
+    public Birdbeak birdbeak;
+    public Climber climber;
+    public CargoCollector collector;
+    public Drivetrain drivetrain;
+    public CargoShooter shooter;
 
-    /*
-     * Constants are defined as static final deeply immutable types (e.g. String)
-     * Since the factory is not deeply immutable, we use regular variable case.
-     * See Google Java Style Guide.
-     */
     public static final RobotFactory factory = new RobotFactory(
-            System.getenv("ROBOT_NAME") != null
-                    ? System.getenv("ROBOT_NAME") : "zeta"
-    );
+            System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
+    public Robot() {
+        super(.04); // set loop timeout (s)
+    }
+    
     @Override
     public void robotInit() {
         System.out.println("Initializing robot!");
@@ -38,20 +41,34 @@ public class Robot extends TimedRobot {
         Components.getInstance();
         Controls.getInstance();
 
+        birdbeak = Components.getInstance().birdbeak;
+        climber = Components.getInstance().climber;
+        collector = Components.getInstance().collector;
         drivetrain = Components.getInstance().drivetrain;
+        shooter = Components.getInstance().shooter;
 
         logger.finishInitialization();
     }
 
     @Override
-    public void disabledInit() { }
+    public void disabledInit() {
+    }
 
     @Override
-    public void autonomousInit() { }
+    public void autonomousInit() {
+    }
 
     @Override
     public void teleopInit() {
-        Components.getInstance().drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        if (climber != null) {
+            climber.setDefaultCommand(new GamepadClimbCommand());
+        }
+        if (drivetrain != null) {
+            drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        }
+        if (shooter != null) {
+            // shooter.setDefaultCommand(new GamepadShootCommand());
+        }
     }
 
     @Override
@@ -63,7 +80,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         periodic();
     }
-    
+
     @Override
     public void autonomousPeriodic() {
         periodic();
@@ -83,10 +100,10 @@ public class Robot extends TimedRobot {
         // System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
 
-        logger.updateTopics();
-        if (!DriverStation.getInstance().isDisabled()) {
-            logger.log();
-        }
+        // logger.updateTopics();
+        // if (!DriverStation.getInstance().isDisabled()) {
+        //     logger.log();
+        // }
     }
 
     private void initLog() {

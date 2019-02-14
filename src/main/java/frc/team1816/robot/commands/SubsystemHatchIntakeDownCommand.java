@@ -2,15 +2,16 @@ package frc.team1816.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
-import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.Birdbeak;
 
-public class ToggleReverseModeCommand extends Command {
+public class SubsystemHatchIntakeDownCommand extends Command {
+    private Birdbeak birdbeak;
 
-    private Drivetrain drivetrain;
+    public SubsystemHatchIntakeDownCommand() {
+        super("subsystemhatchintakedowncommand");
+        birdbeak = Components.getInstance().birdbeak;
 
-    public ToggleReverseModeCommand() {
-        super("togglereversemodecommand");
-        drivetrain = Components.getInstance().drivetrain;
+        requires(birdbeak);
     }
 
     @Override
@@ -19,8 +20,9 @@ public class ToggleReverseModeCommand extends Command {
 
     @Override
     protected void execute() {
-        System.out.println("Reversing Drivetrain");
-        drivetrain.toggleReverseMode();
+        birdbeak.setArm(true);
+        birdbeak.setIntake(1);
+        birdbeak.setBeak(true);
     }
 
     @Override
@@ -30,11 +32,9 @@ public class ToggleReverseModeCommand extends Command {
 
     @Override
     protected void end() {
-
     }
 
     @Override
     protected void interrupted() {
-        super.interrupted();
     }
 }
