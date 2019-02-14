@@ -44,7 +44,7 @@ public class RobotFactory {
     }
 
     /**
-     * @deprecated Use {@link #getMotor(String, String, String)} instead as this does
+     * @deprecated Use {@link #getMotor(String, String, IMotorController)} instead as this does
      * not support Victor SPXs.
      */
     @Deprecated(forRemoval = true)
@@ -78,37 +78,26 @@ public class RobotFactory {
         return CtreMotorFactory.createGhostTalon();
     }
 
-    public IMotorController getMotor(String subsystem, String name, String master) {
+    public IMotorController getMotor(String subsystem, String name, IMotorController master) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
         YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
         if (
             subsystemConfig.talons.get(name) != null &&
             subsystemConfig.talons.get(name) > -1 &&
-            subsystemConfig.talons.get(master) != null &&
-            subsystemConfig.talons.get(master) > -1
+            master != null
         ) {
             // Talons must be following another Talon, cannot follow a Victor.
             return CtreMotorFactory.createPermanentSlaveTalon(
-                    subsystemConfig.talons.get(name), subsystemConfig.talons.get(master)
+                    subsystemConfig.talons.get(name), master
             );
         } else if (
             subsystemConfig.victors.get(name) != null &&
             subsystemConfig.victors.get(name) > -1
         ) {
             // Victors can follow Talons or another Victor.
-            if (
-                subsystemConfig.talons.get(master) != null &&
-                subsystemConfig.talons.get(master) > -1
-            ) {
+            if (master != null) {
                 return CtreMotorFactory.createPermanentSlaveVictor(
-                        subsystemConfig.victors.get(name), subsystemConfig.talons.get(master)
-                );
-            } else if (
-                subsystemConfig.victors.get(master) != null &&
-                subsystemConfig.victors.get(master) > -1
-            ) {
-                return CtreMotorFactory.createPermanentSlaveVictor(
-                        subsystemConfig.victors.get(name), subsystemConfig.victors.get(master)
+                        subsystemConfig.victors.get(name), master
                 );
             }
         }

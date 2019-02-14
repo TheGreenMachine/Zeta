@@ -63,10 +63,18 @@ public class CtreMotorFactory {
         return createTalon(id, kDefaultConfiguration);
     }
 
+    @Deprecated(forRemoval = true)
     public static IMotorControllerEnhanced createPermanentSlaveTalon(int id, int master_id) {
         final IMotorControllerEnhanced talon = createTalon(id, kSlaveConfiguration);
         System.out.println("Slaving talon on " + id + " to talon on " + master_id);
         talon.set(ControlMode.Follower, master_id);
+        return talon;
+    }
+
+    public static IMotorControllerEnhanced createPermanentSlaveTalon(int id, IMotorController master) {
+        final IMotorControllerEnhanced talon = createTalon(id, kSlaveConfiguration);
+        System.out.println("Slaving talon on " + id + " to talon on " + master.getDeviceID());
+        talon.follow(master);
         return talon;
     }
 
@@ -101,10 +109,10 @@ public class CtreMotorFactory {
         return createVictor(id, kDefaultConfiguration);
     }
 
-    public static IMotorController createPermanentSlaveVictor(int id, int masterId) {
+    public static IMotorController createPermanentSlaveVictor(int id, IMotorController master) {
         final IMotorController victor = createVictor(id, kSlaveConfiguration);
-        System.out.println("Slaving victor on " + id + " to talon on " + masterId);
-        victor.set(ControlMode.Follower, masterId);
+        System.out.println("Slaving victor on " + id + " to talon on " + master.getDeviceID());
+        victor.follow(master);
         return victor;
     }
 

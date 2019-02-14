@@ -84,12 +84,12 @@ public class Drivetrain extends Subsystem implements Checkable {
         INCHES_PER_REV = TICKS_PER_REV / TICKS_PER_INCH;
 
         this.leftMain = factory.getMotor(NAME, "leftMain");
-        this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", "leftMain");
-        this.leftSlaveTwo = factory.getMotor(NAME, "leftSlaveTwo", "leftMain");
+        this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", leftMain);
+        this.leftSlaveTwo = factory.getMotor(NAME, "leftSlaveTwo", leftMain);
 
         this.rightMain = factory.getMotor(NAME, "rightMain");
-        this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", "rightMain");
-        this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", "rightMain");
+        this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", rightMain);
+        this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", rightMain);
 
         invertTalons(true);
         setBrakeMode();
