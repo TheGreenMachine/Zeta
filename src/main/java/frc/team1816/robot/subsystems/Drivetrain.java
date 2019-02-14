@@ -273,7 +273,7 @@ public class Drivetrain extends Subsystem implements Checkable {
             outputsChanged = false;
         }
 
-        // coordinateTracking();
+         coordinateTracking();
     }
 
     public void coordinateTracking() {

@@ -87,11 +87,11 @@ public class DriveToHatchCommand extends Command {
     }
 
     private void setupTableEntries() {
-        xEntry = table.getEntry("averagedCenterX");
-        yEntry = table.getEntry("averagedCenterY");
+        xEntry = table.getEntry("center_x");
+        yEntry = table.getEntry("center_y");
         widthEntry = table.getEntry("width");
         heightEntry = table.getEntry("height");
-        distanceEntry = table.getEntry("distance");
+        distanceEntry = table.getEntry("distance_esti");
     }
 
     private void updateCoordData() {
