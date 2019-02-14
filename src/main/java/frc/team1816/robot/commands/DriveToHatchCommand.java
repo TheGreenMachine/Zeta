@@ -18,7 +18,7 @@ public class DriveToHatchCommand extends Command {
     private NetworkTableEntry heightEntry;
     private NetworkTableEntry distanceEntry;
 
-    private static final double kP = 5;
+    private static final double kP = 0.005; // halve nominal velocity at 100px error
     private static final double ERROR_THRESHOLD = 5;
     private static final double DIST_THRESHOLD = 4;
 
@@ -45,7 +45,6 @@ public class DriveToHatchCommand extends Command {
 
         width = widthEntry.getDouble(640);
         height = widthEntry.getDouble(480);
-        deltaDist = distanceEntry.getDouble(-1);
 
         updateCoordData();
 
@@ -97,5 +96,6 @@ public class DriveToHatchCommand extends Command {
     private void updateCoordData() {
         xCoord = xEntry.getDouble(320);
         yCoord = yEntry.getDouble(240);
+        deltaDist = distanceEntry.getDouble(-1);
     }
 }
