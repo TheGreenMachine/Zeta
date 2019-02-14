@@ -9,6 +9,11 @@ import java.util.Date;
 public class LogThread extends Thread {
     private BadLog logger;
 
+    public LogThread() {
+        super();
+        setPriority(Thread.NORM_PRIORITY - 2); // Reduce the priority of this thread
+    }
+
     public synchronized void initLog() {
         // Format timestamp according to ISO 8601 e.g. 2019-02-14T16.37
         var timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm").format(new Date());
