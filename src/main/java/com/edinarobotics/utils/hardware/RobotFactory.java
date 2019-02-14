@@ -27,22 +27,6 @@ public class RobotFactory {
         return (getSubsystem(subsystem) != null) && (getSubsystem(subsystem).implemented);
     }
 
-    /**
-     * @deprecated Use {@link #getMotor(String, String)} instead as this does
-     * not support Victor SPXs.
-     */
-    @Deprecated(forRemoval = true)
-    public IMotorControllerEnhanced getTalon(String subsystem, String name) {
-        if (
-            isImplemented(subsystem) &&
-            getSubsystem(subsystem).talons.get(name) != null &&
-            getSubsystem(subsystem).talons.get(name) > -1
-        ) {
-            return CtreMotorFactory.createDefaultTalon(getSubsystem(subsystem).talons.get(name));
-        }
-        return CtreMotorFactory.createGhostTalon();
-    }
-
     public IMotorController getMotor(String subsystem, String name) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
         YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
