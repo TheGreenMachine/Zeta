@@ -63,14 +63,6 @@ public class CtreMotorFactory {
         return createTalon(id, kDefaultConfiguration);
     }
 
-    @Deprecated(forRemoval = true)
-    public static IMotorControllerEnhanced createPermanentSlaveTalon(int id, int master_id) {
-        final IMotorControllerEnhanced talon = createTalon(id, kSlaveConfiguration);
-        System.out.println("Slaving talon on " + id + " to talon on " + master_id);
-        talon.set(ControlMode.Follower, master_id);
-        return talon;
-    }
-
     public static IMotorControllerEnhanced createPermanentSlaveTalon(int id, IMotorController master) {
         final IMotorControllerEnhanced talon = createTalon(id, kSlaveConfiguration);
         System.out.println("Slaving talon on " + id + " to talon on " + master.getDeviceID());
