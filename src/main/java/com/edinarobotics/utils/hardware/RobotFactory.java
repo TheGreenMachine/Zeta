@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class RobotFactory {
 
     public RobotFactory(String configName) {
         Yaml yaml = new Yaml(new Constructor(YamlConfiguration.class));
+        yaml.setBeanAccess(BeanAccess.FIELD);
         config = yaml.load(
             this.getClass()
                 .getClassLoader()
@@ -101,18 +103,21 @@ public class RobotFactory {
         return config.subsystems.get(subsystem);
     }
 
+    // Since the Collections of configurations are injected by SnakeYaml,
+    // IDEs will report that the collections are never updated.
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     public static class YamlConfiguration {
-        public Map<String, SubsystemConfig> subsystems;
-        public Map<String, Double> constants = new HashMap<>();
-        public int pcm;
+        Map<String, SubsystemConfig> subsystems;
+        Map<String, Double> constants = new HashMap<>();
+        int pcm;
 
         public static class SubsystemConfig {
-            public boolean implemented = false;
-            public Map<String, Integer> talons = new HashMap<>();
-            public Map<String, Integer> victors = new HashMap<>();
-            public Map<String, Integer> solenoids = new HashMap<>();
-            public Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
-            public Map<String, Double> constants = new HashMap<>();
+            boolean implemented = false;
+            Map<String, Integer> talons = new HashMap<>();
+            Map<String, Integer> victors = new HashMap<>();
+            Map<String, Integer> solenoids = new HashMap<>();
+            Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
+            Map<String, Double> constants = new HashMap<>();
 
             @Override
             public String toString() {
@@ -128,12 +133,12 @@ public class RobotFactory {
         }
 
         public static class DoubleSolenoidConfig {
-            public int forward;
-            public int reverse;
+            int forward;
+            int reverse;
 
             @Override
             public String toString() {
-                return String.format("{ forward: %d, reverse: %d }", forward, reverse);
+                return String.format("{ forward = %d, reverse = %d }", forward, reverse);
             }
         }
 

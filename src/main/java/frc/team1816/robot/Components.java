@@ -1,11 +1,9 @@
 package frc.team1816.robot;
 
 import com.edinarobotics.utils.hardware.RobotFactory;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-
 import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
