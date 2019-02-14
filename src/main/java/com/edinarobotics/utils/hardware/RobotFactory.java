@@ -1,7 +1,6 @@
 package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.yaml.snakeyaml.Yaml;
