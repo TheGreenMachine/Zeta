@@ -141,11 +141,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS,
                 () -> this.rightMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
         BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS,
-                () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Output Velocities");
+                () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS,
-                () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide",
-                "join:Drivetrain/Output Velocities");
-        BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
+                () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
+        BadLog.createTopic("Drivetrain/Angle", "deg", this::getGyroAngle);
+        BadLog.createTopic("Drivetrain/Left Input Velocity", BadLog.UNITLESS,
+                this::getLeftPower, "hide", "join:Drivetrain/Velocities");
+        BadLog.createTopic("Drivetrain/Right Input Velocity", BadLog.UNITLESS,
+                this::getLeftPower, "hide", "join:Drivetrain/Velocities");
 
         // TODO: consider creating a BadLog topic for right and left talon inches?
     }
@@ -162,6 +165,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.prevY = 0;
         this.initAngle = navX.getAngle();
         System.out.println(initAngle);
+    }
+
+    public double getLeftPower() {
+        return leftPower;
+    }
+
+    public double getRightPower() {
+        return rightPower;
     }
 
     public double getGyroAngle() {
