@@ -24,7 +24,7 @@ public class SubsystemHatchFireCommand extends Command {
         birdbeak.setPuncher(true);
         Timer.delay(0.1); // TODO: tune delay timing, don't delay, use elapsed time
         birdbeak.setBeak(true);
-    }
+    } 
 
     @Override
     protected boolean isFinished() {

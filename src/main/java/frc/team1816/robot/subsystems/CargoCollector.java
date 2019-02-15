@@ -42,6 +42,10 @@ public class CargoCollector extends Subsystem implements Checkable {
         outputsChanged = true;
     }
 
+    public boolean isArmDown() {
+        return armDown;
+    }
+
     public boolean getArmPistonState() {
         return armDown;
     }
