@@ -45,8 +45,8 @@ public class Controls {
         gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
 
-        gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(true));
-        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(false));
+        gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(false));
+        gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
 
         gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); 
         gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
@@ -64,9 +64,9 @@ public class Controls {
         gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
 
         gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
-        gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0));
+        gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0.0));
         gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(-1.0));
-        gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(-1.0));
+        gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
     }
 
     public double getDriveThrottle() {
