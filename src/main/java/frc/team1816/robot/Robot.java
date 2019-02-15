@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        drivetrain.setDefaultCommand(new DriveToHatchCommand(0.5));
+        // drivetrain.setDefaultCommand(new DriveToHatchCommand(0.5));
     }
 
     @Override
