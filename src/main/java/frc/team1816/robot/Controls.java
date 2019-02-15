@@ -7,7 +7,6 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.commands.*;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class Controls {
 
         gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); // TODO: temp, testing Subsystem commands
         gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false));
-        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeDownCommand());
+        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeDownCommand()); // TODO: test commands + timing
         gamepadOperator.dPadRight().whenReleased(new SubsystemHatchIntakeUpCommand());
 
         gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0));

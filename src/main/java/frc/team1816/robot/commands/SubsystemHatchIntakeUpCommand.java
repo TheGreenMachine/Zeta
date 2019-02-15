@@ -8,9 +8,14 @@ import frc.team1816.robot.subsystems.Birdbeak;
 public class SubsystemHatchIntakeUpCommand extends Command {
     private Birdbeak birdbeak;
 
+    private double initTime;
+    private double elapsedDelayMs;
+
     public SubsystemHatchIntakeUpCommand() {
         super("subsystemhatchintakeupcommand");
         birdbeak = Components.getInstance().birdbeak;
+
+        elapsedDelayMs = 300;
 
         requires(birdbeak);
     }
@@ -23,13 +28,14 @@ public class SubsystemHatchIntakeUpCommand extends Command {
     protected void execute() {
         birdbeak.setIntake(0);
         birdbeak.setArm(false);
-        Timer.delay(0.5); // TODO: tune delay timing OR use sensor feedback, don't delay, use elapsed time
-        birdbeak.setBeak(true);
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
+            birdbeak.setBeak(true);
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
     }
 
     @Override

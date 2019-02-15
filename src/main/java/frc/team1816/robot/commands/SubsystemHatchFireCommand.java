@@ -8,27 +8,34 @@ import frc.team1816.robot.subsystems.Birdbeak;
 public class SubsystemHatchFireCommand extends Command {
     private Birdbeak birdbeak;
 
+    private double initTime;
+    private double elapsedDelayMs;
+
     public SubsystemHatchFireCommand() {
         super("subsystemhatchfirecommand");
         birdbeak = Components.getInstance().birdbeak;
+
+        elapsedDelayMs = 100;
 
         requires(birdbeak);
     }
 
     @Override
     protected void initialize() {
+        initTime = System.currentTimeMillis();
     }
 
     @Override
     protected void execute() {
         birdbeak.setPuncher(true);
-        Timer.delay(0.1); // TODO: tune delay timing, don't delay, use elapsed time
-        birdbeak.setBeak(true);
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
+            birdbeak.setBeak(true);
+        }
     } 
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
     }
 
     @Override

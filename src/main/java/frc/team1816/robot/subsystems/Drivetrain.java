@@ -24,7 +24,7 @@ import frc.team1816.robot.Robot;
 public class Drivetrain extends Subsystem implements Checkable {
     public static final String NAME = "drivetrain";
 
-    private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
+    private static final double SLOW_MOD_THROTTLE = 0.5;
     private static final double SLOW_MOD_ROT = 0.8;
 
     private static double TICKS_PER_REV;
@@ -77,7 +77,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isReverseMode;
     private boolean outputsChanged = false;
 
-    public Drivetrain() { // TODO: consider calls to periodic
+    public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.factory;
 
@@ -256,7 +256,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.leftPos = leftMain.getSelectedSensorPosition(0);
         this.rightPos = rightMain.getSelectedSensorPosition(0);
 
-        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0); // TODO: get proper pidIdx
+        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0);
         this.talonPositionRight = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
@@ -311,7 +311,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     protected void initDefaultCommand() {
-        // TODO: add commands here
     }
 
     @Override
