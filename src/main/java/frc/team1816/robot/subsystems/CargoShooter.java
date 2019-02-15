@@ -23,7 +23,6 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     private ArmPosition armPosition;
 
-    private double armPositionTicks;
     private double armPower;
     private double intakePower;
 
@@ -75,9 +74,8 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         /* Set the quadrature (relative) sensor to match absolute */
         this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
-        this.armPositionTicks = absolutePosition;
 
-        armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
+        armTalon.configOpenloopRamp(0, 0);
     }
 
     private void configureArmTalon() {

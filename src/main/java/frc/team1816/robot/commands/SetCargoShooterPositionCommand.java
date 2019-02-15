@@ -21,12 +21,7 @@ public class SetCargoShooterPositionCommand extends Command {
     @Override
     protected void execute() {
         System.out.println("Setting Shooter Position: " + position.toString());
-     //   if(collector.isArmDown()) {
-            shooter.setArmPosition(position); //TODO: check if collector arm is down/up before adjusting shooter position
-//        } else {
-//            shooter.setArmPosition(ArmPosition.UP);
-//        }
-
+            shooter.setArmPosition(position);
     }
 
     @Override

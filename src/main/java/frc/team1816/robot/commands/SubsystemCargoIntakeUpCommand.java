@@ -1,6 +1,5 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
@@ -36,9 +35,11 @@ public class SubsystemCargoIntakeUpCommand extends Command {
         collector.setIntake(0);
         shooter.setArmPosition(ArmPosition.UP);
         // Timer.delay(0.8);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()
+                && Math.abs(shooter.getArmPosition().getPos() - shooter.getArmEncoderPosition()) < 50) { // TODO: test
             collector.setArm(false);
         }
+
     }
 
     @Override

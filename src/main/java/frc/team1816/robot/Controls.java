@@ -90,7 +90,6 @@ public class Controls {
     }
 
     public double getShooterArmThrottle() {
-        //TODO: check collector arm state
         return gamepadOperator.getRightY();
     }
 
