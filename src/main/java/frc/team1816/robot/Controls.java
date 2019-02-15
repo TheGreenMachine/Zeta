@@ -61,6 +61,7 @@ public class Controls {
         // gamepadOperator.diamondRight().whenReleased(new SubsystemCargoIntakeUpCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand()); // TODO: testing only
         // gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
+        gamepadOperator.dPadUp().whenPressed(new SubsystemCargoIntakeRocketCommand());
         gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
 
         gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));

@@ -43,7 +43,7 @@ subsystems:
       kD: 1.0
       kF: 0
       maxPos: 9300
-      midPos: 6000
+      midPos: 8200
       minPos: 3800
 pcm: 17
 constants:
