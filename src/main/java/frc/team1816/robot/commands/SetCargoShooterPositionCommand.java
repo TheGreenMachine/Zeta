@@ -8,7 +8,6 @@ import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
 public class SetCargoShooterPositionCommand extends Command {
     private CargoShooter shooter;
-    private CargoCollector collector;
     private ArmPosition position;
 
     public SetCargoShooterPositionCommand(ArmPosition pos) {
@@ -32,8 +31,6 @@ public class SetCargoShooterPositionCommand extends Command {
     @Override
     protected void end() {
     }
-
-
 
     @Override
     protected void interrupted() {

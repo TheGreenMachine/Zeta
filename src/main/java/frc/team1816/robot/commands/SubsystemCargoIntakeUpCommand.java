@@ -39,7 +39,6 @@ public class SubsystemCargoIntakeUpCommand extends Command {
                 && Math.abs(shooter.getArmPosition().getPos() - shooter.getArmEncoderPosition()) < 50) { // TODO: test
             collector.setArm(false);
         }
-
     }
 
     @Override
