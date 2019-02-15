@@ -9,6 +9,7 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.Robot;
 
 @RunTest
@@ -19,7 +20,7 @@ public class Climber extends Subsystem implements Checkable {
     private IMotorController climbSlave;
 
     private DoubleSolenoid habPiston;
-    private DoubleSolenoid.Value habPistonState;
+    private DoubleSolenoid.Value habPistonState = Value.kOff;
 
     private double motorPower;
 
@@ -42,9 +43,17 @@ public class Climber extends Subsystem implements Checkable {
         periodic();
     }
 
-    public void setHabPiston(DoubleSolenoid.Value state) {
+    public void setHabPiston(Value state) {
         this.habPistonState = state;
         periodic();
+    }
+
+    public void toggleHabPiston() {
+        if(habPistonState == Value.kForward) {
+            habPistonState = Value.kReverse;
+        } else {
+            habPistonState = Value.kForward;
+        }
     }
 
     public String getHabPistonState() {
@@ -79,11 +88,11 @@ public class Climber extends Subsystem implements Checkable {
         Timer.delay(3);
         setClimberPower(0);
         Timer.delay(3);
-        setHabPiston(DoubleSolenoid.Value.kForward);
+        setHabPiston(Value.kForward);
         Timer.delay(3);
-        setHabPiston(DoubleSolenoid.Value.kReverse);
+        setHabPiston(Value.kReverse);
         Timer.delay(3);
-        setHabPiston(DoubleSolenoid.Value.kOff);
+        setHabPiston(Value.kOff);
         return true;
     }
 }

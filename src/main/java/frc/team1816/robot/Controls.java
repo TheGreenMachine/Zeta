@@ -6,6 +6,8 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.commands.*;
 
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class Controls {
         gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
         gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
-        gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
+        gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0)); // TODO: remove after testing concluded
         gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
         gamepadDriver.dPadDown().whenPressed(new SetClimberPowerCommand(-1.0));
         gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
@@ -67,6 +69,8 @@ public class Controls {
         gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0.0));
         gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(-1.0));
         gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
+
+        // gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand()); // TODO: wire
     }
 
     public double getDriveThrottle() {
