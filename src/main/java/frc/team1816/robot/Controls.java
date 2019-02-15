@@ -48,18 +48,17 @@ public class Controls {
         gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(false));
         gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
 
-        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); 
-        gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false)); // TODO: change to Subsytem commands
-
-        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeDownCommand()); // TODO: testing only for the time being
+        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); // TODO: temp, testing Subsystem commands
+        gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false));
+        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeDownCommand());
         gamepadOperator.dPadRight().whenReleased(new SubsystemHatchIntakeUpCommand());
 
-        gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0)); // TODO: confirm direction
+        gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0));
         gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
 
         gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
         // gamepadOperator.diamondRight().whenReleased(new SubsystemCargoIntakeUpCommand());
-        gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand()); // TODO: testing only
+        gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand()); // FIXME: toggle until encoder remounted
         // gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
         gamepadOperator.dPadUp().whenPressed(new SubsystemCargoIntakeRocketCommand());
         gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
