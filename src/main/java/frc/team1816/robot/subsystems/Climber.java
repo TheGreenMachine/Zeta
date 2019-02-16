@@ -32,7 +32,7 @@ public class Climber extends Subsystem implements Checkable {
 
         this.climbMaster = factory.getMotor(NAME, "climbMaster");
         this.climbSlave = factory.getMotor(NAME, "climbSlave", climbMaster);
-        // this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston"); // TODO: wire
+        this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston"); // TODO: wire
 
         this.climbSlave.setInverted(true);
     }
@@ -68,7 +68,7 @@ public class Climber extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             climbMaster.set(ControlMode.PercentOutput, motorPower);
-            // habPiston.set(habPistonState); // TODO: wire
+            habPiston.set(habPistonState); // TODO: wire
             outputsChanged = false;
         }
     }

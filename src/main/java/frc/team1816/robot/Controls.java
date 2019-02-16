@@ -69,7 +69,7 @@ public class Controls {
         gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(-1.0));
         gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
 
-        // gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand()); // TODO: wire
+        gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand()); // TODO: wire
     }
 
     public double getDriveThrottle() {
