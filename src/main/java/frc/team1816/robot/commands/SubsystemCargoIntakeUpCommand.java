@@ -18,7 +18,7 @@ public class SubsystemCargoIntakeUpCommand extends Command {
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
-        elapsedDelayMs = 800;
+        elapsedDelayMs = 1000;
 
         requires(collector);
         requires(shooter);
@@ -35,8 +35,7 @@ public class SubsystemCargoIntakeUpCommand extends Command {
         collector.setIntake(0);
         shooter.setArmPosition(ArmPosition.UP);
         // Timer.delay(0.8);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()
-                && Math.abs(shooter.getArmPosition().getPos() - shooter.getArmEncoderPosition()) < 50) { // TODO: test
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) { // TODO: test
             collector.setArm(false);
         }
     }

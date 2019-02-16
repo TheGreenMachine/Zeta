@@ -15,13 +15,14 @@ public class SubsystemHatchIntakeUpCommand extends Command {
         super("subsystemhatchintakeupcommand");
         birdbeak = Components.getInstance().birdbeak;
 
-        elapsedDelayMs = 300;
+        elapsedDelayMs = 1500;
 
         requires(birdbeak);
     }
 
     @Override
     protected void initialize() {
+        initTime = System.currentTimeMillis();
     }
 
     @Override
@@ -29,7 +30,7 @@ public class SubsystemHatchIntakeUpCommand extends Command {
         birdbeak.setIntake(0);
         birdbeak.setArm(false);
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
-            birdbeak.setBeak(true);
+            birdbeak.setBeak(false);
         }
     }
 

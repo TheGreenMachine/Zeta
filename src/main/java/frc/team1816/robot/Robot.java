@@ -55,7 +55,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        // drivetrain.setDefaultCommand(new DriveToHatchCommand(0.5));
+        if (climber != null) {
+            climber.setDefaultCommand(new GamepadClimbCommand());
+        }
+        if (drivetrain != null) {
+            drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        }
     }
 
     @Override
@@ -65,9 +70,6 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-        }
-        if (shooter != null) {
-            // shooter.setDefaultCommand(new GamepadShootCommand());
         }
     }
 

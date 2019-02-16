@@ -140,18 +140,18 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Left Meas %", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Left Meas Percent", BadLog.UNITLESS,
                 () -> this.leftMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Right Meas %", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Right Meas Percent", BadLog.UNITLESS,
                 () -> this.rightMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
         BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Angle", "deg", this::getGyroAngle);
-        BadLog.createTopic("Drivetrain/Left Set %", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
                 () -> getLeftPower(), "hide", "join:Drivetrain/Velocities");
-        BadLog.createTopic("Drivetrain/Right Set %", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
                 () -> getRightPower(), "hide", "join:Drivetrain/Velocities");
 
         // TODO: consider creating a BadLog topic for right and left talon inches?

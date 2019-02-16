@@ -42,7 +42,6 @@ public class GamepadClimbCommand extends Command {
     @Override
     protected void end() {
         climber.setClimberPower(0);
-        climber.setHabPiston(DoubleSolenoid.Value.kForward); // TODO: ensure not gripped when the match ends
     }
 
     @Override

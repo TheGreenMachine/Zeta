@@ -64,13 +64,11 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         this.intakeMotor.setInverted(true);
 
-        this.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
         configureArmTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
         int absolutePosition = getArmPositionAbsolute();
-        /* Mask out overflows, keep bottom 12 bits */
-        absolutePosition &= 0xFFF;
+
 
         /* Set the quadrature (relative) sensor to match absolute */
         this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
@@ -82,6 +80,10 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.setNeutralMode(NeutralMode.Brake);
         armTalon.setInverted(kMotorInverted);
         armTalon.setSensorPhase(kSensorPhase);
+        armTalon.enableCurrentLimit(true);
+        armTalon.configContinuousCurrentLimit(3,kTimeoutMs);
+        armTalon.configPeakCurrentLimit(5,kTimeoutMs);
+        armTalon.configPeakCurrentDuration(75, kTimeoutMs);
         armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
         /* Config the peak and nominal outputs, 12V means full */
@@ -142,7 +144,8 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public int getArmPositionAbsolute() {
-        return armTalon.getSensorCollection().getPulseWidthPosition();
+        /* Mask out overflows, keep bottom 12 bits */
+        return armTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
     }
 
     public double getArmEncoderPosition() {

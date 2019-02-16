@@ -7,7 +7,9 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.team1816.robot.commands.*;
+import frc.team1816.robot.subsystems.CargoShooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +35,18 @@ public class Controls {
 
         gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
 
+        gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
+        gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
         gamepadDriver.leftBumper().whenPressed(new SubsystemHatchFireCommand());
         gamepadDriver.leftBumper().whenReleased(new SubsystemHatchUnfireCommand());
 
         // gamepadDriver.rightTrigger().whenPressed(new ToggleCameraCommand());
         gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
         gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
+
+        gamepadDriver.diamondLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
+        gamepadDriver.diamondRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
+        gamepadDriver.diamondDown().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kOff));
 
         gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0)); // TODO: remove after testing concluded
         gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
@@ -49,10 +57,8 @@ public class Controls {
         gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(false));
         gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
 
-        gamepadOperator.dPadLeft().whenPressed(new SetBeakCollectorArmCommand(true)); // TODO: temp, testing Subsystem commands
-        gamepadOperator.dPadLeft().whenReleased(new SetBeakCollectorArmCommand(false));
-        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeDownCommand()); // TODO: test commands + timing
-        gamepadOperator.dPadRight().whenReleased(new SubsystemHatchIntakeUpCommand());
+        gamepadOperator.dPadLeft().whenPressed(new SubsystemHatchIntakeDownCommand());
+        gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeUpCommand());
 
         gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0));
         gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
@@ -61,7 +67,7 @@ public class Controls {
         // gamepadOperator.diamondRight().whenReleased(new SubsystemCargoIntakeUpCommand());
         gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand()); // FIXME: toggle until encoder remounted
         // gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
-        gamepadOperator.dPadUp().whenPressed(new SubsystemCargoIntakeRocketCommand());
+//        gamepadOperator.dPadUp().whenPressed(new SubsystemCargoIntakeRocketCommand());
         gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
 
         gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
