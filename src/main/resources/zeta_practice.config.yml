@@ -51,3 +51,4 @@ constants:
   ticksPerRev: 1025
   ticksPerIn: 50
   maxVel: 800
+  cheezyDrive: 0

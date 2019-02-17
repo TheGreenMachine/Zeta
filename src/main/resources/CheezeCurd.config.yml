@@ -6,6 +6,7 @@ subsystems:
       leftSlaveOne: -1
       rightMain: 2
       rightSlaveOne: -1
+    victors:
       rightSlaveTwo: -1
       leftSlaveTwo: -1
   climber:
@@ -37,16 +38,17 @@ subsystems:
       arm: 5
       intake: 10
     constants:
-      kP: 2.0
-      kI: .001
-      kD: 10.0
-      kF: 1.85
-      maxPos: 1475
-      midPos: 1195
-      minPos: 915
-pcm: 17
+      kP: 5.0
+      kI: 0
+      kD: 1.0
+      kF: 0
+      maxPos: 2100
+      midPos: 2100
+      minPos: 950
+pcm: -1
 constants:
-  wheelbase: 25
-  ticksPerRev: 1025
-  ticksPerIn: 50
+  wheelbase: 15.75
+  ticksPerRev: 960
+  ticksPerIn: 78
   maxVel: 800
+  cheezyDrive: 1
