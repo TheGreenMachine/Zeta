@@ -75,6 +75,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isPercentOut;
     private boolean isSlowMode;
     private boolean isReverseMode;
+    private boolean isVisionMode = false;
     private boolean outputsChanged = false;
 
     public Drivetrain() {
@@ -229,6 +230,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rotation = rotation;
         isPercentOut = true;
         outputsChanged = true;
+    }
+
+    public void setDrivetrainVisionNav(boolean visionOn) {
+        isVisionMode = visionOn;
+    }
+
+    public boolean getVisionStatus() {
+        return isVisionMode;
     }
 
     public void setSlowMode(boolean slowMode) {

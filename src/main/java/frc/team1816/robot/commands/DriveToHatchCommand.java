@@ -39,6 +39,8 @@ public class DriveToHatchCommand extends Command {
 
     @Override
     protected void initialize() {
+        drivetrain.setDrivetrainVisionNav(true);
+
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         table = inst.getTable("SmartDashboard");
         setupTableEntries();
@@ -59,6 +61,8 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = lateralError * kP;
 
+        System.out.println("x: " + xCoord + "\ty: " +"y: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
+
         if (Math.abs(lateralError) < ERROR_THRESHOLD) {
             if(lateralError > 0) {
                 rightPow = rightPow * control;
@@ -67,7 +71,8 @@ public class DriveToHatchCommand extends Command {
             }
         }
 
-        drivetrain.setDrivetrainVelocity(leftPow, rightPow);
+        System.out.println("L set pow: " + leftPow + "\tR set pow: " + rightPow);
+        drivetrain.setDrivetrainPercent(leftPow, rightPow);
     }
 
     @Override
@@ -77,6 +82,7 @@ public class DriveToHatchCommand extends Command {
 
     @Override
     protected void end() {
+        drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0,0);
     }
 

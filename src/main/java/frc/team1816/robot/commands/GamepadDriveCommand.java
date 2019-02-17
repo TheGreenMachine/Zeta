@@ -42,15 +42,15 @@ public class GamepadDriveCommand extends Command {
 
             prevPowLeft = leftPow;
             prevPowRight = rightPow;
-        } else { //  Cheesy Drive
+        } else { // Cheesy Drive
             boolean quickTurn = Controls.getInstance().getQuickTurn();
             var signal = mCheesyDriveHelper.cheesyDrive(leftPow, rotation, quickTurn, false);
             leftPow = signal.getLeft();
             rightPow = signal.getRight();
-            rotation = 0;  // CheezyDrive takes care of rotation so set to 0 to keep or code from adjusting
+            rotation = 0; // CheezyDrive takes care of rotation so set to 0 to keep or code from adjusting
         }
 
-        drivetrain.setDrivetrainPercent(leftPow, rightPow, rotation);
+        drivetrain.setDrivetrainPercent(leftPow, rightPow, rotation); // TODO: possibly check vision status tag, if necessary
     }
 
     @Override
@@ -60,7 +60,7 @@ public class GamepadDriveCommand extends Command {
 
     @Override
     protected void end() {
-        drivetrain.setDrivetrainPercent(0,0);
+        drivetrain.setDrivetrainPercent(0, 0);
     }
 
     @Override
