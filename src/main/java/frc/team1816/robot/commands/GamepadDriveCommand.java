@@ -34,7 +34,7 @@ public class GamepadDriveCommand extends Command {
         double rightPow = leftPow;
         double rotation = Controls.getInstance().getDriveTurn();
 
-        if (factory.getConstant("cheezyDrive") == 0) {
+        if (factory.getConstant("cheezyDrive") == 0) { // Arcade Drive
             if (rotation == 0 || leftPow != 0) {
                 leftPow = limitAcceleration(leftPow, prevPowLeft);
                 rightPow = limitAcceleration(rightPow, prevPowRight);
@@ -42,7 +42,7 @@ public class GamepadDriveCommand extends Command {
 
             prevPowLeft = leftPow;
             prevPowRight = rightPow;
-        } else {
+        } else { //  Cheesy Drive
             boolean quickTurn = Controls.getInstance().getQuickTurn();
             var signal = mCheesyDriveHelper.cheesyDrive(leftPow, rotation, quickTurn, false);
             leftPow = signal.getLeft();

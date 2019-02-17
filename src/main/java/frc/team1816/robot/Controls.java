@@ -105,7 +105,7 @@ public class Controls {
     }
 
     public boolean getQuickTurn() {
-        return gamepadDriver.diamondUp().get();
+        return gamepadDriver.diamondDown().get();
     }
 
     public double getClimbThrottle() {
