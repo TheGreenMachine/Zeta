@@ -26,8 +26,8 @@ public class CargoShooter extends Subsystem implements Checkable {
     private double armPower;
     private double intakePower;
 
-    private static final boolean kSensorPhase = false;
-    private static final boolean kMotorInverted = false;
+    private static final boolean kSensorPhase = true; // these two booleans should always match
+    private static final boolean kMotorInverted = true;
 
     // TODO: Measure true min and max
     public static final int ARM_POSITION_MIN = Robot.factory.getConstant(NAME, "minPos").intValue();
@@ -73,7 +73,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         /* Set the quadrature (relative) sensor to match absolute */
         this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
-        armTalon.configOpenloopRamp(0, 0);
+        armTalon.configOpenloopRamp(0.25, 0);
     }
 
     private void configureArmTalon() {
@@ -117,9 +117,9 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MIN), 
+        DOWN(ARM_POSITION_MAX), 
         ROCKET(ARM_POSITION_MID), 
-        UP(ARM_POSITION_MAX);
+        UP(ARM_POSITION_MIN);
 
         private double armPos;
 

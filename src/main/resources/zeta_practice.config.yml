@@ -38,13 +38,13 @@ subsystems:
       arm: 5
       intake: 10
     constants:
-      kP: 5.0
+      kP: 2.5
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 2100
-      midPos: 2100
-      minPos: 950
+      maxPos: 2900
+      midPos: 2900
+      minPos: 1900
 pcm: 17
 constants:
   wheelbase: 25
