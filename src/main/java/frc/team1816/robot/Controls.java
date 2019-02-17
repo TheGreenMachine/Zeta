@@ -104,6 +104,10 @@ public class Controls {
         return gamepadDriver.getRightX();
     }
 
+    public boolean getQuickTurn() {
+        return gamepadDriver.diamondUp().get();
+    }
+
     public double getClimbThrottle() {
         return gamepadOperator.getLeftY();
     }

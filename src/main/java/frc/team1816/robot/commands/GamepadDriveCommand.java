@@ -42,9 +42,9 @@ public class GamepadDriveCommand extends Command {
 
             prevPowLeft = leftPow;
             prevPowRight = rightPow;
-        }else {
-            // TODO map quick turn to button?
-            var signal = mCheesyDriveHelper.cheesyDrive(leftPow, rotation, false, false);
+        } else {
+            boolean quickTurn = Controls.getInstance().getQuickTurn();
+            var signal = mCheesyDriveHelper.cheesyDrive(leftPow, rotation, quickTurn, false);
             leftPow = signal.getLeft();
             rightPow = signal.getRight();
             rotation = 0;  // CheezyDrive takes care of rotation so set to 0 to keep or code from adjusting
