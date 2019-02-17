@@ -22,6 +22,7 @@ public class SubsystemHatchIntakeUpCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("SUBSYSTEM Hatch Intake Up");
         initTime = System.currentTimeMillis();
     }
 

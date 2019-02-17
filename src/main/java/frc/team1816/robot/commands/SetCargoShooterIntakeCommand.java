@@ -16,6 +16,10 @@ public class SetCargoShooterIntakeCommand extends Command {
     }
 
     @Override
+    protected void initialize() {
+        System.out.println("Setting Shooter Intake: " + power);
+    }
+    @Override
     protected void execute() {
         shooter.setIntake(power);
     }

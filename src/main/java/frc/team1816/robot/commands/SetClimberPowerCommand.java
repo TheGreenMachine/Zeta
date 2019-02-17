@@ -16,6 +16,11 @@ public class SetClimberPowerCommand extends Command {
     }
 
     @Override
+    protected void initialize() {
+        System.out.println("Setting Climber Power: " + power);
+    }
+
+    @Override
     protected void execute() {
         climber.setClimberPower(power);
     }

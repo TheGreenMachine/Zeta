@@ -17,6 +17,10 @@ public class SetClimberPistonCommand extends Command {
     }
 
     @Override
+    protected void initialize() {
+        System.out.println("Setting Climber Piston: " + value.toString());
+    }
+    @Override
     protected void execute() {
         climber.setHabPiston(value);
     }

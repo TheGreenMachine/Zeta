@@ -20,6 +20,7 @@ public class SubsystemCargoIntakeResetCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("SUBSYSTEM Reset Cargo Intake");
     }
 
     @Override

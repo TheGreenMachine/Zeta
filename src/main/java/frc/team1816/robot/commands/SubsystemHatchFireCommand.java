@@ -22,6 +22,7 @@ public class SubsystemHatchFireCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("Firing Hatch");
         initTime = System.currentTimeMillis();
     }
 

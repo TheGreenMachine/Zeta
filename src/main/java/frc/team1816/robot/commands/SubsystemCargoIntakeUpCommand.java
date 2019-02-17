@@ -26,6 +26,7 @@ public class SubsystemCargoIntakeUpCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("SUBSYSTEM Cargo Intake Up");
         initTime = System.currentTimeMillis();
     }
 

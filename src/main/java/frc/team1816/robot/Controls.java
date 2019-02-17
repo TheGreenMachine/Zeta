@@ -63,7 +63,7 @@ public class Controls {
         if(factory.isImplemented(CargoCollector.NAME)){
             gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
             // gamepadOperator.diamondRight().whenReleased(new SubsystemCargoIntakeUpCommand());
-            gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand()); // FIXME: toggle until encoder remounted
+            gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
             // gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
             // gamepadOperator.dPadUp().whenPressed(new SubsystemCargoIntakeRocketCommand());
             gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
@@ -86,12 +86,12 @@ public class Controls {
             gamepadDriver.diamondRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
             gamepadDriver.diamondDown().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kOff));
 
-            gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0)); // TODO: remove after testing concluded
+            gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
             gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
             gamepadDriver.dPadDown().whenPressed(new SetClimberPowerCommand(-1.0));
             gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
 
-            gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand()); // TODO: wire
+            gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand());
         }
 
     }
