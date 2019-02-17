@@ -2,6 +2,7 @@ package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
@@ -16,8 +17,8 @@ import frc.team1816.robot.Robot;
 public class Climber extends Subsystem implements Checkable {
     public static final String NAME = "climber";
 
-    private IMotorController climbMaster;
-    private IMotorController climbSlave;
+    private IMotorControllerEnhanced climbMaster;
+    private IMotorControllerEnhanced climbSlave;
 
     private DoubleSolenoid habPiston;
     private DoubleSolenoid.Value habPistonState = Value.kOff;
@@ -26,26 +27,31 @@ public class Climber extends Subsystem implements Checkable {
 
     private boolean outputsChanged = false;
 
+    private static final int kTimeoutMs = 100;
+
     public Climber() {
         super(NAME);
         RobotFactory factory = Robot.factory;
 
-        this.climbMaster = factory.getMotor(NAME, "climbMaster");
-        this.climbSlave = factory.getMotor(NAME, "climbSlave", climbMaster);
-        this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston"); // TODO: wire
+        this.climbMaster = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbMaster");
+        this.climbSlave = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbSlave", climbMaster);
+        this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
 
         this.climbSlave.setInverted(true);
+
+        this.climbMaster.enableCurrentLimit(true);
+        this.climbMaster.configContinuousCurrentLimit(30, kTimeoutMs);
+        this.climbMaster.configPeakCurrentLimit(35, kTimeoutMs);
+        this.climbMaster.configPeakCurrentDuration(500, kTimeoutMs);
     }
 
     public void setClimberPower(double motorPow) {
         this.motorPower = motorPow;
         outputsChanged = true;
-        periodic();
     }
 
     public void setHabPiston(Value state) {
         this.habPistonState = state;
-        periodic();
     }
 
     public void toggleHabPiston() {
