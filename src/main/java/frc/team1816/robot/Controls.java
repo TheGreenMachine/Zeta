@@ -69,8 +69,6 @@ public class Controls {
             gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
         }
 
-        // gamepadDriver.rightTrigger().whenPressed(new ToggleCameraCommand());
-
         if(factory.isImplemented(CargoShooter.NAME)) {
             gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
             gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
@@ -94,6 +92,9 @@ public class Controls {
             gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand());
         }
 
+        // gamepadDriver.diamondLeft().whenPressed(new ToggleCameraCommand());
+        gamepadDriver.rightTrigger().whenPressed(new SetSlowModeCommand(true));
+        gamepadDriver.rightTrigger().whenReleased(new SetSlowModeCommand(false));
     }
 
     public double getDriveThrottle() {
