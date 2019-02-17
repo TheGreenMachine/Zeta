@@ -62,7 +62,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.kD = factory.getConstant(NAME, "kD");
         this.kF = factory.getConstant(NAME, "kF");
 
-        this.intakeMotor.setInverted(true);
+        this.intakeMotor.setInverted(false);
 
         configureArmTalon();
 
