@@ -19,13 +19,13 @@ subsystems:
         forward: 5
         reverse: 6
   cargocollector:
-    implemented: false
+    implemented: true
     talons:
       intake: 11
     solenoids:
       arm: 2
   birdbeak:
-    implemented: false
+    implemented: true
     talons:
       hatchIntake: 4
     solenoids:
@@ -33,7 +33,7 @@ subsystems:
       puncher: 3
       arm: 4
   cargoshooter:
-    implemented: false
+    implemented: true
     talons:
       arm: 5
       intake: 10
@@ -54,3 +54,4 @@ constants:
   ticksPerRev: 1025
   ticksPerIn: 50
   maxVel: 800
+  cheezyDrive: 0
