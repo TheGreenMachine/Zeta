@@ -324,15 +324,9 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
-        System.out.println("Warning: mechanisms will move!");
-        Timer.delay(3);
-        setDrivetrainPercent(0.25, 0.25);
-        Timer.delay(3);
-        setDrivetrainPercent(0, 0);
-        Timer.delay(0.5);
-        setDrivetrainPercent(-0.25, -0.25);
-        Timer.delay(3);
-        setDrivetrainPercent(0, 0);
+        // System.out.println("Warning: mechanisms will move!");
+        // Timer.delay(3);
+
         return true;
     }
 }

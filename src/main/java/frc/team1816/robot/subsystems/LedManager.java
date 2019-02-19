@@ -28,23 +28,25 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public void setLedColor(int r, int g, int b) {
-        this.ledR = r;
-        this.ledG = g;
-        this.ledB = b;
-        outputsChanged = true;
+        if (this.ledR != r || this.ledG != g || this.ledB != b) {
+            this.ledR = r;
+            this.ledG = g;
+            this.ledB = b;
+            outputsChanged = true;
+        }
     }
 
     public void indicateStatus(RobotStatus status) {
-        System.out.println("Robot Status: " + status.name());
         setLedColor(status.getRed(), status.getGreen(), status.getBlue());
     }
 
     @Override
     public void periodic() {
         if (outputsChanged) {
-            canifier.setLEDOutput(ledB, CANifier.LEDChannel.LEDChannelA);
-            canifier.setLEDOutput(ledG, CANifier.LEDChannel.LEDChannelB);
+            System.out.println("Set LEDs: (" + ledR + "," + ledG + "," + ledB + ")");
+            canifier.setLEDOutput(ledG, CANifier.LEDChannel.LEDChannelA);
             canifier.setLEDOutput(ledR, CANifier.LEDChannel.LEDChannelB);
+            canifier.setLEDOutput(ledB, CANifier.LEDChannel.LEDChannelC);
             outputsChanged = false;
         }
     }
@@ -56,25 +58,30 @@ public class LedManager extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
+        System.out.println("Warning: checking LED systems");
+        Timer.delay(3);
+
         setLedColor(255, 0, 0);
         periodic();
-        Timer.delay(1); // TODO: Best way to delay?
+        Timer.delay(0.4);
         setLedColor(0, 255, 0);
         periodic();
-        Timer.delay(1);
+        Timer.delay(0.4);
         setLedColor(0, 0, 255);
         periodic();
-        Timer.delay(1);
-        setLedColor(0,0,0);
+        Timer.delay(0.4);
+        setLedColor(0, 0, 0);
         periodic();
+
         return true;
     }
 
     public enum RobotStatus {
-        RUNNING(0, 0, 255),
-        SUCCESS(0, 255, 0),
-        FAILURE(255, 0, 0),
-        WARNING(255, 128, 0);
+        RUNNING(0, 0, 255), 
+        ENABLED(0, 255, 0), 
+        ERROR(255, 0, 0), 
+        DISABLED(255, 128, 0), 
+        OFF(0, 0, 0);
 
         int red;
         int green;
@@ -86,8 +93,16 @@ public class LedManager extends Subsystem implements Checkable {
             this.blue = b;
         }
 
-        public int getRed() { return red; }
-        public int getGreen() { return green; }
-        public int getBlue() { return blue; }
+        public int getRed() {
+            return red;
+        }
+
+        public int getGreen() {
+            return green;
+        }
+
+        public int getBlue() {
+            return blue;
+        }
     }
 }

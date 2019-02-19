@@ -29,7 +29,6 @@ public class CargoShooter extends Subsystem implements Checkable {
     private static final boolean kSensorPhase = true; // these two booleans should always match
     private static final boolean kMotorInverted = true;
 
-    // TODO: Measure true min and max
     public static final int ARM_POSITION_MIN = Robot.factory.getConstant(NAME, "minPos").intValue();
     public static final int ARM_POSITION_MID = Robot.factory.getConstant(NAME, "midPos").intValue();
     public static final int ARM_POSITION_MAX = Robot.factory.getConstant(NAME, "maxPos").intValue();
@@ -225,15 +224,12 @@ public class CargoShooter extends Subsystem implements Checkable {
     @Override
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
-        setArmPosition(ArmPosition.DOWN);
-        Timer.delay(5);
-        setArmPosition(ArmPosition.UP);
-        Timer.delay(5);
-        setIntake(1);
-        Timer.delay(5);
+        Timer.delay(3);
+        
+        setIntake(1.0);
+        Timer.delay(0.5);
         setIntake(0);
-        Timer.delay(5);
-        setArmPosition(ArmPosition.DOWN);
+
         return true;
     }
 }

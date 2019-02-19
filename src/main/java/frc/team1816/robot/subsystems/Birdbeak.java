@@ -97,25 +97,17 @@ public class Birdbeak extends Subsystem implements Checkable {
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
         Timer.delay(3);
-        setIntake(0.5);
-        Timer.delay(3);
-        setIntake(0);
-        Timer.delay(0.5);
-        setIntake(-0.5);
-        Timer.delay(3);
-        setIntake(0);
-        Timer.delay(0.5);
+
         setBeak(true);
-        Timer.delay(3);
-        setBeak(false);
-        Timer.delay(3);
         setPuncher(true);
-        Timer.delay(3);
+        Timer.delay(0.5);
+        setBeak(false);
         setPuncher(false);
-        Timer.delay(3);
-        setArm(true);
-        Timer.delay(3);
-        setArm(false);
+        
+        setIntake(1.0);
+        Timer.delay(0.5);
+        setIntake(0);
+
         return true;
     }
 }
