@@ -15,7 +15,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.team1816.robot.Robot;
@@ -322,8 +321,6 @@ public class Drivetrain extends Subsystem implements Checkable {
     @Override
     public boolean check() throws CheckFailException {
         // System.out.println("Warning: mechanisms will move!");
-        // Timer.delay(3);
-
         return true;
     }
 }

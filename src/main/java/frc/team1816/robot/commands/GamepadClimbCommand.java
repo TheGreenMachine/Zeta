@@ -1,7 +1,6 @@
 package frc.team1816.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.Climber;

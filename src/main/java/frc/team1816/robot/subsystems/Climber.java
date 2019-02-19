@@ -1,7 +1,6 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;

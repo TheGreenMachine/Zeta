@@ -77,7 +77,8 @@ public class DriveToHatchCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return (deltaDist > 0 && deltaDist < DIST_THRESHOLD);
+        // return (deltaDist > 0 && deltaDist < DIST_THRESHOLD);
+        return false;
     }
 
     @Override
