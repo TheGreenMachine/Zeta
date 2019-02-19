@@ -12,6 +12,8 @@ import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.LedManager;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
+import java.util.Arrays;
+
 public class BlinkLedCommand extends Command {
     private LedManager leds;
 
@@ -38,8 +40,7 @@ public class BlinkLedCommand extends Command {
     @Override
     protected void execute() {
         int[] setColor = leds.getLedRgbBlink();
-        if (setColor[0] != color[0] || setColor[1] != color[1] || setColor[2] != color[2]) {
-            System.out.println("Blinking: (" + color[0] + "," + color[1] + "," + color[2] +")");
+        if (!Arrays.equals(setColor, color)) {
             color = setColor;
         }
 
