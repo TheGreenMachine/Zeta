@@ -24,12 +24,12 @@ public class BlinkLedCommand extends Command {
 
     @Override
     protected void initialize() {
-        color = leds.getLedRGB();
+        color = leds.getLedRgbBlink();
     }
 
     @Override
     protected void execute() {
-        int[] setColor = leds.getLedRGB();
+        int[] setColor = leds.getLedRgbBlink();
         if (!setColor.equals(color)) {
             color = setColor;
         }

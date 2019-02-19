@@ -56,7 +56,7 @@ public class LedManager extends Subsystem implements Checkable {
         this.ledBlinkB = status.getBlue();
     }
 
-    public int[] getLedRGBBlink() {
+    public int[] getLedRgbBlink() {
         int[] rgb = {ledBlinkR, ledBlinkG, ledBlinkB};
         return rgb;
     }
