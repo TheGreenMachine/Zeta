@@ -19,6 +19,10 @@ public class LedManager extends Subsystem implements Checkable {
     private int ledG;
     private int ledB;
 
+    private int ledBlinkR;
+    private int ledBlinkG;
+    private int ledBlinkB;
+
     public LedManager() {
         super(NAME);
         this.canifier = Robot.factory.getCanifier(NAME);
@@ -36,8 +40,25 @@ public class LedManager extends Subsystem implements Checkable {
         }
     }
 
+    public void setLedColorBlink(int r, int g, int b) {
+        this.ledBlinkR = r;
+        this.ledBlinkG = g;
+        this.ledBlinkB = b;
+    }
+
     public void indicateStatus(RobotStatus status) {
         setLedColor(status.getRed(), status.getGreen(), status.getBlue());
+    }
+
+    public void blinkStatus(RobotStatus status) {
+        this.ledBlinkR = status.getRed();
+        this.ledBlinkG = status.getGreen();
+        this.ledBlinkB = status.getBlue();
+    }
+
+    public int[] getLedRGBBlink() {
+        int[] rgb = {ledBlinkR, ledBlinkG, ledBlinkB};
+        return rgb;
     }
 
     @Override

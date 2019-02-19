@@ -45,9 +45,6 @@ public class DriveToHatchCommand extends Command {
         table = inst.getTable("SmartDashboard");
         setupTableEntries();
 
-        width = widthEntry.getDouble(640);
-        height = widthEntry.getDouble(480);
-
         updateCoordData();
 
         drivetrain.enableBrakeMode();
@@ -62,6 +59,7 @@ public class DriveToHatchCommand extends Command {
         double control = lateralError * kP;
 
         System.out.println("x: " + xCoord + "\ty: " +"y: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("Distance to target: " + deltaDist);
 
         if (Math.abs(lateralError) < ERROR_THRESHOLD) {
             if(lateralError > 0) {
@@ -98,6 +96,9 @@ public class DriveToHatchCommand extends Command {
         widthEntry = table.getEntry("width");
         heightEntry = table.getEntry("height");
         distanceEntry = table.getEntry("distance_esti");
+
+        width = widthEntry.getDouble(640);
+        height = widthEntry.getDouble(480);
     }
 
     private void updateCoordData() {

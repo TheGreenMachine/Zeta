@@ -6,6 +6,7 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1816.robot.commands.BlinkLedCommand;
 import frc.team1816.robot.commands.DriveToHatchCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
@@ -51,6 +52,8 @@ public class Robot extends TimedRobot {
         shooter = Components.getInstance().shooter;
 
         logger.finishInitialization();
+
+        leds.setDefaultCommand(new BlinkLedCommand(0.5));
     }
 
     @Override
@@ -87,20 +90,20 @@ public class Robot extends TimedRobot {
         if(shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
             leds.indicateStatus(RobotStatus.ERROR);
         } else {
-            leds.indicateStatus(RobotStatus.DISABLED);
+            leds.blinkStatus(RobotStatus.DISABLED);
         }
         periodic();
     }
 
     @Override
     public void autonomousPeriodic() {
-        leds.indicateStatus(RobotStatus.ENABLED);
+        leds.blinkStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     @Override
     public void teleopPeriodic() {
-        leds.indicateStatus(RobotStatus.ENABLED);
+        leds.blinkStatus(RobotStatus.ENABLED);
         periodic();
     }
 
