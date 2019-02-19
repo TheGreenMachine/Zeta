@@ -29,7 +29,8 @@ public class Robot extends TimedRobot {
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
     public Robot() {
-        super(.04); // set loop timeout (s)
+        // set the loop timeout in seconds
+        super(.04); // TODO: change back to default
     }
     
     @Override
