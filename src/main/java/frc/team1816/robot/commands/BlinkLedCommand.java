@@ -16,31 +16,38 @@ public class BlinkLedCommand extends Command {
     private LedManager leds;
 
     private double period;
+    private double prevTime;
     private int[] color;
 
     public BlinkLedCommand(double blinkRateS) {
         leds = Components.getInstance().ledManager;
         this.period = blinkRateS;
+
+        setRunWhenDisabled(true);
+
         requires(leds);
     }
 
     @Override
     protected void initialize() {
         System.out.println("Starting LED Blinker Command");
+        prevTime = timeSinceInitialized();
         color = leds.getLedRgbBlink();
     }
 
     @Override
     protected void execute() {
         int[] setColor = leds.getLedRgbBlink();
-        if (!setColor.equals(color)) {
+        if (setColor[0] != color[0] || setColor[1] != color[1] || setColor[2] != color[2]) {
+            System.out.println("Blinking: (" + color[0] + "," + color[1] + "," + color[2] +")");
             color = setColor;
         }
 
-        if(timeSinceInitialized() % period == 0 && leds.getBlinkMode()) {
+        if (timeSinceInitialized() - prevTime > period && leds.getBlinkMode()) {
+            prevTime = timeSinceInitialized();
             leds.setLedColor(color[0], color[1], color[2]);
-        } else {
-            leds.setLedColor(0,0,0);
+        } else if (timeSinceInitialized() - prevTime > period / 2) {
+            leds.setLedColor(0, 0, 0);
         }
     }
 

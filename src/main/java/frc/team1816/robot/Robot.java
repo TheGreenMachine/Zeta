@@ -52,13 +52,14 @@ public class Robot extends TimedRobot {
         shooter = Components.getInstance().shooter;
 
         logger.finishInitialization();
+
+        if (leds != null) {
+            leds.setDefaultCommand(new BlinkLedCommand(2));
+        }
     }
 
     @Override
     public void disabledInit() {
-        if (leds != null) {
-            leds.setDefaultCommand(new BlinkLedCommand(0.5));
-        }
     }
 
     @Override
@@ -68,9 +69,6 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-        }
-        if (leds != null) {
-            leds.setDefaultCommand(new BlinkLedCommand(0.5));
         }
     }
 
@@ -82,9 +80,6 @@ public class Robot extends TimedRobot {
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
         }
-        if (leds != null) {
-            leds.setDefaultCommand(new BlinkLedCommand(0.5));
-        }
     }
 
     @Override
@@ -95,9 +90,9 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
-            leds.indicateStatus(RobotStatus.ERROR);
+            leds.blinkStatus(RobotStatus.ERROR);
         } else {
-            leds.indicateStatus(RobotStatus.DISABLED);
+            leds.blinkStatus(RobotStatus.DISABLED);
         }
         periodic();
     }
