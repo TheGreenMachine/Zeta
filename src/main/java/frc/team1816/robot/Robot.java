@@ -10,6 +10,7 @@ import frc.team1816.robot.commands.DriveToHatchCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.subsystems.*;
+import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class Robot extends TimedRobot {
     public Climber climber;
     public CargoCollector collector;
     public Drivetrain drivetrain;
+    public LedManager leds;
     public CargoShooter shooter;
 
     public static final RobotFactory factory = new RobotFactory(
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
         climber = Components.getInstance().climber;
         collector = Components.getInstance().collector;
         drivetrain = Components.getInstance().drivetrain;
+        leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
         logger.finishInitialization();
@@ -80,31 +83,38 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        if(shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
+            leds.indicateStatus(RobotStatus.ERROR);
+        } else {
+            leds.indicateStatus(RobotStatus.DISABLED);
+        }
         periodic();
     }
 
     @Override
     public void autonomousPeriodic() {
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     @Override
     public void teleopPeriodic() {
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     @Override
     public void testPeriodic() {
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     private void periodic() {
-     //   System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
 
-         logger.updateTopics();
-         if (!DriverStation.getInstance().isDisabled()) {
-             logger.log();
+        if (!DriverStation.getInstance().isDisabled()) {
+            logger.updateTopics();
+            logger.log();
          }
     }
 
