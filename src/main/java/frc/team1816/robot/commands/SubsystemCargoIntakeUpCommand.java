@@ -26,17 +26,16 @@ public class SubsystemCargoIntakeUpCommand extends Command {
 
     @Override
     protected void initialize() {
-        System.out.println("SUBSYSTEM Cargo Intake Up");
+        System.out.println("SUBSYSTEM Cargo Intake To Bay");
         initTime = System.currentTimeMillis();
     }
 
     @Override
     protected void execute() {
-        shooter.setIntake(0);
-        collector.setIntake(0);
+        shooter.setIntake(0.0);
+        collector.setIntake(0.0);
         shooter.setArmPosition(ArmPosition.UP);
-        // Timer.delay(0.8);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) { // TODO: test
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
             collector.setArm(false);
         }
     }

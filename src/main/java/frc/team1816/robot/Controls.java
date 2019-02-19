@@ -61,11 +61,10 @@ public class Controls {
         }
 
         if(factory.isImplemented(CargoCollector.NAME)){
-            gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeDownCommand());
-            // gamepadOperator.diamondRight().whenReleased(new SubsystemCargoIntakeUpCommand());
-            gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeUpCommand());
-            // gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
-            // gamepadOperator.dPadUp().whenPressed(new SubsystemCargoIntakeRocketCommand());
+            gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeDownCommand());
+            gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
+            gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeUpCommand());
+
             gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
         }
 
@@ -88,13 +87,11 @@ public class Controls {
             gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
             gamepadDriver.dPadDown().whenPressed(new SetClimberPowerCommand(-1.0));
             gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
-
-            gamepadOperator.leftBumper().whenPressed(new ToggleClimberPistonCommand());
         }
 
         // gamepadDriver.diamondLeft().whenPressed(new ToggleCameraCommand());
-        gamepadDriver.rightTrigger().whenPressed(new SetSlowModeCommand(true));
-        gamepadDriver.rightTrigger().whenReleased(new SetSlowModeCommand(false));
+        gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
+        gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
     }
 
     public double getDriveThrottle() {
@@ -123,11 +120,6 @@ public class Controls {
 
     public double getShooterArmThrottle() {
         return gamepadOperator.getRightY();
-    }
-
-
-    public boolean getOperatorLeftTrigger() {
-        return gamepadOperator.leftTrigger().get();
     }
 
     public boolean getOperatorRightTrigger() {

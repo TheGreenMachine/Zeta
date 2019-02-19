@@ -35,8 +35,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
         collector.setArm(true);
         collector.setIntake(-1.0);
         shooter.setIntake(-1.0);
-        // Timer.delay(0.8);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.getArmPistonState()) { // TODO: test
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.getArmPistonState()) {
             shooter.setArmPosition(ArmPosition.DOWN);
         }
     }
