@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
         // set the loop timeout in seconds
         super(.04); // TODO: change back to default
     }
-    
+
     @Override
     public void robotInit() {
         System.out.println("Initializing robot!");
@@ -52,12 +52,13 @@ public class Robot extends TimedRobot {
         shooter = Components.getInstance().shooter;
 
         logger.finishInitialization();
-
-        leds.setDefaultCommand(new BlinkLedCommand(0.5));
     }
 
     @Override
     public void disabledInit() {
+        if (leds != null) {
+            leds.setDefaultCommand(new BlinkLedCommand(0.5));
+        }
     }
 
     @Override
@@ -67,6 +68,9 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        }
+        if (leds != null) {
+            leds.setDefaultCommand(new BlinkLedCommand(0.5));
         }
     }
 
@@ -78,6 +82,9 @@ public class Robot extends TimedRobot {
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
         }
+        if (leds != null) {
+            leds.setDefaultCommand(new BlinkLedCommand(0.5));
+        }
     }
 
     @Override
@@ -87,23 +94,23 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        if(shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
+        if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
             leds.indicateStatus(RobotStatus.ERROR);
         } else {
-            leds.blinkStatus(RobotStatus.DISABLED);
+            leds.indicateStatus(RobotStatus.DISABLED);
         }
         periodic();
     }
 
     @Override
     public void autonomousPeriodic() {
-        leds.blinkStatus(RobotStatus.ENABLED);
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     @Override
     public void teleopPeriodic() {
-        leds.blinkStatus(RobotStatus.ENABLED);
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
@@ -119,7 +126,7 @@ public class Robot extends TimedRobot {
         if (!DriverStation.getInstance().isDisabled()) {
             logger.updateTopics();
             logger.log();
-         }
+        }
     }
 
     private void initLog() {

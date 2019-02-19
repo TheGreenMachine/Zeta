@@ -8,6 +8,7 @@
 package frc.team1816.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.LedManager;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
@@ -18,12 +19,14 @@ public class BlinkLedCommand extends Command {
     private int[] color;
 
     public BlinkLedCommand(double blinkRateS) {
+        leds = Components.getInstance().ledManager;
         this.period = blinkRateS;
         requires(leds);
     }
 
     @Override
     protected void initialize() {
+        System.out.println("Starting LED Blinker Command");
         color = leds.getLedRgbBlink();
     }
 
@@ -34,7 +37,7 @@ public class BlinkLedCommand extends Command {
             color = setColor;
         }
 
-        if(timeSinceInitialized() % period == 0) {
+        if(timeSinceInitialized() % period == 0 && leds.getBlinkMode()) {
             leds.setLedColor(color[0], color[1], color[2]);
         } else {
             leds.setLedColor(0,0,0);

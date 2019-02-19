@@ -43,7 +43,7 @@ subsystems:
       kD: 1.0
       kF: 0
       maxPos: 2300
-      midPos: 2400
+      midPos: 1400
       minPos: 1300
   ledmanager:
     implemented: true

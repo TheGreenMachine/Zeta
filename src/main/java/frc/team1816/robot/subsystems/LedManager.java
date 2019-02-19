@@ -13,6 +13,8 @@ public class LedManager extends Subsystem implements Checkable {
     public static final String NAME = "ledmanager";
 
     private CANifier canifier;
+    
+    private boolean blinkMode;
     private boolean outputsChanged = true;
 
     private int ledR;
@@ -41,16 +43,19 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public void setLedColorBlink(int r, int g, int b) {
+        blinkMode = true;
         this.ledBlinkR = r;
         this.ledBlinkG = g;
         this.ledBlinkB = b;
     }
 
     public void indicateStatus(RobotStatus status) {
+        blinkMode = false;
         setLedColor(status.getRed(), status.getGreen(), status.getBlue());
     }
 
     public void blinkStatus(RobotStatus status) {
+        blinkMode = true;
         this.ledBlinkR = status.getRed();
         this.ledBlinkG = status.getGreen();
         this.ledBlinkB = status.getBlue();
@@ -59,6 +64,10 @@ public class LedManager extends Subsystem implements Checkable {
     public int[] getLedRgbBlink() {
         int[] rgb = {ledBlinkR, ledBlinkG, ledBlinkB};
         return rgb;
+    }
+
+    public boolean getBlinkMode() {
+        return blinkMode;
     }
 
     @Override
