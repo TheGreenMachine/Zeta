@@ -2,11 +2,11 @@ package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.IMotorController;
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,7 @@ public class RobotFactory {
 
     public RobotFactory(String configName) {
         Yaml yaml = new Yaml(new Constructor(YamlConfiguration.class));
+        yaml.setBeanAccess(BeanAccess.FIELD);
         config = yaml.load(
             this.getClass()
                 .getClassLoader()
@@ -26,40 +27,6 @@ public class RobotFactory {
 
     public boolean isImplemented(String subsystem) {
         return (getSubsystem(subsystem) != null) && (getSubsystem(subsystem).implemented);
-    }
-
-    /**
-     * @deprecated Use {@link #getMotor(String, String)} instead as this does
-     * not support Victor SPXs.
-     */
-    @Deprecated(forRemoval = true)
-    public IMotorControllerEnhanced getTalon(String subsystem, String name) {
-        if (
-            isImplemented(subsystem) &&
-            getSubsystem(subsystem).talons.get(name) != null &&
-            getSubsystem(subsystem).talons.get(name) > -1
-        ) {
-            return CtreMotorFactory.createDefaultTalon(getSubsystem(subsystem).talons.get(name));
-        }
-        return CtreMotorFactory.createGhostTalon();
-    }
-
-    /**
-     * @deprecated Use {@link #getMotor(String, String, String)} instead as this does
-     * not support Victor SPXs.
-     */
-    @Deprecated(forRemoval = true)
-    public IMotorControllerEnhanced getTalon(String subsystem, String name, String master) {
-        if (
-            isImplemented(subsystem) &&
-            getSubsystem(subsystem).talons.get(name) != null &&
-            getSubsystem(subsystem).talons.get(name) > -1 &&
-            getSubsystem(subsystem).talons.get(master) != null &&
-            getSubsystem(subsystem).talons.get(master) > -1
-        ) {
-            return CtreMotorFactory.createPermanentSlaveTalon(getSubsystem(subsystem).talons.get(name), getSubsystem(subsystem).talons.get(master));
-        }
-        return CtreMotorFactory.createGhostTalon();
     }
 
     public IMotorController getMotor(String subsystem, String name) {
@@ -79,37 +46,26 @@ public class RobotFactory {
         return CtreMotorFactory.createGhostTalon();
     }
 
-    public IMotorController getMotor(String subsystem, String name, String master) {
+    public IMotorController getMotor(String subsystem, String name, IMotorController master) {
         if (!isImplemented(subsystem)) return CtreMotorFactory.createGhostTalon();
         YamlConfiguration.SubsystemConfig subsystemConfig = getSubsystem(subsystem);
         if (
             subsystemConfig.talons.get(name) != null &&
             subsystemConfig.talons.get(name) > -1 &&
-            subsystemConfig.talons.get(master) != null &&
-            subsystemConfig.talons.get(master) > -1
+            master != null
         ) {
             // Talons must be following another Talon, cannot follow a Victor.
             return CtreMotorFactory.createPermanentSlaveTalon(
-                    subsystemConfig.talons.get(name), subsystemConfig.talons.get(master)
+                    subsystemConfig.talons.get(name), master
             );
         } else if (
             subsystemConfig.victors.get(name) != null &&
             subsystemConfig.victors.get(name) > -1
         ) {
             // Victors can follow Talons or another Victor.
-            if (
-                subsystemConfig.talons.get(master) != null &&
-                subsystemConfig.talons.get(master) > -1
-            ) {
+            if (master != null) {
                 return CtreMotorFactory.createPermanentSlaveVictor(
-                        subsystemConfig.victors.get(name), subsystemConfig.talons.get(master)
-                );
-            } else if (
-                subsystemConfig.victors.get(master) != null &&
-                subsystemConfig.victors.get(master) > -1
-            ) {
-                return CtreMotorFactory.createPermanentSlaveVictor(
-                        subsystemConfig.victors.get(name), subsystemConfig.victors.get(master)
+                        subsystemConfig.victors.get(name), master
                 );
             }
         }
@@ -155,19 +111,22 @@ public class RobotFactory {
         return config.subsystems.get(subsystem);
     }
 
+    // Since the Collections of configurations are injected by SnakeYaml,
+    // IDEs will report that the collections are never updated.
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     public static class YamlConfiguration {
-        public Map<String, SubsystemConfig> subsystems;
-        public Map<String, Double> constants = new HashMap<>();
-        public int pcm;
+        Map<String, SubsystemConfig> subsystems;
+        Map<String, Double> constants = new HashMap<>();
+        int pcm;
 
         public static class SubsystemConfig {
-            public boolean implemented = false;
-            public Map<String, Integer> talons = new HashMap<>();
-            public Map<String, Integer> victors = new HashMap<>();
-            public Map<String, Integer> solenoids = new HashMap<>();
-            public Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
-            public Map<String, Double> constants = new HashMap<>();
-            public Integer canifier;
+            boolean implemented = false;
+            Map<String, Integer> talons = new HashMap<>();
+            Map<String, Integer> victors = new HashMap<>();
+            Map<String, Integer> solenoids = new HashMap<>();
+            Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
+            Map<String, Double> constants = new HashMap<>();
+            Integer canifier;
 
             @Override
             public String toString() {
@@ -184,12 +143,12 @@ public class RobotFactory {
         }
 
         public static class DoubleSolenoidConfig {
-            public int forward;
-            public int reverse;
+            int forward;
+            int reverse;
 
             @Override
             public String toString() {
-                return String.format("{ forward: %d, reverse: %d }", forward, reverse);
+                return String.format("{ forward = %d, reverse = %d }", forward, reverse);
             }
         }
 

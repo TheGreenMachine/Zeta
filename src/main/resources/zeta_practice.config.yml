@@ -38,19 +38,20 @@ subsystems:
       arm: 5
       intake: 10
     constants:
-      kP: 5.0
+      kP: 2.5
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 2800
-      midPos: 1000
-      minPos: 700
+      maxPos: 2900
+      midPos: 2150
+      minPos: 1800
   ledmanager:
     implemented: true
-    canifier: 16
+    canifier: 18
 pcm: 17
 constants:
   wheelbase: 25
   ticksPerRev: 1025
   ticksPerIn: 50
   maxVel: 800
+  cheezyDrive: 0

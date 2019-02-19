@@ -1,6 +1,6 @@
 package com.edinarobotics.utils.hardware;
 
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -48,14 +48,14 @@ class RobotFactoryTest {
     @Disabled
     void definedTalonReturnsTalon_zetaDrivetrain() {
         assertTrue(
-                robotFactory.getTalon("drivetrain", "leftMain") instanceof TalonSRX,
+                robotFactory.getMotor("drivetrain", "leftMain") instanceof TalonSRX,
                 "Talon defined in config does not return TalonSRX"
         );
     }
 
     @Test
     void undefinedTalonReturnsGhostTalon_undefinedSubsystem_zetaCargoShooter() {
-        IMotorControllerEnhanced talon = robotFactory.getTalon("CargoShooter", "arm");
+        IMotorController talon = robotFactory.getMotor("CargoShooter", "arm");
         System.out.println(talon);
         assertTrue(
                 talon instanceof GhostTalonSRX,
@@ -65,7 +65,7 @@ class RobotFactoryTest {
 
     @Test
     void undefinedTalonReturnsGhostTalon_definedSubsystem_zetaDrivetrain() {
-        IMotorControllerEnhanced talon = robotFactory.getTalon("drivetrain", "undefined");
+        IMotorController talon = robotFactory.getMotor("drivetrain", "undefined");
         System.out.println(talon);
         assertTrue(
                 talon instanceof GhostTalonSRX,
@@ -75,7 +75,7 @@ class RobotFactoryTest {
 
     @Test
     void definedTalonReturnsGhostTalon_unimplSubsystem_zetaClimber() {
-        IMotorControllerEnhanced talon = robotFactory.getTalon("climber", "one");
+        IMotorController talon = robotFactory.getMotor("climber", "one");
         System.out.println(talon);
         assertTrue(
                 talon instanceof GhostTalonSRX,
@@ -85,7 +85,7 @@ class RobotFactoryTest {
 
     @Test
     void undefinedTalonReturnsGhostTalon_unimplSubsystem_zetaClimber() {
-        IMotorControllerEnhanced talon = robotFactory.getTalon("climber", "two");
+        IMotorController talon = robotFactory.getMotor("climber", "two");
         System.out.println(talon);
         assertTrue(
                 talon instanceof GhostTalonSRX,

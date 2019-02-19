@@ -2,13 +2,13 @@ subsystems:
   drivetrain:
     implemented: true
     talons:
-      leftMain: 14
-      leftSlaveOne: 13
-      rightMain: 1
-      rightSlaveOne: 2
+      leftMain: 1
+      leftSlaveOne: -1
+      rightMain: 2
+      rightSlaveOne: -1
     victors:
-      rightSlaveTwo: 0
-      leftSlaveTwo: 15
+      rightSlaveTwo: -1
+      leftSlaveTwo: -1
   climber:
     implemented: false
     talons:
@@ -42,15 +42,13 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 7100
-      midPos: 8500
-      minPos: 2000
-  ledmanager:
-    implemented: true
-    canifier: 18
-pcm: 17
+      maxPos: 2100
+      midPos: 2100
+      minPos: 950
+pcm: -1
 constants:
-  wheelbase: 25
-  ticksPerRev: 1025
-  ticksPerIn: 50
+  wheelbase: 15.75
+  ticksPerRev: 960
+  ticksPerIn: 78
   maxVel: 800
+  cheezyDrive: 1

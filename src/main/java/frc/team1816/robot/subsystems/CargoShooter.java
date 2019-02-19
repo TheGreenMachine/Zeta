@@ -3,6 +3,7 @@ package frc.team1816.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
+import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -13,6 +14,7 @@ import frc.team1816.robot.Robot;
 /**
  * Subsystem for the cargo shooter.
  */
+@RunTest
 public class CargoShooter extends Subsystem implements Checkable {
     public static final String NAME = "cargoshooter";
 
@@ -21,9 +23,11 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     private ArmPosition armPosition;
 
-    private double armPositionTicks;
     private double armPower;
     private double intakePower;
+
+    private static final boolean kSensorPhase = true; // these two booleans should always match
+    private static final boolean kMotorInverted = true;
 
     // TODO: Measure true min and max
     public static final int ARM_POSITION_MIN = Robot.factory.getConstant(NAME, "minPos").intValue();
@@ -58,26 +62,28 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.kD = factory.getConstant(NAME, "kD");
         this.kF = factory.getConstant(NAME, "kF");
 
-        this.intakeMotor.setInverted(true);
-        
+        this.intakeMotor.setInverted(false);
+
         configureArmTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
-        // int absolutePosition = getArmPositionAbsolute();
-        /* Mask out overflows, keep bottom 12 bits */
-        // absolutePosition &= 0xFFF;
+        int absolutePosition = getArmPositionAbsolute();
+
 
         /* Set the quadrature (relative) sensor to match absolute */
-        this.armTalon.setSelectedSensorPosition(getArmPositionAbsolute(), kPIDLoopIdx, kTimeoutMs);
-        this.armPositionTicks = getArmPositionAbsolute();
+        this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
-        armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
+        armTalon.configOpenloopRamp(0.25, 0);
     }
 
     private void configureArmTalon() {
         armTalon.setNeutralMode(NeutralMode.Brake);
-        armTalon.setInverted(false);
-        armTalon.setSensorPhase(false);
+        armTalon.setInverted(kMotorInverted);
+        armTalon.setSensorPhase(kSensorPhase);
+        armTalon.enableCurrentLimit(true);
+        armTalon.configContinuousCurrentLimit(3,kTimeoutMs);
+        armTalon.configPeakCurrentLimit(5,kTimeoutMs);
+        armTalon.configPeakCurrentDuration(75, kTimeoutMs);
         armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
         /* Config the peak and nominal outputs, 12V means full */
@@ -90,9 +96,9 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         armTalon.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
 
-        // FIXME: testing
+        // Both overrides must be true to enable soft limits
         armTalon.overrideLimitSwitchesEnable(true);
-        armTalon.overrideSoftLimitsEnable(false);
+        armTalon.overrideSoftLimitsEnable(true);
 
         armTalon.configForwardSoftLimitEnable(true, kTimeoutMs);
         armTalon.configReverseSoftLimitEnable(true, kTimeoutMs);
@@ -111,7 +117,9 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MIN), ROCKET(ARM_POSITION_MID), UP(ARM_POSITION_MAX);
+        DOWN(ARM_POSITION_MAX), 
+        ROCKET(ARM_POSITION_MID), 
+        UP(ARM_POSITION_MIN);
 
         private double armPos;
 
@@ -128,6 +136,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.armPosition = pos;
         outputsChanged = true;
         isPercentOutput = false;
+        periodic();
     }
 
     public ArmPosition getArmPosition() {
@@ -135,7 +144,8 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public int getArmPositionAbsolute() {
-        return armTalon.getSensorCollection().getPulseWidthPosition();
+        /* Mask out overflows, keep bottom 12 bits */
+        return armTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
     }
 
     public double getArmEncoderPosition() {
@@ -151,20 +161,13 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     public void setArmPower(double armPow) {
         isPercentOutput = true;
-        if (((getArmPositionAbsolute() < ARM_POSITION_MIN) && (armPow < 0))
-                || ((getArmPositionAbsolute() > ARM_POSITION_MAX) && (armPow > 0))) {
-            System.out.println("Limit hit\tAttempted set: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
-                    + "Arm Pos Rel: " + getArmEncoderPosition());
-            
-            this.armPower = 0;
-            outputsChanged = true;
-        } else {
-            System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
-                    + "Arm Pos Rel: " + getArmEncoderPosition());
-            
-            this.armPower = armPow * 0.25;
-            outputsChanged = true;
-        }
+
+        System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
+                + "Arm Pos Rel: " + getArmEncoderPosition());
+
+            this.armPower = armPow * 0.50;
+
+        outputsChanged = true;
     }
 
     public double getArmPower() {

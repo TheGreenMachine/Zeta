@@ -6,15 +6,15 @@ import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
-public class SubsystemCargoIntakeUpCommand extends Command {
+public class SubsystemCargoIntakeRocketCommand extends Command {
     private CargoCollector collector;
     private CargoShooter shooter;
 
     private double initTime;
     private double elapsedDelayMs;
 
-    public SubsystemCargoIntakeUpCommand() {
-        super("subsystemcargointakeupcommand");
+    public SubsystemCargoIntakeRocketCommand() {
+        super("subsystemcargointakerocketcommand");
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
@@ -26,15 +26,15 @@ public class SubsystemCargoIntakeUpCommand extends Command {
 
     @Override
     protected void initialize() {
-        System.out.println("SUBSYSTEM Cargo Intake To Bay");
+        System.out.println("SUBSYSTEM Cargo Intake To Rocket");
         initTime = System.currentTimeMillis();
     }
 
     @Override
     protected void execute() {
-        shooter.setIntake(0.0);
         collector.setIntake(0.0);
-        shooter.setArmPosition(ArmPosition.UP);
+        shooter.setIntake(0.0);
+        shooter.setArmPosition(ArmPosition.ROCKET);
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
             collector.setArm(false);
         }

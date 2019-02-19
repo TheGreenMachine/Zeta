@@ -4,21 +4,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
-import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
-public class SubsystemCargoIntakeUpCommand extends Command {
+public class SubsystemCargoIntakeResetCommand extends Command {
     private CargoCollector collector;
     private CargoShooter shooter;
 
-    private double initTime;
-    private double elapsedDelayMs;
-
-    public SubsystemCargoIntakeUpCommand() {
-        super("subsystemcargointakeupcommand");
+    public SubsystemCargoIntakeResetCommand() {
+        super("subsystemcargointakeresetcommand");
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
-
-        elapsedDelayMs = 1000;
 
         requires(collector);
         requires(shooter);
@@ -26,23 +20,19 @@ public class SubsystemCargoIntakeUpCommand extends Command {
 
     @Override
     protected void initialize() {
-        System.out.println("SUBSYSTEM Cargo Intake To Bay");
-        initTime = System.currentTimeMillis();
+        System.out.println("SUBSYSTEM Reset Cargo Intake");
     }
 
     @Override
     protected void execute() {
-        shooter.setIntake(0.0);
         collector.setIntake(0.0);
-        shooter.setArmPosition(ArmPosition.UP);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
-            collector.setArm(false);
-        }
+        shooter.setIntake(0.0);
+        collector.setArm(false);
     }
 
     @Override
     protected boolean isFinished() {
-        return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
+        return true;
     }
 
     @Override

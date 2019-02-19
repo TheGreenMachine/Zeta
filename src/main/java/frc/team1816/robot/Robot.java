@@ -3,13 +3,12 @@ package frc.team1816.robot;
 import badlog.lib.BadLog;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1816.robot.commands.DriveToHatchCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
-import frc.team1816.robot.commands.GamepadShootCommand;
 import frc.team1816.robot.subsystems.*;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +26,10 @@ public class Robot extends TimedRobot {
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
+    public Robot() {
+        super(.04); // set loop timeout (s)
+    }
+    
     @Override
     public void robotInit() {
         System.out.println("Initializing robot!");
@@ -52,6 +55,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        if (climber != null) {
+            climber.setDefaultCommand(new GamepadClimbCommand());
+        }
+        if (drivetrain != null) {
+            drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        }
     }
 
     @Override
@@ -61,9 +70,6 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-        }
-        if (shooter != null) {
-            shooter.setDefaultCommand(new GamepadShootCommand());
         }
     }
 
@@ -93,13 +99,13 @@ public class Robot extends TimedRobot {
     }
 
     private void periodic() {
-        // System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
+     //   System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
 
-        logger.updateTopics();
-        if (!DriverStation.getInstance().isDisabled()) {
-            logger.log();
-        }
+         logger.updateTopics();
+         if (!DriverStation.getInstance().isDisabled()) {
+             logger.log();
+         }
     }
 
     private void initLog() {
@@ -109,6 +115,6 @@ public class Robot extends TimedRobot {
 
         BadLog.createValue("Match Type", DriverStation.getInstance().getMatchType().toString());
         BadLog.createValue("Match Number", "" + DriverStation.getInstance().getMatchNumber());
-        BadLog.createTopic("Match Time", "s", () -> DriverStation.getInstance().getMatchTime());
+        BadLog.createTopic("Match Time", "s", DriverStation.getInstance()::getMatchTime);
     }
 }

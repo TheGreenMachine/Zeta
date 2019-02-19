@@ -16,8 +16,12 @@ public class SetBeakCommand extends Command {
     }
 
     @Override
+    protected void initialize() {
+        System.out.println("Setting Beak (not gripped): " + beakNotGripped);
+    }
+
+    @Override
     protected void execute() {
-        System.out.println("Setting Beak: " + beakNotGripped);
         birdbeak.setBeak(beakNotGripped);
     }
 

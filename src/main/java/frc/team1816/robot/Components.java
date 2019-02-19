@@ -1,10 +1,9 @@
 package frc.team1816.robot;
 
 import com.edinarobotics.utils.hardware.RobotFactory;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
-
+import edu.wpi.first.cameraserver.CameraServer;
 import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
@@ -51,22 +50,22 @@ public class Components {
             ledManager = new LedManager();
         }
 
-        // camFront = CameraServer.getInstance().startAutomaticCapture(0);
+        camFront = CameraServer.getInstance().startAutomaticCapture(0);
         // camRear = CameraServer.getInstance().startAutomaticCapture(1);
         // server = CameraServer.getInstance().getServer();
     }
 
-    // public void toggleCamera() {
-    //     if(isFrontCam) {
-    //         System.out.println("Activating Rear Cam");
-    //         server.setSource(camRear);
-    //         isFrontCam = false;
-    //     } else {
-    //         System.out.println("Activating Front Cam");
-    //         server.setSource(camFront);
-    //         isFrontCam = true;
-    //     }
-    // }
+    public void toggleCamera() {
+        if(isFrontCam) {
+            System.out.println("Activating Rear Cam");
+            server.setSource(camRear);
+            isFrontCam = false;
+        } else {
+            System.out.println("Activating Front Cam");
+            server.setSource(camFront);
+            isFrontCam = true;
+        }
+    }
 
     /**
      * Returns the singleton instance of Components. Initializes it if there is no

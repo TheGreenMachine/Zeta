@@ -21,7 +21,6 @@ public class GamepadShootCommand extends Command {
     @Override
     protected void execute() {
         double armPower = Controls.getInstance().getShooterArmThrottle();
-        double intakePower;
 
         shooter.setArmPower(armPower);
     }

@@ -1,26 +1,30 @@
 package frc.team1816.robot.subsystems;
 
 import badlog.lib.BadLog;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 import frc.team1816.robot.Robot;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
     public static final String NAME = "drivetrain";
 
-    private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
+    private static final double SLOW_MOD_THROTTLE = 0.5;
     private static final double SLOW_MOD_ROT = 0.8;
 
     private static double TICKS_PER_REV;
@@ -71,9 +75,10 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isPercentOut;
     private boolean isSlowMode;
     private boolean isReverseMode;
+    private boolean isVisionMode = false;
     private boolean outputsChanged = false;
 
-    public Drivetrain() { // TODO: consider calls to periodic
+    public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.factory;
 
@@ -84,15 +89,15 @@ public class Drivetrain extends Subsystem implements Checkable {
         INCHES_PER_REV = TICKS_PER_REV / TICKS_PER_INCH;
 
         this.leftMain = factory.getMotor(NAME, "leftMain");
-        this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", "leftMain");
-        this.leftSlaveTwo = factory.getMotor(NAME, "leftSlaveTwo", "leftMain");
+        this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", leftMain);
+        this.leftSlaveTwo = factory.getMotor(NAME, "leftSlaveTwo", leftMain);
 
         this.rightMain = factory.getMotor(NAME, "rightMain");
-        this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", "rightMain");
-        this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", "rightMain");
+        this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", rightMain);
+        this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", rightMain);
 
         invertTalons(true);
-        setBrakeMode();
+        enableBrakeMode();
 
         navX = new AHRS(I2C.Port.kMXP);
         System.out.println("NavX Active: " + getGyroStatus());
@@ -115,7 +120,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         }
     }
 
-    public void setBrakeMode() {
+    public void enableBrakeMode() {
         this.leftMain.setNeutralMode(NeutralMode.Brake);
         this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
         this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
@@ -125,7 +130,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setCoastMode() {
+    public void enableCoastMode() {
         this.leftMain.setNeutralMode(NeutralMode.Coast);
         this.leftSlaveOne.setNeutralMode(NeutralMode.Coast);
         this.leftSlaveTwo.setNeutralMode(NeutralMode.Coast);
@@ -136,16 +141,19 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Left Meas Percent", BadLog.UNITLESS,
                 () -> this.leftMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Right Meas Percent", BadLog.UNITLESS,
                 () -> this.rightMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Left Output Velocity", BadLog.UNITLESS,
-                () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Output Velocities");
-        BadLog.createTopic("Drivetrain/Right Output Velocity", BadLog.UNITLESS,
-                () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide",
-                "join:Drivetrain/Output Velocities");
-        BadLog.createTopic("Drivetrain/Angle", "deg", () -> getGyroAngle());
+        BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
+                () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
+        BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
+                () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
+        BadLog.createTopic("Drivetrain/Angle", "deg", this::getGyroAngle);
+        BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
+                () -> getLeftPower(), "hide", "join:Drivetrain/Velocities");
+        BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
+                () -> getRightPower(), "hide", "join:Drivetrain/Velocities");
 
         // TODO: consider creating a BadLog topic for right and left talon inches?
     }
@@ -162,6 +170,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.prevY = 0;
         this.initAngle = navX.getAngle();
         System.out.println(initAngle);
+    }
+
+    public double getLeftPower() {
+        return leftPower;
+    }
+
+    public double getRightPower() {
+        return rightPower;
     }
 
     public double getGyroAngle() {
@@ -216,6 +232,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         outputsChanged = true;
     }
 
+    public void setDrivetrainVisionNav(boolean visionOn) {
+        isVisionMode = visionOn;
+    }
+
+    public boolean getVisionStatus() {
+        return isVisionMode;
+    }
+
     public void setSlowMode(boolean slowMode) {
         this.isSlowMode = slowMode;
         outputsChanged = true;
@@ -241,7 +265,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.leftPos = leftMain.getSelectedSensorPosition(0);
         this.rightPos = rightMain.getSelectedSensorPosition(0);
 
-        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0); // TODO: get proper pidIdx
+        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0);
         this.talonPositionRight = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
@@ -273,7 +297,7 @@ public class Drivetrain extends Subsystem implements Checkable {
             outputsChanged = false;
         }
 
-        coordinateTracking();
+        //  coordinateTracking();
     }
 
     public void coordinateTracking() {
@@ -296,7 +320,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     protected void initDefaultCommand() {
-        // TODO: add commands here
     }
 
     @Override

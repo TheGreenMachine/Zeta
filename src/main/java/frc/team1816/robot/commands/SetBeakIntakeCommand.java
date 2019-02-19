@@ -16,6 +16,11 @@ public class SetBeakIntakeCommand extends Command {
     }
 
     @Override
+    protected void initialize() {
+        System.out.println("Setting Beak Intake: " + power);
+    }
+    
+    @Override
     protected void execute() {
         birdbeak.setIntake(power);
     }
