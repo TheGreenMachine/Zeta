@@ -43,8 +43,6 @@ public class Controls {
         }
         gamepadOperator = new FilteredGamepad(1, filterSet);
 
-        gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
-
         if(factory.isImplemented(Birdbeak.NAME)) {
             gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
             gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
@@ -89,7 +87,8 @@ public class Controls {
             gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
         }
 
-        // gamepadDriver.diamondLeft().whenPressed(new ToggleCameraCommand());
+        // gamepadDriver.diamondDown().whenPressed(new ToggleCameraCommand());
+        gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
     }

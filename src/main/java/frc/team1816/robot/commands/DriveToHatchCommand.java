@@ -18,7 +18,7 @@ public class DriveToHatchCommand extends Command {
     private NetworkTableEntry heightEntry;
     private NetworkTableEntry distanceEntry;
 
-    private static final double kP = 0.005; // halve nominal velocity at 100px error
+    private static final double kP = 0.0025; // halve velocity for half throttle as nominal with 100px error
     private static final double ERROR_THRESHOLD = 5;
     private static final double DIST_THRESHOLD = 4;
 
@@ -62,10 +62,10 @@ public class DriveToHatchCommand extends Command {
         System.out.println("Distance to target: " + deltaDist);
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
-            if(lateralError < 0) {
-                rightPow = rightPow * control;
-            } else {
-                leftPow = leftPow * control;
+            if(lateralError < 0) { // target is right of center, so decrease right side vel
+                rightPow = rightPow - control;
+            } else { // target is left of center, so decrease left side vel
+                leftPow = leftPow - control;
             }
         }
 

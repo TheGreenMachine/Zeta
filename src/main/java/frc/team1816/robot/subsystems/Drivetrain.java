@@ -147,11 +147,9 @@ public class Drivetrain extends Subsystem implements Checkable {
         BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
-                () -> getLeftPower(), "hide", "join:Drivetrain/Velocities");
+                () -> getLeftPower(), "hide", "join:Drivetrain/Percent Out");
         BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
-                () -> getRightPower(), "hide", "join:Drivetrain/Velocities");
-
-        // TODO: consider creating a BadLog topic for right and left talon inches?
+                () -> getRightPower(), "hide", "join:Drivetrain/Percent Out");
     }
 
     public void initCoordinateTracking() {
