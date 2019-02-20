@@ -13,7 +13,7 @@ public class LedManager extends Subsystem implements Checkable {
     public static final String NAME = "ledmanager";
 
     private CANifier canifier;
-    
+
     private boolean blinkMode;
     private boolean outputsChanged = true;
 
@@ -62,8 +62,7 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public int[] getLedRgbBlink() {
-        int[] rgb = {ledBlinkR, ledBlinkG, ledBlinkB};
-        return rgb;
+        return new int[] {ledBlinkR, ledBlinkG, ledBlinkB};
     }
 
     public boolean getBlinkMode() {
@@ -106,10 +105,10 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public enum RobotStatus {
-        RUNNING(0, 0, 255), 
-        ENABLED(0, 255, 0), 
-        ERROR(255, 0, 0), 
-        DISABLED(255, 90, 0), 
+        RUNNING(0, 0, 255),
+        ENABLED(0, 255, 0),
+        ERROR(255, 0, 0),
+        DISABLED(255, 90, 0),
         OFF(0, 0, 0);
 
         int red;
