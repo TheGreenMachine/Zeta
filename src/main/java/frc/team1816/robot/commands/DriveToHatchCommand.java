@@ -58,11 +58,11 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = lateralError * kP;
 
-        System.out.println("x: " + xCoord + "\ty: " +"y: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("x: " + xCoord + "\ty: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("Distance to target: " + deltaDist);
 
-        if (Math.abs(lateralError) < ERROR_THRESHOLD) {
-            if(lateralError > 0) {
+        if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
+            if(lateralError < 0) {
                 rightPow = rightPow * control;
             } else {
                 leftPow = leftPow * control;
