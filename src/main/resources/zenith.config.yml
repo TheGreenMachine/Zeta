@@ -2,12 +2,12 @@ subsystems:
   drivetrain:
     implemented: true
     talons:
-      leftMain: 1
-      leftSlaveOne: 2
+      leftMain: 2
+      leftSlaveOne: 1
       leftSlaveTwo: 3
-      rightMain: 5
-      rightSlaveOne: 6
-      rightSlaveTwo: 7
+      rightMain: 7
+      rightSlaveOne: 5
+      rightSlaveTwo: 6
   climber:
     implemented: false
     talons:
@@ -15,12 +15,12 @@ subsystems:
   cargoshooter:
     implemented: false
     talons:
-      arm: -1
-      intake: -1
+      arm: 4
+      intake: 8
   constants:
-    kP: 5.0
+    kP: 0.116
     kI: 0
-    kD: 1.0
-    kF: 0
+    kD: 1.16
+    kF: 0.128
     maxPos: 1475
     minPos: 915
