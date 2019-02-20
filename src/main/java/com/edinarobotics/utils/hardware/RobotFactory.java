@@ -1,5 +1,6 @@
 package com.edinarobotics.utils.hardware;
 
+import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -87,6 +88,13 @@ public class RobotFactory {
         return null;
     }
 
+    public CANifier getCanifier(String subsystem) {
+        if (getSubsystem(subsystem).canifier != null) {
+            return new CANifier(getSubsystem(subsystem).canifier);
+        }
+        return null;
+    }
+
     public Double getConstant(String name) {
         return config.constants.get(name);
     }
@@ -118,6 +126,7 @@ public class RobotFactory {
             Map<String, Integer> solenoids = new HashMap<>();
             Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
             Map<String, Double> constants = new HashMap<>();
+            Integer canifier;
 
             @Override
             public String toString() {
@@ -127,6 +136,7 @@ public class RobotFactory {
                         "  victors = " + victors.toString() + ",\n" +
                         "  solenoids = " + solenoids.toString() + ",\n" +
                         "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
+                        "  canifier = " + canifier + ",\n" +
                         "  constants = " + constants.toString() + ",\n" +
                         "}";
             }

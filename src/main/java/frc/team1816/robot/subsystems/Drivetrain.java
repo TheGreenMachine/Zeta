@@ -1,26 +1,29 @@
 package frc.team1816.robot.subsystems;
 
 import badlog.lib.BadLog;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 import frc.team1816.robot.Robot;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
     public static final String NAME = "drivetrain";
 
-    private static final double SLOW_MOD_THROTTLE = 0.5; // TODO: tune this value
+    private static final double SLOW_MOD_THROTTLE = 0.5;
     private static final double SLOW_MOD_ROT = 0.8;
 
     private static double TICKS_PER_REV;
@@ -71,9 +74,10 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isPercentOut;
     private boolean isSlowMode;
     private boolean isReverseMode;
+    private boolean isVisionMode = false;
     private boolean outputsChanged = false;
 
-    public Drivetrain() { // TODO: consider calls to periodic
+    public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.factory;
 
@@ -136,18 +140,15 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Left Meas %", BadLog.UNITLESS,
-                () -> this.leftMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
-        BadLog.createTopic("Drivetrain/Right Meas %", BadLog.UNITLESS,
-                () -> this.rightMain.getMotorOutputPercent(), "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Angle", "deg", 
+                () -> getGyroAngle());
         BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
-        BadLog.createTopic("Drivetrain/Angle", "deg", this::getGyroAngle);
-        BadLog.createTopic("Drivetrain/Left Set %", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
                 () -> getLeftPower(), "hide", "join:Drivetrain/Velocities");
-        BadLog.createTopic("Drivetrain/Right Set %", BadLog.UNITLESS,
+        BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
                 () -> getRightPower(), "hide", "join:Drivetrain/Velocities");
 
         // TODO: consider creating a BadLog topic for right and left talon inches?
@@ -227,6 +228,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         outputsChanged = true;
     }
 
+    public void setDrivetrainVisionNav(boolean visionOn) {
+        isVisionMode = visionOn;
+    }
+
+    public boolean getVisionStatus() {
+        return isVisionMode;
+    }
+
     public void setSlowMode(boolean slowMode) {
         this.isSlowMode = slowMode;
         outputsChanged = true;
@@ -252,7 +261,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.leftPos = leftMain.getSelectedSensorPosition(0);
         this.rightPos = rightMain.getSelectedSensorPosition(0);
 
-        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0); // TODO: get proper pidIdx
+        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0);
         this.talonPositionRight = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
@@ -307,20 +316,11 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     protected void initDefaultCommand() {
-        // TODO: add commands here
     }
 
     @Override
     public boolean check() throws CheckFailException {
-        System.out.println("Warning: mechanisms will move!");
-        Timer.delay(3);
-        setDrivetrainPercent(0.25, 0.25);
-        Timer.delay(3);
-        setDrivetrainPercent(0, 0);
-        Timer.delay(0.5);
-        setDrivetrainPercent(-0.25, -0.25);
-        Timer.delay(3);
-        setDrivetrainPercent(0, 0);
+        // System.out.println("Warning: mechanisms will move!");
         return true;
     }
 }

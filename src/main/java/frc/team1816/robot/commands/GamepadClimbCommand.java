@@ -1,7 +1,6 @@
 package frc.team1816.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.Climber;
@@ -42,7 +41,6 @@ public class GamepadClimbCommand extends Command {
     @Override
     protected void end() {
         climber.setClimberPower(0);
-        climber.setHabPiston(DoubleSolenoid.Value.kForward); // TODO: ensure not gripped when the match ends
     }
 
     @Override

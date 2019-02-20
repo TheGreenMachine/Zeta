@@ -39,12 +39,11 @@ public class DriveToHatchCommand extends Command {
 
     @Override
     protected void initialize() {
+        drivetrain.setDrivetrainVisionNav(true);
+
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         table = inst.getTable("SmartDashboard");
         setupTableEntries();
-
-        width = widthEntry.getDouble(640);
-        height = widthEntry.getDouble(480);
 
         updateCoordData();
 
@@ -59,6 +58,9 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = lateralError * kP;
 
+        System.out.println("x: " + xCoord + "\ty: " +"y: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("Distance to target: " + deltaDist);
+
         if (Math.abs(lateralError) < ERROR_THRESHOLD) {
             if(lateralError > 0) {
                 rightPow = rightPow * control;
@@ -67,16 +69,19 @@ public class DriveToHatchCommand extends Command {
             }
         }
 
-        drivetrain.setDrivetrainVelocity(leftPow, rightPow);
+        System.out.println("L set pow: " + leftPow + "\tR set pow: " + rightPow);
+        drivetrain.setDrivetrainPercent(leftPow, rightPow);
     }
 
     @Override
     protected boolean isFinished() {
-        return (deltaDist > 0 && deltaDist < DIST_THRESHOLD);
+        // return (deltaDist > 0 && deltaDist < DIST_THRESHOLD);
+        return false;
     }
 
     @Override
     protected void end() {
+        drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0,0);
     }
 
@@ -91,6 +96,9 @@ public class DriveToHatchCommand extends Command {
         widthEntry = table.getEntry("width");
         heightEntry = table.getEntry("height");
         distanceEntry = table.getEntry("distance_esti");
+
+        width = widthEntry.getDouble(640);
+        height = widthEntry.getDouble(480);
     }
 
     private void updateCoordData() {

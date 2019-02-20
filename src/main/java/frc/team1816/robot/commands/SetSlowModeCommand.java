@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
 
-public class ToggleSlowModeCommand extends Command {
+public class SetSlowModeCommand extends Command {
 
     private Drivetrain drivetrain;
     private boolean slowMode;
 
-    public ToggleSlowModeCommand(boolean slowMode) {
-        super("toggleslowmodecommand");
+    public SetSlowModeCommand(boolean slowMode) {
+        super("setslowmodecommand");
         drivetrain = Components.getInstance().drivetrain;
         this.slowMode = slowMode;
     }

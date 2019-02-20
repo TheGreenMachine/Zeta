@@ -23,14 +23,12 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     private ArmPosition armPosition;
 
-    private double armPositionTicks;
     private double armPower;
     private double intakePower;
 
-    private static final boolean kSensorPhase = false;
-    private static final boolean kMotorInverted = false;
+    private static final boolean kSensorPhase = true; // these two booleans should always match
+    private static final boolean kMotorInverted = true;
 
-    // TODO: Measure true min and max
     public static final int ARM_POSITION_MIN = Robot.factory.getConstant(NAME, "minPos").intValue();
     public static final int ARM_POSITION_MID = Robot.factory.getConstant(NAME, "midPos").intValue();
     public static final int ARM_POSITION_MAX = Robot.factory.getConstant(NAME, "maxPos").intValue();
@@ -63,27 +61,28 @@ public class CargoShooter extends Subsystem implements Checkable {
         this.kD = factory.getConstant(NAME, "kD");
         this.kF = factory.getConstant(NAME, "kF");
 
-        this.intakeMotor.setInverted(true);
+        this.intakeMotor.setInverted(false);
 
-        this.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
         configureArmTalon();
 
         // Calibrate quadrature encoder with absolute mag encoder
         int absolutePosition = getArmPositionAbsolute();
-        /* Mask out overflows, keep bottom 12 bits */
-        absolutePosition &= 0xFFF;
+
 
         /* Set the quadrature (relative) sensor to match absolute */
         this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
-        this.armPositionTicks = absolutePosition;
 
-        armTalon.configOpenloopRamp(0, 0); // TODO: tune ramp value
+        armTalon.configOpenloopRamp(0.25, 0);
     }
 
     private void configureArmTalon() {
         armTalon.setNeutralMode(NeutralMode.Brake);
         armTalon.setInverted(kMotorInverted);
         armTalon.setSensorPhase(kSensorPhase);
+        armTalon.enableCurrentLimit(true);
+        armTalon.configContinuousCurrentLimit(3,kTimeoutMs);
+        armTalon.configPeakCurrentLimit(5,kTimeoutMs);
+        armTalon.configPeakCurrentDuration(75, kTimeoutMs);
         armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
         /* Config the peak and nominal outputs, 12V means full */
@@ -117,9 +116,9 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MIN), 
+        DOWN(ARM_POSITION_MAX), 
         ROCKET(ARM_POSITION_MID), 
-        UP(ARM_POSITION_MAX);
+        UP(ARM_POSITION_MIN);
 
         private double armPos;
 
@@ -144,7 +143,8 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public int getArmPositionAbsolute() {
-        return armTalon.getSensorCollection().getPulseWidthPosition();
+        /* Mask out overflows, keep bottom 12 bits */
+        return armTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
     }
 
     public double getArmEncoderPosition() {
@@ -224,15 +224,12 @@ public class CargoShooter extends Subsystem implements Checkable {
     @Override
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
-        setArmPosition(ArmPosition.DOWN);
-        Timer.delay(5);
-        setArmPosition(ArmPosition.UP);
-        Timer.delay(5);
-        setIntake(1);
-        Timer.delay(5);
+        Timer.delay(3);
+        
+        setIntake(1.0);
+        Timer.delay(0.5);
         setIntake(0);
-        Timer.delay(5);
-        setArmPosition(ArmPosition.DOWN);
+
         return true;
     }
 }

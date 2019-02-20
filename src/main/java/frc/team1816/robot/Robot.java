@@ -4,10 +4,11 @@ import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1816.robot.commands.DriveToHatchCommand;
+import frc.team1816.robot.commands.BlinkLedCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.subsystems.*;
+import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 public class Robot extends TimedRobot {
 
@@ -15,15 +16,17 @@ public class Robot extends TimedRobot {
     public Climber climber;
     public CargoCollector collector;
     public Drivetrain drivetrain;
+    public LedManager leds;
     public CargoShooter shooter;
 
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
 
     public Robot() {
-        super(.04); // set loop timeout (s)
+        // set the loop timeout in seconds
+        super(.04); // TODO: change back to default
     }
-    
+
     @Override
     public void robotInit() {
         System.out.println("Initializing robot!");
@@ -39,10 +42,15 @@ public class Robot extends TimedRobot {
         climber = Components.getInstance().climber;
         collector = Components.getInstance().collector;
         drivetrain = Components.getInstance().drivetrain;
+        leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
         logThread.finishInitialization();
         logThread.start();
+
+        if (leds != null) {
+            leds.setDefaultCommand(new BlinkLedCommand(2));
+        }
     }
 
     @Override
@@ -51,7 +59,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        drivetrain.setDefaultCommand(new DriveToHatchCommand(0.5));
+        if (climber != null) {
+            climber.setDefaultCommand(new GamepadClimbCommand());
+        }
+        if (drivetrain != null) {
+            drivetrain.setDefaultCommand(new GamepadDriveCommand());
+        }
     }
 
     @Override
@@ -62,9 +75,6 @@ public class Robot extends TimedRobot {
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
         }
-        if (shooter != null) {
-            // shooter.setDefaultCommand(new GamepadShootCommand());
-        }
     }
 
     @Override
@@ -74,21 +84,29 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
+            leds.blinkStatus(RobotStatus.ERROR);
+        } else {
+            leds.blinkStatus(RobotStatus.DISABLED);
+        }
         periodic();
     }
 
     @Override
     public void autonomousPeriodic() {
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     @Override
     public void teleopPeriodic() {
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 
     @Override
     public void testPeriodic() {
+        leds.indicateStatus(RobotStatus.ENABLED);
         periodic();
     }
 

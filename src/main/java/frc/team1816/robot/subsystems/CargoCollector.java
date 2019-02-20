@@ -42,6 +42,10 @@ public class CargoCollector extends Subsystem implements Checkable {
         outputsChanged = true;
     }
 
+    public boolean isArmDown() {
+        return armDown;
+    }
+
     public boolean getArmPistonState() {
         return armDown;
     }
@@ -66,17 +70,11 @@ public class CargoCollector extends Subsystem implements Checkable {
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
         Timer.delay(3);
-        setIntake(0.5);
-        Timer.delay(3);
-        setIntake(0);
+
+        setIntake(1.0);
         Timer.delay(0.5);
-        setIntake(-0.5);
-        Timer.delay(3);
-        setIntake(0);
-        Timer.delay(0.5);
-        setArm(true);
-        Timer.delay(3);
-        setArm(false);
+        setIntake(0.0);
+
         return true;
     }
 }

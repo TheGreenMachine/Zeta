@@ -16,6 +16,7 @@ public class SubsystemHatchUnfireCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("UnFiring Hatch");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
@@ -19,7 +18,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
-        elapsedDelayMs = 800;
+        elapsedDelayMs = 1000;
 
         requires(collector);
         requires(shooter);
@@ -27,6 +26,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("SUBSYSTEM Cargo Intake Down");
         initTime = System.currentTimeMillis();
     }
 
@@ -35,8 +35,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
         collector.setArm(true);
         collector.setIntake(-1.0);
         shooter.setIntake(-1.0);
-        // Timer.delay(0.8);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.getArmPistonState()) {
             shooter.setArmPosition(ArmPosition.DOWN);
         }
     }

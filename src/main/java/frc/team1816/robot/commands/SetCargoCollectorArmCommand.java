@@ -18,6 +18,7 @@ public class SetCargoCollectorArmCommand extends Command {
     @Override
     protected void execute() {
         System.out.println("Setting Cargo Arm\t Down: " + isDown);
+
         collector.setArm(isDown);
     }
 

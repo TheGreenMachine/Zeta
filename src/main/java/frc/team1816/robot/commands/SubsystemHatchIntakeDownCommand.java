@@ -16,6 +16,7 @@ public class SubsystemHatchIntakeDownCommand extends Command {
 
     @Override
     protected void initialize() {
+        System.out.println("SUBSYSTEM Hatch Intake Down");
     }
 
     @Override
