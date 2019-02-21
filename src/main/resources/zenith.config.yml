@@ -1,0 +1,31 @@
+subsystems:
+  drivetrain:
+    implemented: true
+    talons:
+      leftMain: 2
+      leftSlaveOne: 1
+      leftSlaveTwo: 3
+      rightMain: 7
+      rightSlaveOne: 5
+      rightSlaveTwo: 6
+  arm:
+    implemented: true
+    talons:
+      armTalon: 4
+  intake: 
+    implemented: true
+    talons:
+      collector: 8
+  shooter:
+    implemented: true
+    doubleSolenoids:
+      solenoid:
+        forward: 2
+        reverse: 3
+  constants:
+    kP: 0.116
+    kI: 0
+    kD: 1.16
+    kF: 0.128
+    maxPos: 1475
+    minPos: 915
