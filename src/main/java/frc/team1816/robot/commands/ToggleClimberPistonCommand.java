@@ -8,9 +8,6 @@ import frc.team1816.robot.subsystems.Climber;
 public class ToggleClimberPistonCommand extends Command {
     private Climber climber;
 
-    private double initTime;
-    private double elapsedDelayMs = 2000;
-
     public ToggleClimberPistonCommand() {
         super("toggleclimberpistoncommand");
         climber = Components.getInstance().climber;
@@ -18,9 +15,7 @@ public class ToggleClimberPistonCommand extends Command {
     }
 
     @Override
-    protected void initialize() {
-        initTime = System.currentTimeMillis();
-
+    protected void execute() {
         if (climber.getHabPistonState() == DoubleSolenoid.Value.kForward) {
             climber.setHabPiston(DoubleSolenoid.Value.kReverse);
         } else {
@@ -29,18 +24,7 @@ public class ToggleClimberPistonCommand extends Command {
     }
 
     @Override
-    protected void execute() {
-        if (
-                (initTime + elapsedDelayMs) < System.currentTimeMillis()
-                && climber.getHabPistonState() == DoubleSolenoid.Value.kReverse
-        ) {
-            climber.setHabPiston(DoubleSolenoid.Value.kOff);
-        }
-    }
-
-    @Override
     protected boolean isFinished() {
-        return ((initTime + elapsedDelayMs) < System.currentTimeMillis())
-                || (climber.getHabPistonState() == DoubleSolenoid.Value.kForward);
+        return true;
     }
 }
