@@ -76,9 +76,7 @@ public class Controls {
         }
 
         if(factory.isImplemented(Climber.NAME)) {
-            gamepadDriver.diamondLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
-            gamepadDriver.diamondRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
-            gamepadDriver.diamondDown().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kOff));
+            gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
 
             gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
             gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
@@ -90,8 +88,7 @@ public class Controls {
         gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
-
-        gamepadDriver.dPadLeft().whileHeld(new DriveToHatchCommand(0.1));
+        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.1));
 
     }
 

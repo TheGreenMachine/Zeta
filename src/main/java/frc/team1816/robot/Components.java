@@ -35,6 +35,7 @@ public class Components {
         if (factory.isImplemented(CargoCollector.NAME)) {
             collector = new CargoCollector();
         }
+
         if (factory.isImplemented(Drivetrain.NAME)) {
             drivetrain = new Drivetrain();
         }

@@ -56,13 +56,14 @@ public class Climber extends Subsystem implements Checkable {
     public void toggleHabPiston() {
         if(habPistonState == Value.kForward) {
             habPistonState = Value.kReverse;
+
         } else {
             habPistonState = Value.kForward;
         }
     }
 
-    public String getHabPistonState() {
-        return habPistonState.toString();
+    public Value getHabPistonState() {
+        return habPistonState;
     }
 
     public double getMotorPower() {
