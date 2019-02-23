@@ -129,6 +129,7 @@ public class Controls {
     /**
      * Returns the current singleton instance of Controls.
      * It will initialize the singleton instance if there is none.
+     *
      * @return The current singleton instance of Controls.
      */
     public static Controls getInstance() {

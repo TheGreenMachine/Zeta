@@ -62,7 +62,7 @@ public class DriveToHatchCommand extends Command {
         System.out.println("Distance to target: " + deltaDist);
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
-            if(lateralError < 0) { // target is right of center, so decrease right side vel
+            if (lateralError < 0) { // target is right of center, so decrease right side vel
                 rightPow = rightPow - control;
             } else { // target is left of center, so decrease left side vel
                 leftPow = leftPow - control;
@@ -82,7 +82,7 @@ public class DriveToHatchCommand extends Command {
     @Override
     protected void end() {
         drivetrain.setDrivetrainVisionNav(false);
-        drivetrain.setDrivetrainPercent(0,0);
+        drivetrain.setDrivetrainPercent(0, 0);
     }
 
     @Override

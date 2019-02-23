@@ -51,7 +51,7 @@ public class Components {
     }
 
     public void toggleCamera() {
-        if(isFrontCam) {
+        if (isFrontCam) {
             System.out.println("Activating Rear Cam");
             server.setSource(camRear);
             isFrontCam = false;
@@ -65,7 +65,7 @@ public class Components {
     /**
      * Returns the singleton instance of Components. Initializes it if there is no
      * current instance.
-     * 
+     *
      * @return The current singleton instance of Components.
      */
     public static Components getInstance() {

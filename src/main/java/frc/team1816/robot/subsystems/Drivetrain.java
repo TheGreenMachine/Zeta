@@ -136,7 +136,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Angle", "deg", 
+        BadLog.createTopic("Drivetrain/Angle", "deg",
                 () -> getGyroAngle());
         BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");

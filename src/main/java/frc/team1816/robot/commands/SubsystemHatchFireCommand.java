@@ -31,7 +31,7 @@ public class SubsystemHatchFireCommand extends Command {
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
             birdbeak.setBeak(true);
         }
-    } 
+    }
 
     @Override
     protected boolean isFinished() {
