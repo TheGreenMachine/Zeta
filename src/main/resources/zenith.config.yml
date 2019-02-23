@@ -18,10 +18,9 @@ subsystems:
     implemented: false
   ledmanager:
     implemented: false
-  constants:
-    kP: 0.116
-    kI: 0
-    kD: 1.16
-    kF: 0.128
-    maxPos: 1475
-    minPos: 915
+constants:
+  wheelbase: 25
+  ticksPerRev: 1025
+  ticksPerIn: 50
+  maxVel: 800
+  cheezyDrive: 0
