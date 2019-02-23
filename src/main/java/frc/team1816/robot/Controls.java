@@ -6,7 +6,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.commands.*;
 import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.CargoCollector;
@@ -77,6 +77,8 @@ public class Controls {
 
         if(factory.isImplemented(Climber.NAME)) {
             gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
+            gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
+            gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));
 
             gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
             gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
