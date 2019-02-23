@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
         }
+
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand()/*new DriveToHatchCommand(0.1)*/);
         }
