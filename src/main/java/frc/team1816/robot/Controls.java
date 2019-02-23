@@ -75,15 +75,8 @@ public class Controls {
             gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
         }
 
-<<<<<<< HEAD
         if(factory.isImplemented(Climber.NAME)) {
             gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
-=======
-        if (factory.isImplemented(Climber.NAME)) {
-            gamepadDriver.diamondLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
-            gamepadDriver.diamondRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
-            gamepadDriver.diamondDown().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kOff));
->>>>>>> b9c196fd6508cfc0dd76485fcc53c0077743f4a1
 
             gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
             gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
@@ -95,13 +88,7 @@ public class Controls {
         gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
-<<<<<<< HEAD
         gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.1));
-
-=======
-
-        gamepadDriver.dPadLeft().whileHeld(new DriveToHatchCommand(0.1));
->>>>>>> b9c196fd6508cfc0dd76485fcc53c0077743f4a1
     }
 
     public double getDriveThrottle() {
