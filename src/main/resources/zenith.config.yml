@@ -8,20 +8,16 @@ subsystems:
       rightMain: 7
       rightSlaveOne: 5
       rightSlaveTwo: 6
-  arm:
-    implemented: true
-    talons:
-      armTalon: 4
-  intake: 
-    implemented: true
-    talons:
-      collector: 8
-  shooter:
-    implemented: true
-    doubleSolenoids:
-      solenoid:
-        forward: 2
-        reverse: 3
+  climber:
+    implemented: false
+  cargocollector:
+    implemented: false
+  birdbeak:
+    implemented: false
+  cargoshooter:
+    implemented: false
+  ledmanager:
+    implemented: false
   constants:
     kP: 0.116
     kI: 0
