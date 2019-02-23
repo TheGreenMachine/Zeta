@@ -54,7 +54,7 @@ public class Climber extends Subsystem implements Checkable {
     }
 
     public void toggleHabPiston() {
-        if(habPistonState == Value.kForward) {
+        if (habPistonState == Value.kForward) {
             habPistonState = Value.kReverse;
 
         } else {
