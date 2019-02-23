@@ -2,9 +2,10 @@ package frc.team1816.robot.commands;
 
 import com.team254.lib.util.CheesyDriveHelper;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1816.robot.Controls;
 import frc.team1816.robot.Components;
+import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.Drivetrain;
+
 import static frc.team1816.robot.Robot.factory;
 
 public class GamepadDriveCommand extends Command {
