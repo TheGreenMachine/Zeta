@@ -42,7 +42,7 @@ public class Controls {
         }
         gamepadOperator = new FilteredGamepad(1, filterSet);
 
-        if(factory.isImplemented(Birdbeak.NAME)) {
+        if (factory.isImplemented(Birdbeak.NAME)) {
             gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
             gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
             gamepadDriver.leftBumper().whenPressed(new SubsystemHatchFireCommand());
@@ -57,7 +57,7 @@ public class Controls {
             gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
         }
 
-        if(factory.isImplemented(CargoCollector.NAME)){
+        if (factory.isImplemented(CargoCollector.NAME)) {
             gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeDownCommand());
             gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
             gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeUpCommand());
@@ -65,7 +65,7 @@ public class Controls {
             gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
         }
 
-        if(factory.isImplemented(CargoShooter.NAME)) {
+        if (factory.isImplemented(CargoShooter.NAME)) {
             gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
             gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
@@ -75,7 +75,7 @@ public class Controls {
             gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
         }
 
-        if(factory.isImplemented(Climber.NAME)) {
+        if (factory.isImplemented(Climber.NAME)) {
             gamepadDriver.diamondLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
             gamepadDriver.diamondRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
             gamepadDriver.diamondDown().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kOff));
@@ -92,7 +92,6 @@ public class Controls {
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
 
         gamepadDriver.dPadLeft().whileHeld(new DriveToHatchCommand(0.1));
-
     }
 
     public double getDriveThrottle() {
