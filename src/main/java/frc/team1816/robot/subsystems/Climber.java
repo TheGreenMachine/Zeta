@@ -65,7 +65,7 @@ public class Climber extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             climbMaster.set(ControlMode.PercentOutput, motorPower);
-            habPiston.set(habPistonState); // TODO: wire
+            habPiston.set(habPistonState);
             outputsChanged = false;
         }
     }
