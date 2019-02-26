@@ -6,8 +6,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.commands.*;
 import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.CargoCollector;
@@ -43,9 +42,7 @@ public class Controls {
         }
         gamepadOperator = new FilteredGamepad(1, filterSet);
 
-        gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
-
-        if(factory.isImplemented(Birdbeak.NAME)) {
+        if (factory.isImplemented(Birdbeak.NAME)) {
             gamepadDriver.leftTrigger().whenPressed(new SetBeakCommand(true));
             gamepadDriver.leftTrigger().whenReleased(new SetBeakCommand(false));
             gamepadDriver.leftBumper().whenPressed(new SubsystemHatchFireCommand());
@@ -60,7 +57,7 @@ public class Controls {
             gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
         }
 
-        if(factory.isImplemented(CargoCollector.NAME)){
+        if (factory.isImplemented(CargoCollector.NAME)) {
             gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeDownCommand());
             gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
             gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeUpCommand());
@@ -68,7 +65,7 @@ public class Controls {
             gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
         }
 
-        if(factory.isImplemented(CargoShooter.NAME)) {
+        if (factory.isImplemented(CargoShooter.NAME)) {
             gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
             gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
@@ -79,9 +76,9 @@ public class Controls {
         }
 
         if(factory.isImplemented(Climber.NAME)) {
-            gamepadDriver.diamondLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
-            gamepadDriver.diamondRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
-            gamepadDriver.diamondDown().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kOff));
+            gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
+            gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
+            gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));
 
             gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
             gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
@@ -89,9 +86,11 @@ public class Controls {
             gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
         }
 
-        // gamepadDriver.diamondLeft().whenPressed(new ToggleCameraCommand());
+        // gamepadDriver.diamondDown().whenPressed(new ToggleCameraCommand());
+        gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
+        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.2));
     }
 
     public double getDriveThrottle() {
@@ -129,6 +128,7 @@ public class Controls {
     /**
      * Returns the current singleton instance of Controls.
      * It will initialize the singleton instance if there is none.
+     *
      * @return The current singleton instance of Controls.
      */
     public static Controls getInstance() {

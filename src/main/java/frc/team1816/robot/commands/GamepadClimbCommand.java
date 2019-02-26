@@ -22,9 +22,9 @@ public class GamepadClimbCommand extends Command {
     protected void execute() {
         double climberPow;
 
-        if(Controls.getInstance().getDriverClimbUp()) {
+        if (Controls.getInstance().getDriverClimbUp()) {
             climberPow = 1.0;
-        } else if(Controls.getInstance().getDriverClimbDown()) {
+        } else if (Controls.getInstance().getDriverClimbDown()) {
             climberPow = -1.0;
         } else {
             climberPow = Controls.getInstance().getClimbThrottle();

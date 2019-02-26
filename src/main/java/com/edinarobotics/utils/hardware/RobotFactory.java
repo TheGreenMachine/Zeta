@@ -89,7 +89,7 @@ public class RobotFactory {
     }
 
     public CANifier getCanifier(String subsystem) {
-        if (getSubsystem(subsystem).canifier != null) {
+        if (isImplemented(subsystem) && getSubsystem(subsystem).canifier != null) {
             return new CANifier(getSubsystem(subsystem).canifier);
         }
         return null;

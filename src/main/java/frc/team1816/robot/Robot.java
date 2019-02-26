@@ -84,29 +84,37 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
-            leds.blinkStatus(RobotStatus.ERROR);
-        } else {
-            leds.blinkStatus(RobotStatus.DISABLED);
+        if (shooter != null && leds != null) {
+            if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
+                leds.blinkStatus(RobotStatus.ERROR);
+            } else {
+                leds.blinkStatus(RobotStatus.DISABLED);
+            }
         }
         periodic();
     }
 
     @Override
     public void autonomousPeriodic() {
-        leds.indicateStatus(RobotStatus.ENABLED);
+        if (leds != null) {
+            leds.indicateStatus(RobotStatus.ENABLED);
+        }
         periodic();
     }
 
     @Override
     public void teleopPeriodic() {
-        leds.indicateStatus(RobotStatus.ENABLED);
+        if (leds != null) {
+            leds.indicateStatus(RobotStatus.ENABLED);
+        }
         periodic();
     }
 
     @Override
     public void testPeriodic() {
-        leds.indicateStatus(RobotStatus.ENABLED);
+        if (leds != null) {
+            leds.indicateStatus(RobotStatus.ENABLED);
+        }
         periodic();
     }
 

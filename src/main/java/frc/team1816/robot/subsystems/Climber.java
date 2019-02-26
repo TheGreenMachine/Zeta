@@ -7,9 +7,9 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 @RunTest
@@ -53,16 +53,8 @@ public class Climber extends Subsystem implements Checkable {
         this.habPistonState = state;
     }
 
-    public void toggleHabPiston() {
-        if(habPistonState == Value.kForward) {
-            habPistonState = Value.kReverse;
-        } else {
-            habPistonState = Value.kForward;
-        }
-    }
-
-    public String getHabPistonState() {
-        return habPistonState.toString();
+    public Value getHabPistonState() {
+        return habPistonState;
     }
 
     public double getMotorPower() {
@@ -73,7 +65,7 @@ public class Climber extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             climbMaster.set(ControlMode.PercentOutput, motorPower);
-            habPiston.set(habPistonState); // TODO: wire
+            habPiston.set(habPistonState);
             outputsChanged = false;
         }
     }

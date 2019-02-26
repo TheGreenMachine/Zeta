@@ -62,7 +62,7 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public int[] getLedRgbBlink() {
-        return new int[] {ledBlinkR, ledBlinkG, ledBlinkB};
+        return new int[]{ledBlinkR, ledBlinkG, ledBlinkB};
     }
 
     public boolean getBlinkMode() {

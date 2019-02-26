@@ -1,5 +1,7 @@
 package frc.team1816.robot.commands;
 
+import com.edinarobotics.utils.math.Math1816;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -18,11 +20,14 @@ public class DriveToHatchCommand extends Command {
     private NetworkTableEntry heightEntry;
     private NetworkTableEntry distanceEntry;
 
-    private static final double kP = 0.005; // halve nominal velocity at 100px error
+    private static final double kP = 0.0015;
     private static final double ERROR_THRESHOLD = 5;
     private static final double DIST_THRESHOLD = 4;
 
+    private boolean prevReverseState;
+
     private double nominalPower;
+    private double targetCenterX = 320.0; // define x that corresponds to bot center
 
     private double width;
     private double height;
@@ -48,24 +53,34 @@ public class DriveToHatchCommand extends Command {
         updateCoordData();
 
         drivetrain.enableBrakeMode();
+
+        prevReverseState = drivetrain.isReverseMode();
+        drivetrain.setReverseMode(true);
     }
 
     @Override
     protected void execute() {
         updateCoordData();
-        lateralError = (width / 2) - xCoord;
+        lateralError = (targetCenterX / 2) - xCoord;
         double leftPow = nominalPower;
         double rightPow = nominalPower;
-        double control = lateralError * kP;
+        double control = Math.abs(lateralError * kP);
 
-        System.out.println("x: " + xCoord + "\ty: " +"y: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
-        System.out.println("Distance to target: " + deltaDist);
+        System.out.println("cam: (" + width + "," + height + ")\tcenter: (" + xCoord + "," + yCoord + 
+            ")\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
 
-        if (Math.abs(lateralError) < ERROR_THRESHOLD) {
-            if(lateralError > 0) {
-                rightPow = rightPow * control;
-            } else {
-                leftPow = leftPow * control;
+        if(xCoord == -1.0 || yCoord == -1.0) {
+            control = 0;
+        }
+
+        if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
+            if (lateralError < 0) { // target is right of center, so decrease right side (wrt cargo) vel
+                leftPow = leftPow - control; // drivetrain reversed, so apply control to other side
+                Math1816.coerceValue(1.0, 0.0, leftPow);
+            } else { // target is left of center, so decrease left side (wrt cargo) vel
+                rightPow = rightPow - control; // drivetrain reversed, so apply control to other side
+                Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
 
@@ -82,7 +97,8 @@ public class DriveToHatchCommand extends Command {
     @Override
     protected void end() {
         drivetrain.setDrivetrainVisionNav(false);
-        drivetrain.setDrivetrainPercent(0,0);
+        drivetrain.setDrivetrainPercent(0, 0);
+        drivetrain.setReverseMode(prevReverseState);
     }
 
     @Override
@@ -102,8 +118,8 @@ public class DriveToHatchCommand extends Command {
     }
 
     private void updateCoordData() {
-        xCoord = xEntry.getDouble(320);
-        yCoord = yEntry.getDouble(240);
+        xCoord = xEntry.getDouble(-1.0);
+        yCoord = yEntry.getDouble(-1.0);
         deltaDist = distanceEntry.getDouble(-1);
     }
 }

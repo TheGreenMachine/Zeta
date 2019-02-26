@@ -103,7 +103,7 @@ public class Birdbeak extends Subsystem implements Checkable {
         Timer.delay(0.5);
         setBeak(false);
         setPuncher(false);
-        
+
         setIntake(1.0);
         Timer.delay(0.5);
         setIntake(0);

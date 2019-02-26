@@ -1,5 +1,6 @@
 package frc.team1816.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Climber;
@@ -14,8 +15,16 @@ public class ToggleClimberPistonCommand extends Command {
     }
 
     @Override
-    protected void execute() {
-        climber.toggleHabPiston();
+    protected void initialize() {
+    }
+
+    @Override
+    protected void execute() { // TODO: test logic and offload to internal Climber method
+        if (climber.getHabPistonState() == DoubleSolenoid.Value.kForward) {
+            climber.setHabPiston(DoubleSolenoid.Value.kReverse);
+        } else {
+            climber.setHabPiston(DoubleSolenoid.Value.kForward);
+        }
     }
 
     @Override

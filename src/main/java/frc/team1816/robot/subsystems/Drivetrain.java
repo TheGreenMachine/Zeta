@@ -1,22 +1,18 @@
 package frc.team1816.robot.subsystems;
 
 import badlog.lib.BadLog;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 import frc.team1816.robot.Robot;
 
 @RunTest
@@ -140,18 +136,16 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     private void initDrivetrainLog() {
-        BadLog.createTopic("Drivetrain/Angle", "deg", 
+        BadLog.createTopic("Drivetrain/Angle", "deg",
                 () -> getGyroAngle());
         BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
                 () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
         BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
-                () -> getLeftPower(), "hide", "join:Drivetrain/Velocities");
+                () -> getLeftPower(), "hide", "join:Drivetrain/Percent Out");
         BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
-                () -> getRightPower(), "hide", "join:Drivetrain/Velocities");
-
-        // TODO: consider creating a BadLog topic for right and left talon inches?
+                () -> getRightPower(), "hide", "join:Drivetrain/Percent Out");
     }
 
     public void initCoordinateTracking() {

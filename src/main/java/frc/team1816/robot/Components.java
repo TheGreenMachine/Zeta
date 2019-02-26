@@ -4,12 +4,7 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-import frc.team1816.robot.subsystems.Birdbeak;
-import frc.team1816.robot.subsystems.CargoCollector;
-import frc.team1816.robot.subsystems.CargoShooter;
-import frc.team1816.robot.subsystems.Climber;
-import frc.team1816.robot.subsystems.Drivetrain;
-import frc.team1816.robot.subsystems.LedManager;
+import frc.team1816.robot.subsystems.*;
 
 /**
  * Contains all subsystems of the robot. Follows the singleton pattern.
@@ -40,6 +35,7 @@ public class Components {
         if (factory.isImplemented(CargoCollector.NAME)) {
             collector = new CargoCollector();
         }
+
         if (factory.isImplemented(Drivetrain.NAME)) {
             drivetrain = new Drivetrain();
         }
@@ -56,7 +52,7 @@ public class Components {
     }
 
     public void toggleCamera() {
-        if(isFrontCam) {
+        if (isFrontCam) {
             System.out.println("Activating Rear Cam");
             server.setSource(camRear);
             isFrontCam = false;
@@ -70,7 +66,7 @@ public class Components {
     /**
      * Returns the singleton instance of Components. Initializes it if there is no
      * current instance.
-     * 
+     *
      * @return The current singleton instance of Components.
      */
     public static Components getInstance() {

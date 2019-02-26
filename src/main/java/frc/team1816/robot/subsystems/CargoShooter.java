@@ -80,8 +80,8 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.setInverted(kMotorInverted);
         armTalon.setSensorPhase(kSensorPhase);
         armTalon.enableCurrentLimit(true);
-        armTalon.configContinuousCurrentLimit(3,kTimeoutMs);
-        armTalon.configPeakCurrentLimit(5,kTimeoutMs);
+        armTalon.configContinuousCurrentLimit(3, kTimeoutMs);
+        armTalon.configPeakCurrentLimit(5, kTimeoutMs);
         armTalon.configPeakCurrentDuration(75, kTimeoutMs);
         armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
@@ -116,8 +116,8 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MAX), 
-        ROCKET(ARM_POSITION_MID), 
+        DOWN(ARM_POSITION_MAX),
+        ROCKET(ARM_POSITION_MID),
         UP(ARM_POSITION_MIN);
 
         private double armPos;
@@ -164,7 +164,7 @@ public class CargoShooter extends Subsystem implements Checkable {
         System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
                 + "Arm Pos Rel: " + getArmEncoderPosition());
 
-            this.armPower = armPow * 0.50;
+        this.armPower = armPow * 0.50;
 
         outputsChanged = true;
     }
@@ -225,7 +225,7 @@ public class CargoShooter extends Subsystem implements Checkable {
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
         Timer.delay(3);
-        
+
         setIntake(1.0);
         Timer.delay(0.5);
         setIntake(0);
