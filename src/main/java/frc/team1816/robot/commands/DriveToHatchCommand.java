@@ -22,6 +22,8 @@ public class DriveToHatchCommand extends Command {
     private static final double ERROR_THRESHOLD = 5;
     private static final double DIST_THRESHOLD = 4;
 
+    private boolean prevReverseState;
+
     private double nominalPower;
 
     private double width;
@@ -48,6 +50,9 @@ public class DriveToHatchCommand extends Command {
         updateCoordData();
 
         drivetrain.enableBrakeMode();
+
+        prevReverseState = drivetrain.isReverseMode();
+        drivetrain.setReverseMode(true);
     }
 
     @Override
@@ -56,7 +61,7 @@ public class DriveToHatchCommand extends Command {
         lateralError = (width / 2) - xCoord;
         double leftPow = nominalPower;
         double rightPow = nominalPower;
-        double control = lateralError * kP;
+        double control = Math.abs(lateralError * kP);
 
         System.out.println("x: " + xCoord + "\ty: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("Distance to target: " + deltaDist);
@@ -83,6 +88,7 @@ public class DriveToHatchCommand extends Command {
     protected void end() {
         drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0, 0);
+        drivetrain.setReverseMode(prevReverseState);
     }
 
     @Override
