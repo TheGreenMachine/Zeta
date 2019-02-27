@@ -105,10 +105,10 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public enum RobotStatus {
-        RUNNING(0, 0, 255),
+        ENDGAME(0, 0, 255),
         ENABLED(0, 255, 0),
         ERROR(255, 0, 0),
-        DISABLED(255, 90, 0),
+        DISABLED(255, 103, 0),
         OFF(0, 0, 0);
 
         int red;
