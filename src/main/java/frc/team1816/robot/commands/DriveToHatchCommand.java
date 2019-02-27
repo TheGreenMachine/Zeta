@@ -27,7 +27,7 @@ public class DriveToHatchCommand extends Command {
     private boolean prevReverseState;
 
     private double nominalPower;
-    private double targetCenterX = 320.0; // define x that corresponds to bot center
+    private double targetCenterX = 300.0; // define x that corresponds to bot center
 
     private double width;
     private double height;
@@ -43,7 +43,7 @@ public class DriveToHatchCommand extends Command {
     }
 
     @Override
-    protected void initialize() {
+    protected void initialize() { // TODO: ungrip while driving, grip when finished
         drivetrain.setDrivetrainVisionNav(true);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -61,12 +61,12 @@ public class DriveToHatchCommand extends Command {
     @Override
     protected void execute() {
         updateCoordData();
-        lateralError = (targetCenterX / 2) - xCoord;
+        lateralError = targetCenterX - xCoord;
         double leftPow = nominalPower;
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
 
-        System.out.println("cam: (" + width + "," + height + ")\tcenter: (" + xCoord + "," + yCoord + 
+        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord + 
             ")\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
 
