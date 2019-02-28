@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
 import frc.team1816.robot.subsystems.LedManager;
+import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 public class DriveToHatchCommand extends Command {
 
@@ -41,8 +42,10 @@ public class DriveToHatchCommand extends Command {
 
     public DriveToHatchCommand(double power) {
         drivetrain = Components.getInstance().drivetrain;
+        leds = Components.getInstance().ledManager;
         nominalPower = power;
         requires(drivetrain);
+        requires(leds);
     }
 
     @Override
@@ -69,17 +72,17 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
 
-        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord + 
-            ")\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord +
+                ")\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
 
-        if(xCoord == -1.0 || yCoord == -1.0) {
+        if (xCoord == -1.0 || yCoord == -1.0) {
             control = 0;
+        } else {
+            leds.indicateStatus(RobotStatus.TARGET_SEEN);
         }
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
-
-            leds.blinkStatus(LedManager.RobotStatus.TARGET_SEEN); // TODO: check if this is being done correctly
             if (lateralError < 0) { // target is right of center, so decrease right side (wrt cargo) vel
                 leftPow = leftPow - control; // drivetrain reversed, so apply control to other side
                 Math1816.coerceValue(1.0, 0.0, leftPow);
