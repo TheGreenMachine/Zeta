@@ -7,11 +7,13 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
+import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.Drivetrain;
 
-public class DriveToHatchCommand extends Command {
+public class DriveToLoadHatchCommand extends Command {
 
     private Drivetrain drivetrain;
+    private Birdbeak birdbeak;
 
     private NetworkTable table;
     private NetworkTableEntry xEntry;
@@ -36,14 +38,16 @@ public class DriveToHatchCommand extends Command {
     private double deltaDist;
     private double lateralError;
 
-    public DriveToHatchCommand(double power) {
+    public DriveToLoadHatchCommand(double power) {
+        birdbeak = Components.getInstance().birdbeak;
         drivetrain = Components.getInstance().drivetrain;
         nominalPower = power;
         requires(drivetrain);
+        requires(birdbeak);
     }
 
     @Override
-    protected void initialize() { // TODO: ungrip while driving, grip when finished
+    protected void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -53,9 +57,10 @@ public class DriveToHatchCommand extends Command {
         updateCoordData();
 
         drivetrain.enableBrakeMode();
-
         prevReverseState = drivetrain.isReverseMode();
         drivetrain.setReverseMode(true);
+
+        birdbeak.setBeak(true);
     }
 
     @Override
@@ -99,6 +104,7 @@ public class DriveToHatchCommand extends Command {
         drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0, 0);
         drivetrain.setReverseMode(prevReverseState);
+        birdbeak.setBeak(false);
     }
 
     @Override

@@ -85,10 +85,10 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         if (shooter != null && leds != null) {
-            if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID) {
+            if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID + 100) { // Check Shooter arm position
                 leds.blinkStatus(RobotStatus.ERROR);
             } else {
-                leds.blinkStatus(RobotStatus.DISABLED);
+                leds.indicateStatus(RobotStatus.DISABLED);
             }
         }
         periodic();
@@ -104,7 +104,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (leds != null) {
+        if (DriverStation.getInstance().getMatchTime() <= 30 && DriverStation.getInstance().getMatchTime() > 0) {
+            leds.blinkStatus(RobotStatus.ENDGAME);
+        } else if (leds != null) {
             leds.indicateStatus(RobotStatus.ENABLED);
         }
         periodic();
