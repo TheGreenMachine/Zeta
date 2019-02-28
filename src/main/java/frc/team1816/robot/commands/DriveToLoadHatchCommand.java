@@ -48,7 +48,6 @@ public class DriveToLoadHatchCommand extends Command {
         nominalPower = power;
         requires(drivetrain);
         requires(birdbeak);
-        requires(leds);
     }
 
     @Override

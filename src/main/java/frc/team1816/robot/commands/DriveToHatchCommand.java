@@ -45,7 +45,6 @@ public class DriveToHatchCommand extends Command {
         leds = Components.getInstance().ledManager;
         nominalPower = power;
         requires(drivetrain);
-        requires(leds);
     }
 
     @Override
