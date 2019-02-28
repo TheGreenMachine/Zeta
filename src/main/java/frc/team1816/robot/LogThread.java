@@ -2,6 +2,7 @@ package frc.team1816.robot;
 
 import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Threads;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,8 @@ public class LogThread extends Thread {
 
     public LogThread() {
         super();
-        setPriority(Thread.NORM_PRIORITY - 2); // Reduce the priority of this thread
+        // Reduce the priority of this thread
+        Threads.setCurrentThreadPriority(true, 30);
     }
 
     public synchronized void initLog() {
@@ -32,12 +34,11 @@ public class LogThread extends Thread {
 
     @Override
     public void run() {
-        logger.updateTopics();
-        if (!DriverStation.getInstance().isDisabled()) {
-            logger.log();
-        }
-        if (!Thread.currentThread().isInterrupted()) {
-            run();
+        while (!Thread.currentThread().isInterrupted()) {
+            logger.updateTopics();
+            if (!DriverStation.getInstance().isDisabled()) {
+                logger.log();
+            }
         }
     }
 }
