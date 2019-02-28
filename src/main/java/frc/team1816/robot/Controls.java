@@ -75,7 +75,7 @@ public class Controls {
             gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
         }
 
-        if(factory.isImplemented(Climber.NAME)) {
+        if (factory.isImplemented(Climber.NAME)) {
             gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
             gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
             gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));

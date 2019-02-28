@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.LedManager;
 
 public class DriveToHatchCommand extends Command {
 
@@ -35,6 +36,8 @@ public class DriveToHatchCommand extends Command {
     private double yCoord;
     private double deltaDist;
     private double lateralError;
+
+    private LedManager leds;
 
     public DriveToHatchCommand(double power) {
         drivetrain = Components.getInstance().drivetrain;
@@ -75,6 +78,8 @@ public class DriveToHatchCommand extends Command {
         }
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
+
+            leds.blinkStatus(LedManager.RobotStatus.TARGET_SEEN); // TODO: check if this is being done correctly
             if (lateralError < 0) { // target is right of center, so decrease right side (wrt cargo) vel
                 leftPow = leftPow - control; // drivetrain reversed, so apply control to other side
                 Math1816.coerceValue(1.0, 0.0, leftPow);
@@ -83,7 +88,6 @@ public class DriveToHatchCommand extends Command {
                 Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
-
         System.out.println("L set pow: " + leftPow + "\tR set pow: " + rightPow);
         drivetrain.setDrivetrainPercent(leftPow, rightPow);
     }

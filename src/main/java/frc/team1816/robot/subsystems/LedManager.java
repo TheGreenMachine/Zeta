@@ -112,6 +112,7 @@ public class LedManager extends Subsystem implements Checkable {
         TARGET_SEEN(255, 0, 255), // magenta
         OFF(0, 0, 0); // off
 
+
         int red;
         int green;
         int blue;
