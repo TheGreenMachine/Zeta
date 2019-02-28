@@ -9,7 +9,7 @@ import frc.team1816.robot.subsystems.Drivetrain;
 import static frc.team1816.robot.Robot.factory;
 
 public class GamepadDriveCommand extends Command {
-    private static final String NAME = "gamepaddrivecommand";
+    public static final String NAME = "gamepaddrivecommand";
 
     private Drivetrain drivetrain;
     CheesyDriveHelper mCheesyDriveHelper = new CheesyDriveHelper();
