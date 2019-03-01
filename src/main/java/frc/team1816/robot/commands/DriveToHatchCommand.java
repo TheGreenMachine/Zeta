@@ -77,6 +77,7 @@ public class DriveToHatchCommand extends Command {
 
         if (xCoord == -1.0 || yCoord == -1.0) {
             control = 0;
+            leds.indicateStatus(RobotStatus.OFF);
         } else {
             leds.indicateStatus(RobotStatus.TARGET_SEEN);
         }
