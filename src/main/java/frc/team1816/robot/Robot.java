@@ -139,16 +139,17 @@ public class Robot extends TimedRobot {
     private void initLog() {
         var timestamp = new SimpleDateFormat("DDD.HH.mm").format(new Date());
 
-        String path;
-        String defaultPath = "/home/lvuser/";
-        String usbPath = "/media/sda1/";
+        String path = "/home/lvuser/";
 
-        File f = new File(usbPath);
-        if (f.exists() && f.isDirectory()) {
-            path = usbPath;
-        } else {
-            path = defaultPath;
-        }
+        /** Code to write logs to a USB drive. Currently receiving permission denied error*/
+        // String usbPath = "/media/sda1/";
+
+        // File f = new File(usbPath);
+        // if (f.exists() && f.isDirectory()) {
+        //     path = usbPath;
+        // } else {
+        //     path = defaultPath;
+        // }
 
         logger = BadLog.init(path + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
 
