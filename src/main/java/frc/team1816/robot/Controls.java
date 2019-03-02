@@ -90,7 +90,9 @@ public class Controls {
         gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
-        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.2));
+
+        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.25));
+        gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.25));
     }
 
     public double getDriveThrottle() {

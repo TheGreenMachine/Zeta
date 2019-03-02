@@ -18,8 +18,8 @@ public class LogThread extends Thread {
     }
 
     public synchronized void initLog() {
-        // Format timestamp according to ISO 8601 e.g. 2019-02-14T16.37
-        var timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm").format(new Date());
+        // Format timestamp according to ISO 8601 e.g. 2019-02-14T16-37
+        var timestamp = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH'-'mm").format(new Date());
         String path = "/home/lvuser/";
         logger = BadLog.init(path + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
 

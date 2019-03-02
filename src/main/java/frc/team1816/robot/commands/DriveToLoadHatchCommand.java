@@ -47,7 +47,9 @@ public class DriveToLoadHatchCommand extends Command {
         leds = Components.getInstance().ledManager;
         nominalPower = power;
         requires(drivetrain);
-        requires(birdbeak);
+        if (birdbeak != null) {
+            requires(birdbeak);
+        }
     }
 
     @Override
@@ -64,7 +66,9 @@ public class DriveToLoadHatchCommand extends Command {
         prevReverseState = drivetrain.isReverseMode();
         drivetrain.setReverseMode(true);
 
-        birdbeak.setBeak(true);
+        if (birdbeak != null) {
+            birdbeak.setBeak(true);
+        }
     }
 
     @Override
@@ -111,7 +115,9 @@ public class DriveToLoadHatchCommand extends Command {
         drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0, 0);
         drivetrain.setReverseMode(prevReverseState);
-        birdbeak.setBeak(false);
+        if (birdbeak != null) {
+            birdbeak.setBeak(false);
+        }
     }
 
     @Override
