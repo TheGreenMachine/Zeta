@@ -1,7 +1,6 @@
 package frc.team1816.robot.commands;
 
 import com.edinarobotics.utils.math.Math1816;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -9,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.LedManager;
+import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 public class DriveToLoadHatchCommand extends Command {
 
@@ -38,9 +39,12 @@ public class DriveToLoadHatchCommand extends Command {
     private double deltaDist;
     private double lateralError;
 
+    private LedManager leds;
+
     public DriveToLoadHatchCommand(double power) {
         birdbeak = Components.getInstance().birdbeak;
         drivetrain = Components.getInstance().drivetrain;
+        leds = Components.getInstance().ledManager;
         nominalPower = power;
         requires(drivetrain);
         requires(birdbeak);
@@ -71,12 +75,15 @@ public class DriveToLoadHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
 
-        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord + 
-            ")\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord +
+                ")\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
 
-        if(xCoord == -1.0 || yCoord == -1.0) {
+        if (xCoord == -1.0 || yCoord == -1.0) {
             control = 0;
+            leds.indicateStatus(RobotStatus.OFF);
+        } else {
+            leds.indicateStatus(RobotStatus.TARGET_SEEN);
         }
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {

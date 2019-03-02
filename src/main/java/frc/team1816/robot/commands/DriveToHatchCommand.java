@@ -8,6 +8,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.LedManager;
+import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 public class DriveToHatchCommand extends Command {
 
@@ -36,8 +38,11 @@ public class DriveToHatchCommand extends Command {
     private double deltaDist;
     private double lateralError;
 
+    private LedManager leds;
+
     public DriveToHatchCommand(double power) {
         drivetrain = Components.getInstance().drivetrain;
+        leds = Components.getInstance().ledManager;
         nominalPower = power;
         requires(drivetrain);
     }
@@ -66,12 +71,15 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
 
-        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord + 
-            ")\tlatErr: " + lateralError + "\tcontrol: " + control);
+        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord +
+                ")\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
 
-        if(xCoord == -1.0 || yCoord == -1.0) {
+        if (xCoord == -1.0 || yCoord == -1.0) {
             control = 0;
+            leds.indicateStatus(RobotStatus.OFF);
+        } else {
+            leds.indicateStatus(RobotStatus.TARGET_SEEN);
         }
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
@@ -83,7 +91,6 @@ public class DriveToHatchCommand extends Command {
                 Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
-
         System.out.println("L set pow: " + leftPow + "\tR set pow: " + rightPow);
         drivetrain.setDrivetrainPercent(leftPow, rightPow);
     }

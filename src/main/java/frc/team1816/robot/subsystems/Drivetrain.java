@@ -135,7 +135,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo.setNeutralMode(NeutralMode.Coast);
     }
 
-    private void initDrivetrainLog() {
+    private void initDrivetrainLog() { // TODO: do all bad logging in different thread
         BadLog.createTopic("Drivetrain/Angle", "deg",
                 () -> getGyroAngle());
         BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,

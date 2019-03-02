@@ -65,7 +65,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
     compile 'org.reflections:reflections:0.9.11'
     compile 'org.yaml:snakeyaml:1.23'
-    compile 'com.github.dominikWin:badlog:v0.1.1'
+    compile 'com.github.dominikwin:badlog:v0.1.1'
 }
 
 test {
