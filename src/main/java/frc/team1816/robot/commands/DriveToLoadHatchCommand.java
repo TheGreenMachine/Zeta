@@ -17,11 +17,12 @@ public class DriveToLoadHatchCommand extends Command {
     private Birdbeak birdbeak;
 
     private NetworkTable table;
-    private NetworkTableEntry xEntry;
-    private NetworkTableEntry yEntry;
     private NetworkTableEntry widthEntry;
     private NetworkTableEntry heightEntry;
+    private NetworkTableEntry xEntry;
+    private NetworkTableEntry yEntry;
     private NetworkTableEntry distanceEntry;
+    private NetworkTableEntry yawEntry;
 
     private static final double kP = 0.0015;
     private static final double ERROR_THRESHOLD = 5;
@@ -36,6 +37,7 @@ public class DriveToLoadHatchCommand extends Command {
     private double height;
     private double xCoord;
     private double yCoord;
+    private double yawOffset;
     private double deltaDist;
     private double lateralError;
 
@@ -125,6 +127,7 @@ public class DriveToLoadHatchCommand extends Command {
         widthEntry = table.getEntry("width");
         heightEntry = table.getEntry("height");
         distanceEntry = table.getEntry("distance_esti");
+        yawEntry = table.getEntry("yaw");
 
         width = widthEntry.getDouble(640);
         height = widthEntry.getDouble(480);
@@ -134,5 +137,6 @@ public class DriveToLoadHatchCommand extends Command {
         xCoord = xEntry.getDouble(-1.0);
         yCoord = yEntry.getDouble(-1.0);
         deltaDist = distanceEntry.getDouble(-1);
+        yawOffset = yawEntry.getDouble(0);
     }
 }
