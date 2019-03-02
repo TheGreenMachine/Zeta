@@ -3,6 +3,7 @@ package frc.team1816.robot;
 import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Threads;
+import edu.wpi.first.wpilibj.Timer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +40,7 @@ public class LogThread extends Thread {
             if (!DriverStation.getInstance().isDisabled()) {
                 logger.log();
             }
+            Timer.delay(1);
         }
     }
 }
