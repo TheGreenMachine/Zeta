@@ -12,6 +12,7 @@ import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.subsystems.*;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -137,7 +138,18 @@ public class Robot extends TimedRobot {
 
     private void initLog() {
         var timestamp = new SimpleDateFormat("DDD.HH.mm").format(new Date());
-        String path = "/home/lvuser/";
+
+        String path;
+        String defaultPath = "/home/lvuser/";
+        String usbPath = "/media/sda1/";
+
+        File f = new File(usbPath);
+        if (f.exists() && f.isDirectory()) {
+            path = usbPath;
+        } else {
+            path = defaultPath;
+        }
+
         logger = BadLog.init(path + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
 
         BadLog.createValue("Match Type", DriverStation.getInstance().getMatchType().toString());
