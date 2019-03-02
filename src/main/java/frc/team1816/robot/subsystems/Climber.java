@@ -20,7 +20,7 @@ public class Climber extends Subsystem implements Checkable {
     private IMotorControllerEnhanced climbSlave;
 
     private DoubleSolenoid habPiston;
-    private DoubleSolenoid.Value habPistonState = Value.kOff;
+    private Value habPistonState = Value.kOff;
 
     private double motorPower;
 
@@ -59,6 +59,18 @@ public class Climber extends Subsystem implements Checkable {
 
     public double getMotorPower() {
         return motorPower;
+    }
+
+    public void toggleClimberPiston() {
+        if (habPistonState == Value.kReverse) {
+            setHabPiston(Value.kOff);
+            setHabPiston(Value.kForward);
+            System.out.println("Set Climber Piston: fwd");
+        } else {
+            setHabPiston(Value.kOff);
+            setHabPiston(Value.kReverse);
+            System.out.println("Set Climber Piston: rev");
+        }
     }
 
     @Override

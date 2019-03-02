@@ -19,12 +19,8 @@ public class ToggleClimberPistonCommand extends Command {
     }
 
     @Override
-    protected void execute() { // TODO: test logic and offload to internal Climber method
-        if (climber.getHabPistonState() == DoubleSolenoid.Value.kForward) {
-            climber.setHabPiston(DoubleSolenoid.Value.kReverse);
-        } else {
-            climber.setHabPiston(DoubleSolenoid.Value.kForward);
-        }
+    protected void execute() { // TODO: test logic
+        climber.toggleClimberPiston();
     }
 
     @Override
