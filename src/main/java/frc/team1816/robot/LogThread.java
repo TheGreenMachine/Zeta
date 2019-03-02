@@ -27,7 +27,7 @@ public class LogThread extends Thread {
         File f = new File(usbPath);
         String path = (f.exists() && f.isDirectory() ? usbPath : defaultPath);
 
-        logger = BadLog.init(path + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
+        logger = BadLog.init(path + "/bags/" +System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
 
         DriverStation ds = DriverStation.getInstance();
         BadLog.createValue("Match Type", ds.getMatchType().toString());
