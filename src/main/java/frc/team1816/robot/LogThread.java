@@ -22,12 +22,15 @@ public class LogThread extends Thread {
         // Format timestamp according to ISO 8601 e.g. 2019-02-14T16-37
         var timestamp = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH'-'mm").format(new Date());
 
-        String defaultPath = "/home/lvuser/";
-        String usbPath = "/media/sda1/";
+        String path = "/home/lvuser/";
+        // TODO: Fix issues with writing to USB
+        /*String usbPath = "/media/sda1/";
         File f = new File(usbPath);
-        String path = (f.exists() && f.isDirectory() ? usbPath : defaultPath);
+        if (f.exists() && f.isDirectory()) {
+            path = usbPath;
+        }*/
 
-        logger = BadLog.init(path + "/bags/" +System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
+        logger = BadLog.init(path + "/bags/" + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
 
         DriverStation ds = DriverStation.getInstance();
         BadLog.createValue("Match Type", ds.getMatchType().toString());
