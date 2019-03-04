@@ -12,6 +12,8 @@ import java.util.Date;
 public class LogThread extends Thread {
     private BadLog logger;
 
+    private static final int LOOP_TIME_S = 1;
+
     public LogThread() {
         super();
         // Reduce the priority of this thread
@@ -49,7 +51,7 @@ public class LogThread extends Thread {
             if (!DriverStation.getInstance().isDisabled()) {
                 logger.log();
             }
-            Timer.delay(1);
+            Timer.delay(LOOP_TIME_S);
         }
     }
 }
