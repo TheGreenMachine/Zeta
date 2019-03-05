@@ -124,7 +124,6 @@ public class Robot extends TimedRobot {
     }
 
     private void periodic() {
-        //   System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
     }
 }

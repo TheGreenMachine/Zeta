@@ -23,14 +23,15 @@ public class DriveToHatchCommand extends Command {
     private NetworkTableEntry distanceEntry;
     private NetworkTableEntry yawEntry;
 
-    private static final double kP = 0.0015; // stable @ 20% - 0.0015
+    private static final double kP = 0.0010; // stable @ 20% - 0.0015
     private static final double ERROR_THRESHOLD = 5;
+    private static final double ON_TARGET_THRESHOLD = 20;
     private static final double DIST_THRESHOLD = 4;
 
     private boolean prevReverseState;
 
     private double nominalPower;
-    private double targetCenterX = 300.0; // define x that corresponds to bot center
+    private double targetCenterX = 340.0; // define x that corresponds to bot center
 
     private double width;
     private double height;
@@ -81,7 +82,11 @@ public class DriveToHatchCommand extends Command {
             control = 0;
             leds.indicateStatus(RobotStatus.OFF);
         } else {
-            leds.indicateStatus(RobotStatus.TARGET_SEEN);
+            if (Math.abs(lateralError) <= ON_TARGET_THRESHOLD) {
+                leds.indicateStatus(RobotStatus.ON_TARGET);
+            } else {
+                leds.indicateStatus(RobotStatus.SEEN_TARGET);
+            }
         }
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
@@ -93,6 +98,7 @@ public class DriveToHatchCommand extends Command {
                 Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
+
         System.out.println("L set pow: " + leftPow + "\tR set pow: " + rightPow);
         drivetrain.setDrivetrainPercent(leftPow, rightPow);
     }
