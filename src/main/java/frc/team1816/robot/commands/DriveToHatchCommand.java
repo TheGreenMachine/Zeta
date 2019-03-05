@@ -51,7 +51,7 @@ public class DriveToHatchCommand extends Command {
     }
 
     @Override
-    protected void initialize() { // TODO: ungrip while driving, grip when finished
+    protected void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
