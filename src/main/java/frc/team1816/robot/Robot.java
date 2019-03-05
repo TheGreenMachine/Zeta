@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
     public Robot() {
         // set the loop timeout in seconds
-        super(.04); // TODO: change back to default
+        super(.02);
     }
 
     @Override
@@ -33,8 +33,8 @@ public class Robot extends TimedRobot {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
 
-        LogThread logThread = new LogThread();
-        logThread.initLog();
+//        LogThread logThread = new LogThread();
+//        logThread.initLog();
 
         Components.getInstance();
         Controls.getInstance();
@@ -46,8 +46,8 @@ public class Robot extends TimedRobot {
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
-        logThread.finishInitialization();
-        logThread.start();
+//       logThread.finishInitialization();
+//       logThread.start();
 
         if (leds != null) {
             leds.setDefaultCommand(new BlinkLedCommand(2));

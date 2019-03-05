@@ -18,6 +18,7 @@ public class LogThread extends Thread {
         super();
         // Reduce the priority of this thread
         Threads.setCurrentThreadPriority(true, 30);
+        setDaemon(true);
     }
 
     public synchronized void initLog() {
