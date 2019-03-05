@@ -11,14 +11,13 @@ import java.util.Date;
 
 public class LogThread extends Thread {
     private BadLog logger;
+    private Object lock = new Object();
 
     private static final int LOOP_TIME_S = 1;
 
     public LogThread() {
         super();
         // Reduce the priority of this thread
-        
-        // Threads.setCurrentThreadPriority(true, 30);
         setDaemon(true);
     }
 
@@ -46,14 +45,25 @@ public class LogThread extends Thread {
         logger.finishInitialization();
     }
 
+
+    public void doLog() {
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
+
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            logger.updateTopics();
-            if (!DriverStation.getInstance().isDisabled()) {
-                logger.log();
+        while (!Thread.interrupted()) {
+            try {
+                lock.wait();
+                logger.updateTopics();
+                if (!DriverStation.getInstance().isDisabled()) {
+                    logger.log();
+                }
+            } catch (InterruptedException ie) {
+
             }
-            Timer.delay(LOOP_TIME_S);
         }
     }
 }

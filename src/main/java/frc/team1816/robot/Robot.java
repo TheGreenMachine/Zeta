@@ -19,6 +19,7 @@ public class Robot extends TimedRobot {
     public Drivetrain drivetrain;
     public LedManager leds;
     public CargoShooter shooter;
+    public LogThread logThread;
 
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
@@ -33,7 +34,7 @@ public class Robot extends TimedRobot {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
 
-        LogThread logThread = new LogThread();
+        logThread = new LogThread();
         logThread.initLog();
 
         Components.getInstance();
@@ -46,8 +47,8 @@ public class Robot extends TimedRobot {
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
-//       logThread.finishInitialization();
-//       logThread.start();
+        logThread.finishInitialization();
+        logThread.start();
 
         if (leds != null) {
             leds.setDefaultCommand(new BlinkLedCommand(2));
@@ -126,5 +127,7 @@ public class Robot extends TimedRobot {
     private void periodic() {
         //   System.out.println("Gyro Angle" + drivetrain.getGyroAngle());
         Scheduler.getInstance().run();
+
+        logThread.doLog();
     }
 }
