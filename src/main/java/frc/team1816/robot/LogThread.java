@@ -17,8 +17,7 @@ public class LogThread extends Thread {
     public LogThread() {
         super();
         // Reduce the priority of this thread
-        
-        // Threads.setCurrentThreadPriority(true, 30);
+        Threads.setCurrentThreadPriority(true, 30);
         setDaemon(true);
     }
 
@@ -28,13 +27,13 @@ public class LogThread extends Thread {
 
         String path = "/home/lvuser/";
         // TODO: Fix issues with writing to USB
-        // String usbPath = "/media/sda1/";
-        // File f = new File(usbPath);
-        // if (f.exists() && f.isDirectory()) {
-        //     path = usbPath;
-        // }
+        /*String usbPath = "/media/sda1/";
+        File f = new File(usbPath);
+        if (f.exists() && f.isDirectory()) {
+            path = usbPath;
+        }*/
 
-        logger = BadLog.init(path + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
+        logger = BadLog.init(path + "/bags/" + System.getenv("ROBOT_NAME") + "_" + timestamp + ".bag");
 
         DriverStation ds = DriverStation.getInstance();
         BadLog.createValue("Match Type", ds.getMatchType().toString());
