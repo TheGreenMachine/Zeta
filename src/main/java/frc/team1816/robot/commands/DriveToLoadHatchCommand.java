@@ -14,12 +14,16 @@ public class DriveToLoadHatchCommand extends CommandGroup {
         birdbeak = Components.getInstance().birdbeak;
 
         addParallel(new SetBeakCommand(true));
-        addParallel(new DriveToHatchCommand(power));
+        if (birdbeak != null) {
+            addParallel(new DriveToHatchCommand(power));
+        }
     }
 
     @Override
     protected void end() {
-        birdbeak.setBeak(false);
+        if (birdbeak != null) {
+            birdbeak.setBeak(false);
+        }
     }
 
     @Override

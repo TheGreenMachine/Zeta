@@ -77,7 +77,7 @@ public class DriveToHatchCommand extends Command {
                 ")\tlatErr: " + lateralError + "\tcontrol: " + control);
         System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
 
-        if (xCoord == -1.0 || yCoord == -1.0) {
+        if (xCoord == -1.0 && yCoord == -1.0) {
             control = 0;
             leds.indicateStatus(RobotStatus.OFF);
         } else {
