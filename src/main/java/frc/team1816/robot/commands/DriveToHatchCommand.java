@@ -23,7 +23,7 @@ public class DriveToHatchCommand extends Command {
     private NetworkTableEntry distanceEntry;
     private NetworkTableEntry yawEntry;
 
-    private static final double kP = 0.0010; // stable @ 20% - 0.0015
+    private static final double kP = 0.0005; // stable @ 20% - 0.0015
     private static final double ERROR_THRESHOLD = 5;
     private static final double ON_TARGET_THRESHOLD = 20;
     private static final double DIST_THRESHOLD = 4;
