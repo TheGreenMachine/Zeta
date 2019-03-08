@@ -98,9 +98,9 @@ public class Drivetrain extends Subsystem implements Checkable {
         System.out.println("NavX Active: " + getGyroStatus());
 
         this.initTime = System.currentTimeMillis();
-        initCoordinateTracking();
 
-        initDrivetrainLog();
+        // initCoordinateTracking();
+        // initDrivetrainLog();
     }
 
     private void invertTalons(boolean invertRight) {
@@ -135,32 +135,32 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo.setNeutralMode(NeutralMode.Coast);
     }
 
-    private void initDrivetrainLog() { // TODO: do all bad logging in different thread
-        BadLog.createTopic("Drivetrain/Angle", "deg",
-                () -> getGyroAngle());
-        BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
-                () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
-        BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
-                () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
-        BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
-                () -> getLeftPower(), "hide", "join:Drivetrain/Percent Out");
-        BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
-                () -> getRightPower(), "hide", "join:Drivetrain/Percent Out");
-    }
+    // private void initDrivetrainLog() { // TODO: do all bad logging in different thread
+    //     BadLog.createTopic("Drivetrain/Angle", "deg",
+    //             () -> getGyroAngle());
+    //     BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
+    //             () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
+    //     BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
+    //             () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
+    //     BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
+    //             () -> getLeftPower(), "hide", "join:Drivetrain/Percent Out");
+    //     BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
+    //             () -> getRightPower(), "hide", "join:Drivetrain/Percent Out");
+    // }
 
-    public void initCoordinateTracking() {
-        this.initX = 0;
-        this.initY = 0;
-        this.xPos = 0;
-        this.yPos = 0;
-        this.prevRightInches = 0.0;
-        this.prevLeftInches = 0.0;
-        this.prevInches = 0;
-        this.prevX = 0;
-        this.prevY = 0;
-        this.initAngle = navX.getAngle();
-        System.out.println(initAngle);
-    }
+    // public void initCoordinateTracking() {
+    //     this.initX = 0;
+    //     this.initY = 0;
+    //     this.xPos = 0;
+    //     this.yPos = 0;
+    //     this.prevRightInches = 0.0;
+    //     this.prevLeftInches = 0.0;
+    //     this.prevInches = 0;
+    //     this.prevX = 0;
+    //     this.prevY = 0;
+    //     this.initAngle = navX.getAngle();
+    //     System.out.println(initAngle);
+    // }
 
     public double getLeftPower() {
         return leftPower;
