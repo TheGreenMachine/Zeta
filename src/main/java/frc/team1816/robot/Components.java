@@ -20,7 +20,7 @@ public class Components {
     public CargoShooter shooter;
 
     VideoSink server;
-    public UsbCamera camFront, camRear;
+    public UsbCamera camCargo, camHatch;
     private boolean isFrontCam = true;
 
     private Components() {
@@ -45,20 +45,20 @@ public class Components {
         if (factory.isImplemented(LedManager.NAME)) {
             ledManager = new LedManager();
         }
-
-        camFront = CameraServer.getInstance().startAutomaticCapture(0);
-        // camRear = CameraServer.getInstance().startAutomaticCapture(1);
+        
+        camHatch = CameraServer.getInstance().startAutomaticCapture(0);
+        // camCargo = CameraServer.getInstance().startAutomaticCapture(1);
         // server = CameraServer.getInstance().getServer();
     }
 
     public void toggleCamera() {
         if (isFrontCam) {
             System.out.println("Activating Rear Cam");
-            server.setSource(camRear);
+            server.setSource(camHatch);
             isFrontCam = false;
         } else {
             System.out.println("Activating Front Cam");
-            server.setSource(camFront);
+            server.setSource(camCargo);
             isFrontCam = true;
         }
     }
