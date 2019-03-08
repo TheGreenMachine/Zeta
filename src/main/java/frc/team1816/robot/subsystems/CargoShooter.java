@@ -205,21 +205,21 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     }
 
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        builder.addStringProperty("ControlMode", () -> armTalon.getControlMode().toString(), null);
-        builder.addDoubleProperty("CurrentPosition", this::getArmEncoderPosition, null);
-        builder.addDoubleProperty("ClosedLoop/TargetPosition",
-                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
-        builder.addDoubleProperty("ClosedLoop/Error",
-                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopError(kPIDLoopIdx) : 0), null);
-        builder.addDoubleProperty("MotorOutput", armTalon::getMotorOutputPercent, null);
-        builder.addBooleanProperty("Busy", this::isBusy, null);
-        builder.addDoubleProperty("IntakePower", this::getIntakePower, this::setIntake);
-        builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);
-        SmartDashboard.putNumber("max_thresh", ARM_POSITION_MAX);
-        SmartDashboard.putNumber("min_thresh", ARM_POSITION_MIN);
-    }
+    // @Override
+    // public void initSendable(SendableBuilder builder) {
+    //     builder.addStringProperty("ControlMode", () -> armTalon.getControlMode().toString(), null);
+    //     builder.addDoubleProperty("CurrentPosition", this::getArmEncoderPosition, null);
+    //     builder.addDoubleProperty("ClosedLoop/TargetPosition",
+    //             () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
+    //     builder.addDoubleProperty("ClosedLoop/Error",
+    //             () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopError(kPIDLoopIdx) : 0), null);
+    //     builder.addDoubleProperty("MotorOutput", armTalon::getMotorOutputPercent, null);
+    //     builder.addBooleanProperty("Busy", this::isBusy, null);
+    //     builder.addDoubleProperty("IntakePower", this::getIntakePower, this::setIntake);
+    //     builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);
+    //     SmartDashboard.putNumber("max_thresh", ARM_POSITION_MAX);
+    //     SmartDashboard.putNumber("min_thresh", ARM_POSITION_MIN);
+    // }
 
     @Override
     public boolean check() throws CheckFailException {
