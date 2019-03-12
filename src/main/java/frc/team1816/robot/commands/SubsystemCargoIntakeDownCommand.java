@@ -18,7 +18,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
-        elapsedDelayMs = 1000;
+        elapsedDelayMs = 700;
 
         requires(collector);
         requires(shooter);

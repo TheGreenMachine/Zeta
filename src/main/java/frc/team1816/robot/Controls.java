@@ -86,7 +86,7 @@ public class Controls {
             gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
         }
 
-        // gamepadDriver.diamondDown().whenPressed(new ToggleCameraCommand());
+        // gamepadDriver.dPadRight().whenPressed(new ToggleCameraCommand());
         gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));

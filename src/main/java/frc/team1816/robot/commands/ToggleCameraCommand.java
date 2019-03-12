@@ -15,6 +15,7 @@ public class ToggleCameraCommand extends Command {
 
     @Override
     protected void execute() {
+        System.out.println("Toggling Camera");
         Components.getInstance().toggleCamera();
     }
 

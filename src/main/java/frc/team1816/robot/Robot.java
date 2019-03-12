@@ -33,8 +33,8 @@ public class Robot extends TimedRobot {
         System.out.println("Initializing robot!");
         System.out.println(System.getenv("ROBOT_NAME"));
 
-        LogThread logThread = new LogThread();
-        logThread.initLog();
+        // LogThread logThread = new LogThread();
+        // logThread.initLog();
 
         Components.getInstance();
         Controls.getInstance();
@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
+            drivetrain.setSlowMode(true);
         }
     }
 
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
+            drivetrain.setSlowMode(false);
         }
     }
 

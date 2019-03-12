@@ -42,9 +42,9 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 2300
-      midPos: 1400
-      minPos: 1300
+      maxPos: 1820
+      midPos: 1000
+      minPos: 730
   ledmanager:
     implemented: true
     canifier: 18
