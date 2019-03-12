@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-            drivetrain.setSlowMode(true); // TODO: confirm functional
+            drivetrain.setSlowMode(true);
         }
     }
 
@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-            drivetrain.setSlowMode(false); // TODO: confirm functional
+            drivetrain.setSlowMode(false);
         }
     }
 
