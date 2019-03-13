@@ -80,10 +80,6 @@ public class Controls {
             gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
             gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));
 
-            // gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0)); // could be whieHeld()
-            // gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
-            // gamepadDriver.dPadDown().whenPressed(new SetClimberPowerCommand(-1.0));
-            // gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
         }
 
         // gamepadDriver.dPadRight().whenPressed(new ToggleCameraCommand());
@@ -109,14 +105,6 @@ public class Controls {
 
     public double getClimbThrottle() {
         return gamepadOperator.getLeftY();
-    }
-
-    public boolean getDriverClimbUp() {
-        return gamepadDriver.dPadUp().get();
-    }
-
-    public boolean getDriverClimbDown() {
-        return gamepadDriver.dPadDown().get();
     }
 
     public double getShooterArmThrottle() {
