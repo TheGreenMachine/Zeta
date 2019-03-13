@@ -66,6 +66,7 @@ dependencies {
     compile 'org.reflections:reflections:0.9.11'
     compile 'org.yaml:snakeyaml:1.23'
     compile 'com.github.dominikwin:badlog:v0.1.1'
+    compile 'gov.nist.math:jama:1.0.3'    
 }
 
 test {
