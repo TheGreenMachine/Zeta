@@ -29,4 +29,14 @@ public class SetClimberPowerCommand extends Command {
     protected boolean isFinished() {
         return true;
     }
+
+    @Override
+    protected void end() {
+        climber.setClimberPower(0);
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
+    }
 }

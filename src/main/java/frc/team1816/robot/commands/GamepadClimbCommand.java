@@ -22,7 +22,7 @@ public class GamepadClimbCommand extends Command {
     protected void execute() {
         double climberPow;
 
-        if (Controls.getInstance().getDriverClimbUp()) {
+        if (Controls.getInstance().getDriverClimbUp()) { // FIXME: this logic causes climber motion in disabled
             climberPow = 1.0;
         } else if (Controls.getInstance().getDriverClimbDown()) {
             climberPow = -1.0;
