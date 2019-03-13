@@ -42,6 +42,8 @@ public class Climber extends Subsystem implements Checkable {
         this.climbMaster.configContinuousCurrentLimit(30, kTimeoutMs);
         this.climbMaster.configPeakCurrentLimit(35, kTimeoutMs);
         this.climbMaster.configPeakCurrentDuration(500, kTimeoutMs);
+
+        this.climbMaster.set(ControlMode.PercentOutput, 0.0);
     }
 
     public void setClimberPower(double motorPow) {
