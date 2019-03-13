@@ -4,10 +4,13 @@ import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1816.robot.commands.BlinkLedCommand;
+import frc.team1816.robot.commands.DriveTrajectoryAuto;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
+import frc.team1816.robot.paths.TrajectoryGenerator;
 import frc.team1816.robot.subsystems.*;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
@@ -19,6 +22,10 @@ public class Robot extends TimedRobot {
     public Drivetrain drivetrain;
     public LedManager leds;
     public CargoShooter shooter;
+
+    private TrajectoryGenerator trajectoryGenerator = TrajectoryGenerator.getInstance();
+
+    private DriveTrajectoryAuto driveTrajectoryAuto;
 
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
@@ -46,6 +53,9 @@ public class Robot extends TimedRobot {
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
+        trajectoryGenerator.generateTrajectories();
+
+        driveTrajectoryAuto = new DriveTrajectoryAuto();
 //       logThread.finishInitialization();
 //       logThread.start();
 
@@ -67,6 +77,9 @@ public class Robot extends TimedRobot {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
             drivetrain.setSlowMode(true);
         }
+
+        Command autoCommand = driveTrajectoryAuto;
+        autoCommand.start();
     }
 
     @Override
