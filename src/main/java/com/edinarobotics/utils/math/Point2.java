@@ -17,6 +17,16 @@ public class Point2 {
         this.x = x;
         this.y = y;
     }
+
+    /**
+     * Updates the x and y values of this Point2 object.
+     * @param x The new x component of this Point.
+     * @param y The new y component of this Point.
+     */
+    public void set(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
     
     /**
      * Returns the x coordinate of the point
