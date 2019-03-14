@@ -50,11 +50,6 @@ public class Controls {
 
             gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(false));
             gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
-            gamepadOperator.dPadLeft().whenPressed(new SubsystemHatchIntakeDownCommand());
-            gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeUpCommand());
-
-            gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0));
-            gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
         }
 
         if (factory.isImplemented(CargoCollector.NAME)) {
