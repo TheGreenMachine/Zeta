@@ -1,5 +1,6 @@
 package frc.team1816.robot;
 
+import com.edinarobotics.utils.hardware.Autowired;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
@@ -12,12 +13,12 @@ import frc.team1816.robot.subsystems.*;
 public class Components {
     private static Components instance;
 
-    public Birdbeak birdbeak;
-    public LedManager ledManager;
-    public Climber climber;
-    public CargoCollector collector;
-    public Drivetrain drivetrain;
-    public CargoShooter shooter;
+    @Autowired public Birdbeak birdbeak;
+    @Autowired public LedManager ledManager;
+    @Autowired public Climber climber;
+    @Autowired public CargoCollector collector;
+    @Autowired public Drivetrain drivetrain;
+    @Autowired public CargoShooter shooter;
 
     VideoSink server;
     public UsbCamera camCargo, camHatch;
@@ -25,8 +26,8 @@ public class Components {
 
     private Components() {
         RobotFactory factory = Robot.factory;
-
-        if (factory.isImplemented(Birdbeak.NAME)) {
+        factory.injectFields();
+        /*if (factory.isImplemented(Birdbeak.NAME)) {
             birdbeak = new Birdbeak();
         }
         if (factory.isImplemented(Climber.NAME)) {
@@ -44,7 +45,7 @@ public class Components {
         }
         if (factory.isImplemented(LedManager.NAME)) {
             ledManager = new LedManager();
-        }
+        }*/
         
         camHatch = CameraServer.getInstance().startAutomaticCapture(0);
         // camCargo = CameraServer.getInstance().startAutomaticCapture(1);

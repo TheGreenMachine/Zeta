@@ -4,10 +4,13 @@ import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import frc.team1816.robot.Components;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +26,27 @@ public class RobotFactory {
                 .getClassLoader()
                 .getResourceAsStream(configName + ".config.yml")
         );
+    }
+
+    public void injectFields() {
+        Class<Components> componentsCls = Components.class;
+        for (Field field : componentsCls.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Autowired.class)) {
+                String subsystemName = field.getType().getSimpleName().toLowerCase();
+                try {
+                    if (
+                        field.get(Components.getInstance()) == null
+                        && isImplemented(subsystemName)
+                    ) {
+                        field.set(Components.getInstance(), field.getType().getConstructor().newInstance());
+                    }
+                } catch (IllegalAccessException | NoSuchMethodException | InstantiationException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.getTargetException().printStackTrace();
+                }
+            }
+        }
     }
 
     public boolean isImplemented(String subsystem) {
