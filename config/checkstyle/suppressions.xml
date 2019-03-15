@@ -4,4 +4,5 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
     <suppress checks="." files="com[\\/]edinarobotics[\\/]utils[\\/]"/>
+    <suppress checks="JavadocMethod|JavadocType|JavadocVariable" files="."/>
 </suppressions>
