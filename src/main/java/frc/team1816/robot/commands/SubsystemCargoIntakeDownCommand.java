@@ -33,10 +33,11 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     @Override
     protected void execute() {
         collector.setArm(true);
-        collector.setIntake(-1.0);
-        shooter.setIntake(-1.0);
+        
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.getArmPistonState()) {
             shooter.setArmPosition(ArmPosition.DOWN);
+            collector.setIntake(-1.0);
+            shooter.setIntake(-1.0);
         }
     }
 

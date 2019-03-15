@@ -56,8 +56,6 @@ public class Controls {
             gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeDownCommand());
             gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
             gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeUpCommand());
-
-            gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
         }
 
         if (factory.isImplemented(CargoShooter.NAME)) {
