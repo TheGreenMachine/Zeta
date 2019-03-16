@@ -1,7 +1,6 @@
 package frc.team1816.robot.commands;
 
 import com.edinarobotics.utils.math.Math1816;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -92,10 +91,10 @@ public class DriveToHatchCommand extends Command {
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
             if (lateralError < 0) { // target is right of center, so decrease right side (wrt cargo) vel
                 leftPow = leftPow - control; // drivetrain reversed, so apply control to other side
-                Math1816.coerceValue(1.0, 0.0, leftPow);
+                leftPow = Math1816.coerceValue(1.0, 0.0, leftPow);
             } else { // target is left of center, so decrease left side (wrt cargo) vel
                 rightPow = rightPow - control; // drivetrain reversed, so apply control to other side
-                Math1816.coerceValue(1.0, 0.0, rightPow);
+                rightPow = Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
 
