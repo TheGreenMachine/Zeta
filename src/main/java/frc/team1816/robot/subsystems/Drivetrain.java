@@ -1,6 +1,5 @@
 package frc.team1816.robot.subsystems;
 
-import badlog.lib.BadLog;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -14,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.*;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
@@ -73,6 +73,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isVisionMode = false;
     private boolean outputsChanged = false;
 
+    private LedManager ledManager;
+
     public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.factory;
@@ -98,6 +100,8 @@ public class Drivetrain extends Subsystem implements Checkable {
         System.out.println("NavX Active: " + getGyroStatus());
 
         this.initTime = System.currentTimeMillis();
+
+        this.ledManager = new LedManager();
 
         // initCoordinateTracking();
         // initDrivetrainLog();
@@ -240,7 +244,10 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public void setReverseMode(boolean reverseMode) {
-        this.isReverseMode = reverseMode;
+         this.isReverseMode = reverseMode;
+        if (reverseMode) {
+            ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+        }
         outputsChanged = true;
     }
 
