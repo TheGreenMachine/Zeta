@@ -244,7 +244,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public void setReverseMode(boolean reverseMode) {
-         this.isReverseMode = reverseMode;
+        this.isReverseMode = reverseMode;
         if (reverseMode) {
             ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
         }

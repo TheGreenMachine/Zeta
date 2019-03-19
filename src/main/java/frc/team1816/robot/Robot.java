@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
 
         // LogThread logThread = new LogThread();
         // logThread.initLog();
-        NetworkTableInstance inst = NetworkTableInstance.getDefault(); // First initializing Network tables
+        NetworkTableInstance.getDefault(); // First initializing Network tables
 
         Components.getInstance();
         Controls.getInstance();
