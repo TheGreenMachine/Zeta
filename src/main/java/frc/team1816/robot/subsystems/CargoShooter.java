@@ -161,9 +161,10 @@ public class CargoShooter extends Subsystem implements Checkable {
         isPercentOutput = true;
 
         System.out.println(
-                "Nominal range\tSet value: " + armPow
-                + " Arm Pos Abs: " + getArmPositionAbsolute()
-                + " Arm Pos Rel: " + getArmEncoderPosition()
+            new StringBuilder("Nominal range\tSet value: ").append(armPow)
+                .append(" Arm Pos Abs: ").append(getArmPositionAbsolute())
+                .append(" Arm Pos Rel: ").append(getArmEncoderPosition())
+                .toString()
         );
 
         this.armPower = armPow * 0.50;
@@ -194,7 +195,7 @@ public class CargoShooter extends Subsystem implements Checkable {
             if (isPercentOutput) {
                 armTalon.set(ControlMode.PercentOutput, armPower);
             } else {
-                System.out.println("Setting Arm to " + armPosition.getPos() + "...");
+                System.out.println("Setting Arm to " + armPosition.getPos());
                 armTalon.set(ControlMode.Position, armPosition.getPos());
             }
             intakeMotor.set(ControlMode.PercentOutput, intakePower);

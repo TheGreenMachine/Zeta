@@ -75,16 +75,15 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
 
-        System.out.println(
-                "cam: (" + width + "x" + height
-                + ")\tcenter: (" + xCoord + "," + yCoord
-                + ")\tlatErr: " + lateralError
-                + "\tcontrol: " + control
-        );
-        System.out.println(
-                "In range?: " + (deltaDist < DIST_THRESHOLD)
-                + "\tDistance to target: " + deltaDist
-        );
+        StringBuilder sb = new StringBuilder("cam: (");
+        sb.append(width).append("x").append(height)
+            .append(")\tcenter: (").append(xCoord).append(",").append(yCoord)
+            .append(")\tlatErr: ").append(lateralError)
+            .append("\tcontrol: ").append(control)
+            .append("\nIn range?: ").append(deltaDist < DIST_THRESHOLD)
+            .append("\tDistance to target: ").append(deltaDist);
+
+        System.out.println(sb.toString());
 
         if (xCoord == -1.0 && yCoord == -1.0) {
             control = 0;
