@@ -1,5 +1,7 @@
 package frc.team1816.robot.subsystems;
 
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.*;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -13,7 +15,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
-import static frc.team1816.robot.subsystems.LedManager.RobotStatus.*;
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
@@ -300,7 +301,9 @@ public class Drivetrain extends Subsystem implements Checkable {
     public void coordinateTracking() {
         double currLeftInches = getLeftPosInches();
         double currRightInches = getRightPosInches();
-        double avgDistance = ((currLeftInches - prevLeftInches) + (currRightInches - prevRightInches)) / 2;
+        double avgDistance =
+            ((currLeftInches - prevLeftInches)
+            + (currRightInches - prevRightInches)) / 2;
         double theta = (Math.toRadians(initAngle - gyroAngle) + Math.PI / 2);
 
         xPos = avgDistance * Math.cos(theta) + prevX;

@@ -1,5 +1,7 @@
 package frc.team1816.robot;
 
+import static frc.team1816.robot.Robot.factory;
+
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
@@ -15,8 +17,6 @@ import frc.team1816.robot.subsystems.Climber;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static frc.team1816.robot.Robot.factory;
 
 /**
  * Contains all control inputs of the robot.
@@ -84,6 +84,19 @@ public class Controls {
         gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.25));
     }
 
+    /**
+     * Returns the current singleton instance of Controls.
+     * It will initialize the singleton instance if there is none.
+     *
+     * @return The current singleton instance of Controls.
+     */
+    public static Controls getInstance() {
+        if (instance == null) {
+            instance = new Controls();
+        }
+        return instance;
+    }
+
     public double getDriveThrottle() {
         return gamepadDriver.getLeftY();
     }
@@ -106,18 +119,5 @@ public class Controls {
 
     public boolean getOperatorRightTrigger() {
         return gamepadOperator.rightTrigger().get();
-    }
-
-    /**
-     * Returns the current singleton instance of Controls.
-     * It will initialize the singleton instance if there is none.
-     *
-     * @return The current singleton instance of Controls.
-     */
-    public static Controls getInstance() {
-        if (instance == null) {
-            instance = new Controls();
-        }
-        return instance;
     }
 }

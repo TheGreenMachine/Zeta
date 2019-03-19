@@ -15,7 +15,6 @@ public class SetSlowModeCommand extends Command {
         this.slowMode = slowMode;
     }
 
-
     @Override
     protected void initialize() {
     }
