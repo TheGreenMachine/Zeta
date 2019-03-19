@@ -1,6 +1,7 @@
 package frc.team1816.robot.subsystems;
 
-import badlog.lib.BadLog;
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.*;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -73,6 +74,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isVisionMode = false;
     private boolean outputsChanged = false;
 
+    private LedManager ledManager;
+
     public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.factory;
@@ -92,12 +95,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", rightMain);
 
         invertTalons(true);
-        enableBrakeMode();
+        setNeutralMode(NeutralMode.Brake);
 
         navX = new AHRS(I2C.Port.kMXP);
         System.out.println("NavX Active: " + getGyroStatus());
 
         this.initTime = System.currentTimeMillis();
+
+        this.ledManager = new LedManager();
 
         // initCoordinateTracking();
         // initDrivetrainLog();
@@ -115,24 +120,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         }
     }
 
-    public void enableBrakeMode() {
-        this.leftMain.setNeutralMode(NeutralMode.Brake);
-        this.leftSlaveOne.setNeutralMode(NeutralMode.Brake);
-        this.leftSlaveTwo.setNeutralMode(NeutralMode.Brake);
+    public void setNeutralMode(NeutralMode mode) {
+        this.leftMain.setNeutralMode(mode);
+        this.leftSlaveOne.setNeutralMode(mode);
+        this.leftSlaveTwo.setNeutralMode(mode);
 
-        this.rightMain.setNeutralMode(NeutralMode.Brake);
-        this.rightSlaveOne.setNeutralMode(NeutralMode.Brake);
-        this.rightSlaveTwo.setNeutralMode(NeutralMode.Brake);
-    }
-
-    public void enableCoastMode() {
-        this.leftMain.setNeutralMode(NeutralMode.Coast);
-        this.leftSlaveOne.setNeutralMode(NeutralMode.Coast);
-        this.leftSlaveTwo.setNeutralMode(NeutralMode.Coast);
-
-        this.rightMain.setNeutralMode(NeutralMode.Coast);
-        this.rightSlaveOne.setNeutralMode(NeutralMode.Coast);
-        this.rightSlaveTwo.setNeutralMode(NeutralMode.Coast);
+        this.rightMain.setNeutralMode(mode);
+        this.rightSlaveOne.setNeutralMode(mode);
+        this.rightSlaveTwo.setNeutralMode(mode);
     }
 
     // private void initDrivetrainLog() { // TODO: do all bad logging in different thread
@@ -241,6 +236,9 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     public void setReverseMode(boolean reverseMode) {
         this.isReverseMode = reverseMode;
+        if (reverseMode) {
+            ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+        }
         outputsChanged = true;
     }
 
@@ -293,7 +291,9 @@ public class Drivetrain extends Subsystem implements Checkable {
     public void coordinateTracking() {
         double currLeftInches = getLeftPosInches();
         double currRightInches = getRightPosInches();
-        double avgDistance = ((currLeftInches - prevLeftInches) + (currRightInches - prevRightInches)) / 2;
+        double avgDistance =
+            ((currLeftInches - prevLeftInches)
+            + (currRightInches - prevRightInches)) / 2;
         double theta = (Math.toRadians(initAngle - gyroAngle) + Math.PI / 2);
 
         xPos = avgDistance * Math.cos(theta) + prevX;

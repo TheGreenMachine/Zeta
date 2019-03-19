@@ -7,8 +7,6 @@ import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.Robot;
 
 /**
@@ -68,7 +66,6 @@ public class CargoShooter extends Subsystem implements Checkable {
         // Calibrate quadrature encoder with absolute mag encoder
         int absolutePosition = getArmPositionAbsolute();
 
-
         /* Set the quadrature (relative) sensor to match absolute */
         this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
@@ -83,7 +80,8 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.configContinuousCurrentLimit(3, kTimeoutMs);
         armTalon.configPeakCurrentLimit(5, kTimeoutMs);
         armTalon.configPeakCurrentDuration(75, kTimeoutMs);
-        armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
+        armTalon.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
         /* Config the peak and nominal outputs, 12V means full */
         armTalon.configNominalOutputForward(0, kTimeoutMs);
@@ -93,7 +91,8 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         this.setPid(kP, kI, kD);
 
-        armTalon.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
+        armTalon.configAllowableClosedloopError(
+                kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
 
         // Both overrides must be true to enable soft limits
         armTalon.overrideLimitSwitchesEnable(true);
@@ -161,8 +160,12 @@ public class CargoShooter extends Subsystem implements Checkable {
     public void setArmPower(double armPow) {
         isPercentOutput = true;
 
-        System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
-                + "Arm Pos Rel: " + getArmEncoderPosition());
+        System.out.println(
+            new StringBuilder("Nominal range\tSet value: ").append(armPow)
+                .append(" Arm Pos Abs: ").append(getArmPositionAbsolute())
+                .append(" Arm Pos Rel: ").append(getArmEncoderPosition())
+                .toString()
+        );
 
         this.armPower = armPow * 0.50;
 
@@ -192,7 +195,7 @@ public class CargoShooter extends Subsystem implements Checkable {
             if (isPercentOutput) {
                 armTalon.set(ControlMode.PercentOutput, armPower);
             } else {
-                System.out.println("Setting Arm to " + armPosition.getPos() + "...");
+                System.out.println("Setting Arm to " + armPosition.getPos());
                 armTalon.set(ControlMode.Position, armPosition.getPos());
             }
             intakeMotor.set(ControlMode.PercentOutput, intakePower);

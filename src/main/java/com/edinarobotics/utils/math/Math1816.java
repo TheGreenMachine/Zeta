@@ -1,7 +1,5 @@
 package com.edinarobotics.utils.math;
 
-import org.opencv.core.Mat;
-
 /**
  * This class provides common math functions that are not implemented
  * elsewhere in WPILib.
@@ -67,7 +65,7 @@ public final class Math1816 {
      * @param max The maximum allowable value.
      * @param min The minimum allowable value.
      * @param num The number to be coerced.
-     * @return The given value coreced between the maximum and minimum
+     * @return The given value coerced between the maximum and minimum
      * limits.
      */
     public static double coerceValue(double max, double min, double num){

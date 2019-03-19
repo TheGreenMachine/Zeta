@@ -26,12 +26,9 @@ subsystems:
       arm: 2
   birdbeak:
     implemented: true
-    talons:
-      hatchIntake: 4
     solenoids:
       beak: 1
       puncher: 3
-      arm: 4
   cargoshooter:
     implemented: true
     talons:
@@ -44,7 +41,7 @@ subsystems:
       kF: 0
       maxPos: 3700
       midPos: 2800
-      minPos: 2450
+      minPos: 2500
   ledmanager:
     implemented: true
     canifier: 18

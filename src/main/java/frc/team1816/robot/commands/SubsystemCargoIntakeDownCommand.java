@@ -13,6 +13,8 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     private double initTime;
     private double elapsedDelayMs;
 
+    private boolean chainExecuted = false;
+
     public SubsystemCargoIntakeDownCommand() {
         super("subsystemcargointakedowncommand");
         collector = Components.getInstance().collector;
@@ -33,16 +35,20 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     @Override
     protected void execute() {
         collector.setArm(true);
-        collector.setIntake(-1.0);
-        shooter.setIntake(-1.0);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.getArmPistonState()) {
+        
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.isArmDown()) {
             shooter.setArmPosition(ArmPosition.DOWN);
+            if (shooter.getArmPosition().equals(ArmPosition.DOWN)) {
+                collector.setIntake(-1.0);
+                shooter.setIntake(-1.0);
+                chainExecuted = true;
+            }
         }
     }
 
     @Override
     protected boolean isFinished() {
-        return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
+        return chainExecuted;
     }
 
     @Override

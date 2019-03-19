@@ -20,16 +20,7 @@ public class GamepadClimbCommand extends Command {
 
     @Override
     protected void execute() {
-        double climberPow;
-
-        if (Controls.getInstance().getDriverClimbUp()) {
-            climberPow = 1.0;
-        } else if (Controls.getInstance().getDriverClimbDown()) {
-            climberPow = -1.0;
-        } else {
-            climberPow = Controls.getInstance().getClimbThrottle();
-        }
-
+        double climberPow = Controls.getInstance().getClimbThrottle();
         climber.setClimberPower(climberPow);
     }
 

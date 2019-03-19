@@ -19,8 +19,9 @@ public class Components {
     public Drivetrain drivetrain;
     public CargoShooter shooter;
 
-    VideoSink server;
-    public UsbCamera camCargo, camHatch;
+    private VideoSink server;
+    private UsbCamera camCargo;
+    private UsbCamera camHatch;
     private boolean isFrontCam = true;
 
     private Components() {

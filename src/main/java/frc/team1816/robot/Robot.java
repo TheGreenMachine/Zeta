@@ -2,6 +2,7 @@ package frc.team1816.robot;
 
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 
         // LogThread logThread = new LogThread();
         // logThread.initLog();
+        NetworkTableInstance.getDefault(); // First initializing Network tables
 
         Components.getInstance();
         Controls.getInstance();
@@ -46,8 +48,8 @@ public class Robot extends TimedRobot {
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
-//       logThread.finishInitialization();
-//       logThread.start();
+        // logThread.finishInitialization();
+        // logThread.start();
 
         if (leds != null) {
             leds.setDefaultCommand(new BlinkLedCommand(2));
@@ -88,7 +90,8 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         if (shooter != null && leds != null) {
-            if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID + 100) { // Check Shooter arm position
+            // Check Shooter arm position
+            if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID + 100) {
                 leds.blinkStatus(RobotStatus.ERROR);
             } else {
                 leds.indicateStatus(RobotStatus.DISABLED);
@@ -107,8 +110,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (drivetrain != null && leds != null && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)) {
-            if (DriverStation.getInstance().getMatchTime() <= 30 && DriverStation.getInstance().getMatchTime() > 0) {
+        if (
+                drivetrain != null
+                && leds != null
+                && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
+        ) {
+            if (DriverStation.getInstance().getMatchTime() <= 30
+                    && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
             } else if (leds != null) {
                 leds.indicateStatus(RobotStatus.ENABLED);

@@ -1,5 +1,7 @@
 package frc.team1816.robot;
 
+import static frc.team1816.robot.Robot.factory;
+
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
@@ -15,8 +17,6 @@ import frc.team1816.robot.subsystems.Climber;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static frc.team1816.robot.Robot.factory;
 
 /**
  * Contains all control inputs of the robot.
@@ -50,19 +50,12 @@ public class Controls {
 
             gamepadOperator.diamondUp().whenPressed(new SetBeakCommand(false));
             gamepadOperator.diamondDown().whenPressed(new SetBeakCommand(true));
-            gamepadOperator.dPadLeft().whenPressed(new SubsystemHatchIntakeDownCommand());
-            gamepadOperator.dPadRight().whenPressed(new SubsystemHatchIntakeUpCommand());
-
-            gamepadOperator.dPadDown().whenPressed(new SetBeakIntakeCommand(1.0));
-            gamepadOperator.dPadDown().whenReleased(new SetBeakIntakeCommand(0.0));
         }
 
         if (factory.isImplemented(CargoCollector.NAME)) {
             gamepadOperator.leftBumper().whenPressed(new SubsystemCargoIntakeDownCommand());
             gamepadOperator.diamondLeft().whenPressed(new SubsystemCargoIntakeRocketCommand());
             gamepadOperator.diamondRight().whenPressed(new SubsystemCargoIntakeUpCommand());
-
-            gamepadOperator.leftTrigger().whenPressed(new SubsystemCargoIntakeResetCommand());
         }
 
         if (factory.isImplemented(CargoShooter.NAME)) {
@@ -80,10 +73,6 @@ public class Controls {
             gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
             gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));
 
-            gamepadDriver.dPadUp().whenPressed(new SetClimberPowerCommand(1.0));
-            gamepadDriver.dPadUp().whenReleased(new SetClimberPowerCommand(0));
-            gamepadDriver.dPadDown().whenPressed(new SetClimberPowerCommand(-1.0));
-            gamepadDriver.dPadDown().whenReleased(new SetClimberPowerCommand(0));
         }
 
         // gamepadDriver.dPadRight().whenPressed(new ToggleCameraCommand());
@@ -93,6 +82,19 @@ public class Controls {
 
         gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.25));
         gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.25));
+    }
+
+    /**
+     * Returns the current singleton instance of Controls.
+     * It will initialize the singleton instance if there is none.
+     *
+     * @return The current singleton instance of Controls.
+     */
+    public static Controls getInstance() {
+        if (instance == null) {
+            instance = new Controls();
+        }
+        return instance;
     }
 
     public double getDriveThrottle() {
@@ -111,32 +113,11 @@ public class Controls {
         return gamepadOperator.getLeftY();
     }
 
-    public boolean getDriverClimbUp() {
-        return gamepadDriver.dPadUp().get();
-    }
-
-    public boolean getDriverClimbDown() {
-        return gamepadDriver.dPadDown().get();
-    }
-
     public double getShooterArmThrottle() {
         return gamepadOperator.getRightY();
     }
 
     public boolean getOperatorRightTrigger() {
         return gamepadOperator.rightTrigger().get();
-    }
-
-    /**
-     * Returns the current singleton instance of Controls.
-     * It will initialize the singleton instance if there is none.
-     *
-     * @return The current singleton instance of Controls.
-     */
-    public static Controls getInstance() {
-        if (instance == null) {
-            instance = new Controls();
-        }
-        return instance;
     }
 }

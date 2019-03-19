@@ -33,7 +33,8 @@ public class Climber extends Subsystem implements Checkable {
         RobotFactory factory = Robot.factory;
 
         this.climbMaster = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbMaster");
-        this.climbSlave = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbSlave", climbMaster);
+        this.climbSlave =
+                (IMotorControllerEnhanced) factory.getMotor(NAME, "climbSlave", climbMaster);
         this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
 
         this.climbSlave.setInverted(true);
@@ -42,6 +43,8 @@ public class Climber extends Subsystem implements Checkable {
         this.climbMaster.configContinuousCurrentLimit(30, kTimeoutMs);
         this.climbMaster.configPeakCurrentLimit(35, kTimeoutMs);
         this.climbMaster.configPeakCurrentDuration(500, kTimeoutMs);
+
+        this.climbMaster.set(ControlMode.PercentOutput, 0.0);
     }
 
     public void setClimberPower(double motorPow) {

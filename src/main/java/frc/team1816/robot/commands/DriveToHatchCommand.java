@@ -1,7 +1,7 @@
 package frc.team1816.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.edinarobotics.utils.math.Math1816;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -14,6 +14,7 @@ import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 public class DriveToHatchCommand extends Command {
 
     private Drivetrain drivetrain;
+    private NetworkTableInstance inst;
 
     private NetworkTable table;
     private NetworkTableEntry widthEntry;
@@ -23,15 +24,15 @@ public class DriveToHatchCommand extends Command {
     private NetworkTableEntry distanceEntry;
     private NetworkTableEntry yawEntry;
 
-    private static final double kP = 0.0005; // stable @ 20% - 0.0015
-    private static final double ERROR_THRESHOLD = 5;
+    private static final double kP = 0.0015; // stable @ 20% - 0.0015
+    private static final double ERROR_THRESHOLD = 0;
     private static final double ON_TARGET_THRESHOLD = 20;
     private static final double DIST_THRESHOLD = 4;
 
     private boolean prevReverseState;
 
     private double nominalPower;
-    private double targetCenterX = 340.0; // define x that corresponds to bot center
+    private double targetCenterX = 320.0; // define x that corresponds to bot center
 
     private double width;
     private double height;
@@ -46,6 +47,7 @@ public class DriveToHatchCommand extends Command {
     public DriveToHatchCommand(double power) {
         drivetrain = Components.getInstance().drivetrain;
         leds = Components.getInstance().ledManager;
+        inst = NetworkTableInstance.getDefault();
         nominalPower = power;
         requires(drivetrain);
     }
@@ -54,13 +56,12 @@ public class DriveToHatchCommand extends Command {
     protected void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
         table = inst.getTable("SmartDashboard");
         setupTableEntries();
 
         updateCoordData();
 
-        drivetrain.enableBrakeMode();
+        drivetrain.setNeutralMode(NeutralMode.Brake);
 
         prevReverseState = drivetrain.isReverseMode();
         drivetrain.setReverseMode(true);
@@ -74,9 +75,15 @@ public class DriveToHatchCommand extends Command {
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
 
-        System.out.println("cam: (" + width + "x" + height + ")\tcenter: (" + xCoord + "," + yCoord +
-                ")\tlatErr: " + lateralError + "\tcontrol: " + control);
-        System.out.println("In range?: " + (deltaDist < DIST_THRESHOLD) + "\tDistance to target: " + deltaDist);
+        StringBuilder sb = new StringBuilder("cam: (");
+        sb.append(width).append("x").append(height)
+            .append(")\tcenter: (").append(xCoord).append(",").append(yCoord)
+            .append(")\tlatErr: ").append(lateralError)
+            .append("\tcontrol: ").append(control)
+            .append("\nIn range?: ").append(deltaDist < DIST_THRESHOLD)
+            .append("\tDistance to target: ").append(deltaDist);
+
+        System.out.println(sb.toString());
 
         if (xCoord == -1.0 && yCoord == -1.0) {
             control = 0;
@@ -92,10 +99,10 @@ public class DriveToHatchCommand extends Command {
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
             if (lateralError < 0) { // target is right of center, so decrease right side (wrt cargo) vel
                 leftPow = leftPow - control; // drivetrain reversed, so apply control to other side
-                Math1816.coerceValue(1.0, 0.0, leftPow);
+                leftPow = Math1816.coerceValue(1.0, 0.0, leftPow);
             } else { // target is left of center, so decrease left side (wrt cargo) vel
                 rightPow = rightPow - control; // drivetrain reversed, so apply control to other side
-                Math1816.coerceValue(1.0, 0.0, rightPow);
+                rightPow = Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
 
