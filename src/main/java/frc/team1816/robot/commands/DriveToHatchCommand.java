@@ -13,6 +13,7 @@ import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 public class DriveToHatchCommand extends Command {
 
     private Drivetrain drivetrain;
+    private NetworkTableInstance inst;
 
     private NetworkTable table;
     private NetworkTableEntry widthEntry;
@@ -45,6 +46,7 @@ public class DriveToHatchCommand extends Command {
     public DriveToHatchCommand(double power) {
         drivetrain = Components.getInstance().drivetrain;
         leds = Components.getInstance().ledManager;
+        inst = NetworkTableInstance.getDefault();
         nominalPower = power;
         requires(drivetrain);
     }
@@ -53,7 +55,6 @@ public class DriveToHatchCommand extends Command {
     protected void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
         table = inst.getTable("SmartDashboard");
         setupTableEntries();
 

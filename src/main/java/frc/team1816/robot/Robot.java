@@ -2,6 +2,7 @@ package frc.team1816.robot;
 
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 
         // LogThread logThread = new LogThread();
         // logThread.initLog();
+        NetworkTableInstance inst = NetworkTableInstance.getDefault(); // First initializing Network tables
 
         Components.getInstance();
         Controls.getInstance();
