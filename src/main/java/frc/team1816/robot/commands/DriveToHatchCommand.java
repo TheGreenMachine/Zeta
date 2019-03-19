@@ -1,5 +1,6 @@
 package frc.team1816.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.edinarobotics.utils.math.Math1816;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -60,7 +61,7 @@ public class DriveToHatchCommand extends Command {
 
         updateCoordData();
 
-        drivetrain.enableBrakeMode();
+        drivetrain.setNeutralMode(NeutralMode.Brake);
 
         prevReverseState = drivetrain.isReverseMode();
         drivetrain.setReverseMode(true);
