@@ -35,7 +35,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     @Override
     protected void execute() {
         collector.setArm(true);
-        
+
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.isArmDown()) {
             shooter.setArmPosition(ArmPosition.DOWN);
             if (shooter.getArmPosition().equals(ArmPosition.DOWN)) {

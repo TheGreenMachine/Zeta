@@ -17,7 +17,10 @@ public class SetCargoCollectorIntakeCommand extends Command {
 
     @Override
     protected void execute() {
-        System.out.println("Setting Cargo Intake: " + power);
+        StringBuilder sb = new StringBuilder()
+                .append("Setting Cargo Intake: ")
+                .append(power);
+        System.out.println(sb.toString());
         collector.setIntake(power);
     }
 

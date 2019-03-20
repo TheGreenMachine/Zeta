@@ -46,7 +46,7 @@ public class Components {
         if (factory.isImplemented(LedManager.NAME)) {
             ledManager = new LedManager();
         }
-        
+
         camHatch = CameraServer.getInstance().startAutomaticCapture(0);
         // camCargo = CameraServer.getInstance().startAutomaticCapture(1);
         // server = CameraServer.getInstance().getServer();

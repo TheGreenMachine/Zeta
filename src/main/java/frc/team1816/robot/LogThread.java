@@ -17,7 +17,7 @@ public class LogThread extends Thread {
     public LogThread() {
         super();
         // Reduce the priority of this thread
-        
+
         // Threads.setCurrentThreadPriority(true, 30);
         setDaemon(true);
     }

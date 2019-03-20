@@ -77,11 +77,11 @@ public class DriveToHatchCommand extends Command {
 
         StringBuilder sb = new StringBuilder("cam: (");
         sb.append(width).append("x").append(height)
-            .append(")\tcenter: (").append(xCoord).append(",").append(yCoord)
-            .append(")\tlatErr: ").append(lateralError)
-            .append("\tcontrol: ").append(control)
-            .append("\nIn range?: ").append(deltaDist < DIST_THRESHOLD)
-            .append("\tDistance to target: ").append(deltaDist);
+                .append(")\tcenter: (").append(xCoord).append(",").append(yCoord)
+                .append(")\tlatErr: ").append(lateralError)
+                .append("\tcontrol: ").append(control)
+                .append("\nIn range?: ").append(deltaDist < DIST_THRESHOLD)
+                .append("\tDistance to target: ").append(deltaDist);
 
         System.out.println(sb.toString());
 

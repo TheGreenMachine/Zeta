@@ -112,8 +112,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         if (
                 drivetrain != null
-                && leds != null
-                && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
+                        && leds != null
+                        && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
         ) {
             if (DriverStation.getInstance().getMatchTime() <= 30
                     && DriverStation.getInstance().getMatchTime() > 0) {
