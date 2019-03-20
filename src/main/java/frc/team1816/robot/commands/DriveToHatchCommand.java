@@ -137,7 +137,7 @@ public class DriveToHatchCommand extends Command {
         yawEntry = table.getEntry("yaw");
 
         width = widthEntry.getDouble(640);
-        height = widthEntry.getDouble(480);
+        height = heightEntry.getDouble(480);
     }
 
     private void updateCoordData() {
