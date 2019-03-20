@@ -71,7 +71,7 @@ public class LedManager extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
-        if (outputsChanged) {
+        if (outputsChanged && canifier != null) {
             canifier.setLEDOutput((double) (ledG / 255.0), CANifier.LEDChannel.LEDChannelA);
             canifier.setLEDOutput((double) (ledR / 255.0), CANifier.LEDChannel.LEDChannelB);
             canifier.setLEDOutput((double) (ledB / 255.0), CANifier.LEDChannel.LEDChannelC);

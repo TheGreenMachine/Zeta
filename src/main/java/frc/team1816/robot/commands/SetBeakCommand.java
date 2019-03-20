@@ -12,7 +12,9 @@ public class SetBeakCommand extends Command {
         super("setbeakcommand");
         birdbeak = Components.getInstance().birdbeak;
         this.beakNotGripped = notGripped;
-        requires(birdbeak);
+        if (birdbeak != null) {
+            requires(birdbeak);
+        }
     }
 
     @Override
@@ -22,7 +24,9 @@ public class SetBeakCommand extends Command {
 
     @Override
     protected void execute() {
-        birdbeak.setBeak(beakNotGripped);
+        if (birdbeak != null) {
+            birdbeak.setBeak(beakNotGripped);
+        }
     }
 
     @Override
