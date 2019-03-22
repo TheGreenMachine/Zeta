@@ -30,6 +30,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     protected void initialize() {
         System.out.println("SUBSYSTEM Cargo Intake Down");
         initTime = System.currentTimeMillis();
+        chainExecuted = false;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
             shooter.setArmPosition(ArmPosition.DOWN);
             if (shooter.getArmPosition().equals(ArmPosition.DOWN)) {
                 collector.setIntake(-1.0);
-                shooter.setIntake(-1.0);
+                shooter.setIntake(1.0);
                 chainExecuted = true;
             }
         }
