@@ -31,7 +31,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        System.out.println("Initializing robot!");
+        System.out.print("Initializing robot! ");
+        System.out.println(0f);
         System.out.println(System.getenv("ROBOT_NAME"));
 
         // LogThread logThread = new LogThread();
