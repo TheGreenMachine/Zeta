@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
         // logThread.start();
 
         if (leds != null) {
-            leds.setDefaultCommand(new BlinkLedCommand(2));
+            leds.setDefaultCommand(new BlinkLedCommand(0.5));
         }
     }
 
