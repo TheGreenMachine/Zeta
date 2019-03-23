@@ -6,10 +6,7 @@ import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
-import static frc.team1816.robot.Robot.factory;
-
 public class SubsystemCargoIntakeDownCommand extends Command {
-    public static final Double MAX_POS = factory.getConstant(CargoShooter.NAME, "maxPos");
     private CargoCollector collector;
     private CargoShooter shooter;
 
@@ -42,7 +39,7 @@ public class SubsystemCargoIntakeDownCommand extends Command {
 
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.isArmDown()) {
             shooter.setArmPosition(ArmPosition.DOWN);
-            if (shooter.getArmPositionAbsolute() > (MAX_POS - 10)) {
+            if (shooter.getArmPositionAbsolute() > (CargoShooter.ARM_POSITION_MAX - 10)) {
                 collector.setIntake(-1.0);
                 shooter.setIntake(1.0);
                 chainExecuted = true;
