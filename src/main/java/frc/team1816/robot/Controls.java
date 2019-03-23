@@ -79,7 +79,8 @@ public class Controls {
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
 
-        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.30));
+        // TODO: Push this back up 0.30 once kP retuned. Robot has mechanical right bias.
+        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.25));
         gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.40));
     }
 
