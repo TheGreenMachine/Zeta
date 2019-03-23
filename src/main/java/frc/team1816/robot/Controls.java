@@ -1,7 +1,5 @@
 package frc.team1816.robot;
 
-import static frc.team1816.robot.Robot.factory;
-
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
@@ -17,6 +15,8 @@ import frc.team1816.robot.subsystems.Climber;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static frc.team1816.robot.Robot.factory;
 
 /**
  * Contains all control inputs of the robot.
