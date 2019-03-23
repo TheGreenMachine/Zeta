@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 import static frc.team1816.robot.subsystems.LedManager.RobotStatus.DRIVETRAIN_FLIPPED;
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.ENABLED;
+
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
@@ -262,6 +264,8 @@ public class Drivetrain extends Subsystem implements Checkable {
                 leftPower *= -1;
                 rightPower *= -1;
                 ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+            } else {
+                ledManager.indicateStatus(ENABLED);
             }
 
             leftPower += rotation * .55;
