@@ -80,7 +80,7 @@ public class Controls {
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
 
-        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.25));
+        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.3));
         gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.25));
     }
 
