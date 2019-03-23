@@ -263,7 +263,9 @@ public class Drivetrain extends Subsystem implements Checkable {
             if (isReverseMode) {
                 leftPower *= -1;
                 rightPower *= -1;
-                ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+                if (!isVisionMode) {
+                    ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+                }
             } else {
                 ledManager.indicateStatus(ENABLED);
             }

@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.commands.BlinkLedCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
@@ -20,6 +21,9 @@ public class Robot extends TimedRobot {
     public Drivetrain drivetrain;
     public LedManager leds;
     public CargoShooter shooter;
+
+    private boolean drivetrainInitiallyReversed = false;
+    private boolean autoInitialized;
 
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
@@ -49,6 +53,9 @@ public class Robot extends TimedRobot {
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
+        SmartDashboard.putBoolean("reverseDrivetrain", false);
+        autoInitialized = false;
+
         // logThread.finishInitialization();
         // logThread.start();
 
@@ -59,6 +66,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        autoInitialized = false;
     }
 
     @Override
@@ -68,8 +76,11 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-            drivetrain.setSlowMode(true);
+            drivetrainInitiallyReversed = SmartDashboard.getBoolean("reverseDrivetrain", false);
+            drivetrain.setReverseMode(drivetrainInitiallyReversed);
+            // drivetrain.setSlowMode(true);
         }
+        autoInitialized = true;
     }
 
     @Override
@@ -80,6 +91,9 @@ public class Robot extends TimedRobot {
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
             drivetrain.setSlowMode(false);
+            if (!autoInitialized) {
+                drivetrain.setReverseMode(drivetrainInitiallyReversed);
+            }
         }
     }
 
