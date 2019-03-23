@@ -39,7 +39,8 @@ public class SubsystemCargoIntakeDownCommand extends Command {
 
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.isArmDown()) {
             shooter.setArmPosition(ArmPosition.DOWN);
-            if (shooter.getArmPositionAbsolute() > (CargoShooter.ARM_POSITION_MAX - 20)) {
+            if (shooter.getArmEncoderPosition() > (CargoShooter.ARM_POSITION_MAX - 20)
+                    || (initTime + elapsedDelayMs + 1500) < System.currentTimeMillis()) {
                 collector.setIntake(-1.0);
                 shooter.setIntake(1.0);
                 chainExecuted = true;
