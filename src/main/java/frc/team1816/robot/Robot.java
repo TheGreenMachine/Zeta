@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
                         && leds != null
                         && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
         ) {
-            if (DriverStation.getInstance().getMatchTime() <= 30
+            if (DriverStation.getInstance().getMatchTime() <= 45
                     && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
             } else if (leds != null) {
