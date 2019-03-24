@@ -70,6 +70,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        leds.clearStatus(RobotStatus.ENABLED);
+        leds.indicateStatus(RobotStatus.DISABLED);
         autoInitialized = false;
     }
 
@@ -82,6 +84,10 @@ public class Robot extends TimedRobot {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
             drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
             // drivetrain.setSlowMode(true);
+        }
+        if (leds != null) {
+            leds.clearStatus(RobotStatus.DISABLED);
+            leds.indicateStatus(RobotStatus.ENABLED);
         }
         autoInitialized = true;
     }
@@ -98,11 +104,19 @@ public class Robot extends TimedRobot {
                 drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
             }
         }
+        if (leds != null) {
+            leds.clearStatus(RobotStatus.DISABLED);
+            leds.indicateStatus(RobotStatus.ENABLED);
+        }
     }
 
     @Override
     public void testInit() {
         Checker.runTests(factory::isImplemented);
+        if (leds != null) {
+            leds.clearStatus(RobotStatus.DISABLED);
+            leds.indicateStatus(RobotStatus.ENABLED);
+        }
     }
 
     @Override
@@ -112,7 +126,7 @@ public class Robot extends TimedRobot {
             if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID + 100) {
                 leds.blinkStatus(RobotStatus.ERROR);
             } else {
-                leds.indicateStatus(RobotStatus.DISABLED);
+                leds.clearStatus(RobotStatus.ERROR);
             }
         }
         periodic();
@@ -120,9 +134,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        if (leds != null) {
-            leds.indicateStatus(RobotStatus.ENABLED);
-        }
         periodic();
     }
 
@@ -136,8 +147,6 @@ public class Robot extends TimedRobot {
             if (DriverStation.getInstance().getMatchTime() <= 45
                     && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
-            } else if (leds != null) {
-                leds.indicateStatus(RobotStatus.ENABLED);
             }
         }
         periodic();
@@ -145,9 +154,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testPeriodic() {
-        if (leds != null) {
-            leds.indicateStatus(RobotStatus.ENABLED);
-        }
         periodic();
     }
 

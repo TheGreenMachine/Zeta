@@ -233,6 +233,11 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     public void setReverseMode(boolean reverseMode) {
         this.isReverseMode = reverseMode;
+        if (isReverseMode) {
+            ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+        } else {
+            ledManager.clearStatus(DRIVETRAIN_FLIPPED);
+        }
         outputsChanged = true;
     }
 
@@ -260,11 +265,6 @@ public class Drivetrain extends Subsystem implements Checkable {
             if (isReverseMode) {
                 leftPower *= -1;
                 rightPower *= -1;
-                if (!isVisionMode) {
-                    Components.getInstance().ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
-                }
-            } else {
-                Components.getInstance().ledManager.indicateStatus(ENABLED);
             }
 
             leftPower += rotation * .55;

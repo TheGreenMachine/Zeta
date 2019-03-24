@@ -118,6 +118,9 @@ public class DriveToHatchCommand extends Command {
 
     @Override
     protected void end() {
+        leds.clearStatus(RobotStatus.SEEN_TARGET);
+        leds.clearStatus(RobotStatus.ON_TARGET);
+        leds.clearStatus(RobotStatus.OFF);
         drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0, 0);
         drivetrain.setReverseMode(prevReverseState);
