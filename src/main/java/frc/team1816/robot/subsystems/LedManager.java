@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 @RunTest
 public class LedManager extends Subsystem implements Checkable {
     public static final String NAME = "ledmanager";
@@ -24,6 +28,9 @@ public class LedManager extends Subsystem implements Checkable {
     private int ledBlinkR;
     private int ledBlinkG;
     private int ledBlinkB;
+
+    private Set<RobotStatus> statuses = new HashSet<>();
+    private RobotStatus currentStatus;
 
     public LedManager() {
         super(NAME);
@@ -51,7 +58,18 @@ public class LedManager extends Subsystem implements Checkable {
 
     public void indicateStatus(RobotStatus status) {
         blinkMode = false;
-        setLedColor(status.getRed(), status.getGreen(), status.getBlue());
+        statuses.add(status);
+        updateLed();
+    }
+
+    private void updateLed() {
+        currentStatus = Collections.max(statuses);
+        setLedColor(currentStatus.getRed(), currentStatus.getGreen(), currentStatus.getBlue());
+    }
+
+    public void clearStatus(RobotStatus status) {
+        statuses.remove(status);
+        updateLed();
     }
 
     public void blinkStatus(RobotStatus status) {
@@ -61,8 +79,12 @@ public class LedManager extends Subsystem implements Checkable {
         this.ledBlinkB = status.getBlue();
     }
 
+    public RobotStatus getCurrentStatus() {
+        return currentStatus;
+    }
+
     public int[] getLedRgbBlink() {
-        return new int[]{ledBlinkR, ledBlinkG, ledBlinkB};
+        return new int[] {ledBlinkR, ledBlinkG, ledBlinkB};
     }
 
     public boolean getBlinkMode() {
@@ -71,10 +93,10 @@ public class LedManager extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
-        if (outputsChanged && canifier != null) {
-            canifier.setLEDOutput((double) (ledG / 255.0), CANifier.LEDChannel.LEDChannelA);
-            canifier.setLEDOutput((double) (ledR / 255.0), CANifier.LEDChannel.LEDChannelB);
-            canifier.setLEDOutput((double) (ledB / 255.0), CANifier.LEDChannel.LEDChannelC);
+        if (outputsChanged) {
+            canifier.setLEDOutput((ledG / 255.0), CANifier.LEDChannel.LEDChannelA);
+            canifier.setLEDOutput((ledR / 255.0), CANifier.LEDChannel.LEDChannelB);
+            canifier.setLEDOutput((ledB / 255.0), CANifier.LEDChannel.LEDChannelC);
             outputsChanged = false;
         }
     }
@@ -87,32 +109,25 @@ public class LedManager extends Subsystem implements Checkable {
     @Override
     public boolean check() throws CheckFailException {
         System.out.println("Warning: checking LED systems");
-        Timer.delay(3);
-
-        setLedColor(255, 0, 0);
-        periodic();
-        Timer.delay(0.4);
-        setLedColor(0, 255, 0);
-        periodic();
-        Timer.delay(0.4);
-        setLedColor(0, 0, 255);
-        periodic();
-        Timer.delay(0.4);
-        setLedColor(0, 0, 0);
-        periodic();
-
+        for (RobotStatus status : RobotStatus.values()) {
+            indicateStatus(status);
+            periodic();
+            Timer.delay(0.4);
+            clearStatus(status);
+        }
         return true;
     }
 
     public enum RobotStatus {
-        ENABLED(0, 255, 0), // green
+        // Sorted by priority, do not change order!
         DISABLED(255, 103, 0), // orange
-        ERROR(255, 0, 0), // red
+        ENABLED(0, 255, 0), // green
         ENDGAME(0, 0, 255), // blue
+        DRIVETRAIN_FLIPPED(223, 255, 0), // yellow-green
         SEEN_TARGET(255, 0, 255), // magenta
         ON_TARGET(255, 0, 20), // deep magenta
-        DRIVETRAIN_FLIPPED(223, 255, 0), // yellow-green
-        OFF(0, 0, 0); // off
+        OFF(0, 0, 0), // off
+        ERROR(255, 0, 0); // red
 
 
         int red;
