@@ -124,7 +124,7 @@ public class Robot extends TimedRobot {
         if (shooter != null && leds != null) {
             // Check Shooter arm position
             if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID + 100) {
-                leds.blinkStatus(RobotStatus.ERROR);
+                leds.indicateStatus(RobotStatus.ERROR);
             } else {
                 leds.clearStatus(RobotStatus.ERROR);
             }
@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
         ) {
             if (DriverStation.getInstance().getMatchTime() <= 45
                     && DriverStation.getInstance().getMatchTime() > 0) {
-                leds.blinkStatus(RobotStatus.ENDGAME);
+                leds.indicateStatus(RobotStatus.ENDGAME);
             }
         }
         periodic();

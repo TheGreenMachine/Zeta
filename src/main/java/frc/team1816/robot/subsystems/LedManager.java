@@ -57,14 +57,18 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public void indicateStatus(RobotStatus status) {
-        blinkMode = false;
         statuses.add(status);
         updateLed();
     }
 
     private void updateLed() {
         currentStatus = Collections.max(statuses);
-        setLedColor(currentStatus.getRed(), currentStatus.getGreen(), currentStatus.getBlue());
+        if (currentStatus.blink) {
+            blinkStatus(currentStatus);
+        } else {
+            blinkMode = false;
+            setLedColor(currentStatus.getRed(), currentStatus.getGreen(), currentStatus.getBlue());
+        }
     }
 
     public void clearStatus(RobotStatus status) {
@@ -72,7 +76,7 @@ public class LedManager extends Subsystem implements Checkable {
         updateLed();
     }
 
-    public void blinkStatus(RobotStatus status) {
+    private void blinkStatus(RobotStatus status) {
         blinkMode = true;
         this.ledBlinkR = status.getRed();
         this.ledBlinkG = status.getGreen();
@@ -122,22 +126,28 @@ public class LedManager extends Subsystem implements Checkable {
         // Sorted by priority, do not change order!
         DISABLED(255, 103, 0), // orange
         ENABLED(0, 255, 0), // green
-        ENDGAME(0, 0, 255), // blue
+        ENDGAME(0, 0, 255, true), // blue
         DRIVETRAIN_FLIPPED(223, 255, 0), // yellow-green
-        SEEN_TARGET(255, 0, 255), // magenta
-        ON_TARGET(255, 0, 20), // deep magenta
+        SEEN_TARGET(255, 0, 255, true), // magenta
+        ON_TARGET(255, 0, 20, true), // deep magenta
         OFF(0, 0, 0), // off
-        ERROR(255, 0, 0); // red
+        ERROR(255, 0, 0, true); // red
 
 
         int red;
         int green;
         int blue;
+        boolean blink;
 
-        RobotStatus(int r, int g, int b) {
+        RobotStatus(int r, int g, int b, boolean blink) {
             this.red = r;
             this.green = g;
             this.blue = b;
+            this.blink = blink;
+        }
+
+        RobotStatus(int r, int g, int b) {
+            this(r, g, b, false);
         }
 
         public int getRed() {
