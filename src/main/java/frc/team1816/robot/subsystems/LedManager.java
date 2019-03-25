@@ -38,6 +38,7 @@ public class LedManager extends Subsystem implements Checkable {
         this.ledR = 0;
         this.ledG = 0;
         this.ledB = 0;
+        statuses.add(RobotStatus.DISABLED);
     }
 
     public void setLedColor(int r, int g, int b) {
