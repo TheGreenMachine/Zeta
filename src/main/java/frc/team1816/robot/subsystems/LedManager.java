@@ -63,7 +63,6 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     private void updateLed() {
-        System.out.println(statuses);
         currentStatus = Collections.max(statuses);
         if (currentStatus.blink) {
             blinkStatus(currentStatus);
