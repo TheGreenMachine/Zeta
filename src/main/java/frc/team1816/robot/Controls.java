@@ -5,7 +5,7 @@ import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
-import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
+import com.edinarobotics.utils.gamepad.gamepadfilters.SquareFilter;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.commands.*;
 import frc.team1816.robot.subsystems.Birdbeak;
@@ -31,7 +31,7 @@ public class Controls {
     private Controls() {
         List<GamepadFilter> gamepadFilter = new ArrayList<>();
         gamepadFilter.add(new DeadzoneFilter(0.05));
-        gamepadFilter.add(new PowerFilter(2));
+        gamepadFilter.add(new SquareFilter());
         GamepadFilterSet filterSet = new GamepadFilterSet(gamepadFilter);
 
         if (factory.getConstant("cheezyDrive") == 0) {

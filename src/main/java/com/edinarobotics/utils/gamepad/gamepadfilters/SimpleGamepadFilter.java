@@ -10,6 +10,15 @@ import com.edinarobotics.utils.math.Vector2;
  * necessary to override {@link #applyFilter(double)}.
  */
 public abstract class SimpleGamepadFilter implements GamepadFilter {
+    private Vector2 filteredLeft;
+    private Vector2 filteredRight;
+    private GamepadAxisState filteredState;
+
+    public SimpleGamepadFilter() {
+        this.filteredLeft = new Vector2(0, 0);
+        this.filteredRight = new Vector2(0, 0);
+        this.filteredState = new GamepadAxisState(filteredLeft, filteredRight);
+    }
     
     /**
      * The filter function of SimpleGamepadFilter applies
@@ -23,9 +32,9 @@ public abstract class SimpleGamepadFilter implements GamepadFilter {
         double leftY = applyFilter(toFilter.getLeftJoystick().getY());
         double rightX = applyFilter(toFilter.getRightJoystick().getX());
         double rightY = applyFilter(toFilter.getRightJoystick().getY());
-        Vector2 left = new Vector2(leftX, leftY);
-        Vector2 right = new Vector2(rightX, rightY);
-        return new GamepadAxisState(left, right);
+        filteredLeft.set(leftX, leftY);
+        filteredRight.set(rightX, rightY);
+        return filteredState;
     }
     
     /**

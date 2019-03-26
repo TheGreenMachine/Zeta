@@ -9,6 +9,9 @@ import com.edinarobotics.utils.math.Vector2;
  */
 public class FilteredGamepad extends Gamepad {
     private GamepadFilterSet filters;
+    private Vector2 left;
+    private Vector2 right;
+    private GamepadAxisState state;
     
     /**
      * Constructs a new FilteredGamepad that will send the axis results
@@ -21,6 +24,9 @@ public class FilteredGamepad extends Gamepad {
     public FilteredGamepad(int port, GamepadFilterSet filterSet){
         super(port);
         this.filters = filterSet;
+        this.left = new Vector2(0, 0);
+        this.right = new Vector2(0, 0);
+        this.state = new GamepadAxisState(left, right);
     }
     
     /**
@@ -50,16 +56,16 @@ public class FilteredGamepad extends Gamepad {
      * @return A GamepadAxisState object containing the states of all the
      * joystick axes on this Gamepad.
      */
-    public GamepadAxisState getGamepadAxisState(){
-        //This method recomputes values so we avoid infinite loops
-        //in FilteredGamepad.
-        double leftx = super.getLeftX();
-        double lefty = super.getLeftY();
-        double rightx = super.getRightX();
-        double righty = super.getRightY();
-        Vector2 left = new Vector2(leftx, lefty);
-        Vector2 right = new Vector2(rightx, righty);
-        GamepadAxisState state = new GamepadAxisState(left, right);
+    @Override
+    public GamepadAxisState getGamepadAxisState() {
+        // This method recomputes values so we avoid infinite loops
+        // in FilteredGamepad.
+        double leftX = super.getLeftX();
+        double leftY = super.getLeftY();
+        double rightX = super.getRightX();
+        double rightY = super.getRightY();
+        left.set(leftX, leftY);
+        right.set(rightX, rightY);
         return filters.filter(state);
     }
     
