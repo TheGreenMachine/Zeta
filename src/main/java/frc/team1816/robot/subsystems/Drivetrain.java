@@ -1,5 +1,8 @@
 package frc.team1816.robot.subsystems;
 
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.DRIVETRAIN_FLIPPED;
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.ENABLED;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -10,10 +13,8 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Components;
 import frc.team1816.robot.Robot;
-
-import static frc.team1816.robot.subsystems.LedManager.RobotStatus.DRIVETRAIN_FLIPPED;
-import static frc.team1816.robot.subsystems.LedManager.RobotStatus.ENABLED;
 
 
 @RunTest
@@ -74,8 +75,6 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean isVisionMode = false;
     private boolean outputsChanged = false;
 
-    private LedManager ledManager;
-
     public Drivetrain() {
         super(NAME);
         RobotFactory factory = Robot.factory;
@@ -101,8 +100,6 @@ public class Drivetrain extends Subsystem implements Checkable {
         System.out.println("NavX Active: " + getGyroStatus());
 
         this.initTime = System.currentTimeMillis();
-
-        this.ledManager = new LedManager();
 
         // initCoordinateTracking();
         // initDrivetrainLog();
@@ -264,10 +261,10 @@ public class Drivetrain extends Subsystem implements Checkable {
                 leftPower *= -1;
                 rightPower *= -1;
                 if (!isVisionMode) {
-                    ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+                    Components.getInstance().ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
                 }
             } else {
-                ledManager.indicateStatus(ENABLED);
+                Components.getInstance().ledManager.indicateStatus(ENABLED);
             }
 
             leftPower += rotation * .55;
