@@ -242,8 +242,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public void toggleReverseMode() {
-        this.isReverseMode = !this.isReverseMode;
-        outputsChanged = true;
+        setReverseMode(!isReverseMode);
     }
 
     @Override

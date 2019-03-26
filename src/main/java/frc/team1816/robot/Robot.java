@@ -71,7 +71,6 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         leds.clearStatus(RobotStatus.ENABLED);
-        leds.indicateStatus(RobotStatus.DISABLED);
         autoInitialized = false;
     }
 
@@ -86,7 +85,6 @@ public class Robot extends TimedRobot {
             // drivetrain.setSlowMode(true);
         }
         if (leds != null) {
-            leds.clearStatus(RobotStatus.DISABLED);
             leds.indicateStatus(RobotStatus.ENABLED);
         }
         autoInitialized = true;
@@ -105,7 +103,6 @@ public class Robot extends TimedRobot {
             }
         }
         if (leds != null) {
-            leds.clearStatus(RobotStatus.DISABLED);
             leds.indicateStatus(RobotStatus.ENABLED);
         }
     }
@@ -114,7 +111,6 @@ public class Robot extends TimedRobot {
     public void testInit() {
         Checker.runTests(factory::isImplemented);
         if (leds != null) {
-            leds.clearStatus(RobotStatus.DISABLED);
             leds.indicateStatus(RobotStatus.ENABLED);
         }
     }
