@@ -78,10 +78,7 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     private void blinkStatus(RobotStatus status) {
-        blinkMode = true;
-        this.ledBlinkR = status.getRed();
-        this.ledBlinkG = status.getGreen();
-        this.ledBlinkB = status.getBlue();
+        setLedColorBlink(status.getRed(), status.getGreen(), status.getBlue());
     }
 
     public RobotStatus getCurrentStatus() {
