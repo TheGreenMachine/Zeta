@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Set;
 
 @RunTest
@@ -29,7 +29,7 @@ public class LedManager extends Subsystem implements Checkable {
     private int ledBlinkG;
     private int ledBlinkB;
 
-    private Set<RobotStatus> statuses = new HashSet<>();
+    private Set<RobotStatus> statuses;
     private RobotStatus currentStatus;
 
     public LedManager() {
@@ -38,7 +38,7 @@ public class LedManager extends Subsystem implements Checkable {
         this.ledR = 0;
         this.ledG = 0;
         this.ledB = 0;
-        statuses.add(RobotStatus.DISABLED);
+        this.statuses = EnumSet.of(RobotStatus.DISABLED);
     }
 
     public void setLedColor(int r, int g, int b) {
