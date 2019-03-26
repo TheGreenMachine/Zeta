@@ -125,14 +125,14 @@ public class LedManager extends Subsystem implements Checkable {
 
     public enum RobotStatus {
         // Sorted by priority, do not change order!
-        DISABLED(255, 103, 0), // orange
-        ENABLED(0, 255, 0), // green
-        ENDGAME(0, 0, 255, true), // blue
-        DRIVETRAIN_FLIPPED(223, 255, 0), // yellow-green
-        SEEN_TARGET(255, 0, 255, true), // magenta
-        ON_TARGET(255, 0, 20, true), // deep magenta
-        OFF(0, 0, 0), // off
-        ERROR(255, 0, 0, true); // red
+        DISABLED            (255, 103, 0),          // orange
+        ENABLED             (0, 255, 0),            // green
+        ENDGAME             (0, 0, 255, true),      // blue
+        DRIVETRAIN_FLIPPED  (223, 255, 0),          // yellow-green
+        SEEN_TARGET         (255, 0, 255, true),    // magenta
+        ON_TARGET           (255, 0, 20, true),     // deep magenta
+        OFF                 (0, 0, 0),              // off
+        ERROR               (255, 0, 0, true);      // red
 
 
         int red;
