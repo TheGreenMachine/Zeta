@@ -6,6 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.commands.BlinkLedCommand;
 import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
@@ -21,8 +23,11 @@ public class Robot extends TimedRobot {
     public LedManager leds;
     public CargoShooter shooter;
 
+    private boolean autoInitialized;
+
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
+    private SendableChooser<Boolean> drivetrainReverseChooser;
 
     public Robot() {
         // set the loop timeout in seconds
@@ -31,7 +36,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        System.out.println("Initializing robot!");
+        System.out.print("Initializing robot! ");
+        System.out.println(0f);
         System.out.println(System.getenv("ROBOT_NAME"));
 
         // LogThread logThread = new LogThread();
@@ -48,16 +54,23 @@ public class Robot extends TimedRobot {
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
 
+        drivetrainReverseChooser = new SendableChooser<>();
+        drivetrainReverseChooser.addOption("Cargo Forward", false);
+        drivetrainReverseChooser.setDefaultOption("Hatch Forward", true);
+        SmartDashboard.putData("InitDriveDir", drivetrainReverseChooser);
+        autoInitialized = false;
+
         // logThread.finishInitialization();
         // logThread.start();
 
         if (leds != null) {
-            leds.setDefaultCommand(new BlinkLedCommand(2));
+            leds.setDefaultCommand(new BlinkLedCommand(0.5));
         }
     }
 
     @Override
     public void disabledInit() {
+        autoInitialized = false;
     }
 
     @Override
@@ -67,8 +80,10 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-            drivetrain.setSlowMode(true);
+            drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
+            // drivetrain.setSlowMode(true);
         }
+        autoInitialized = true;
     }
 
     @Override
@@ -79,6 +94,9 @@ public class Robot extends TimedRobot {
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
             drivetrain.setSlowMode(false);
+            if (!autoInitialized) {
+                drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
+            }
         }
     }
 
@@ -112,10 +130,10 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         if (
                 drivetrain != null
-                && leds != null
-                && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
+                        && leds != null
+                        && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
         ) {
-            if (DriverStation.getInstance().getMatchTime() <= 30
+            if (DriverStation.getInstance().getMatchTime() <= 45
                     && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
             } else if (leds != null) {

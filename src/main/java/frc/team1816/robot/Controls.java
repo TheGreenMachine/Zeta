@@ -1,7 +1,5 @@
 package frc.team1816.robot;
 
-import static frc.team1816.robot.Robot.factory;
-
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
@@ -17,6 +15,8 @@ import frc.team1816.robot.subsystems.Climber;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static frc.team1816.robot.Robot.factory;
 
 /**
  * Contains all control inputs of the robot.
@@ -62,9 +62,9 @@ public class Controls {
             gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
             gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
-            gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(1.0));
+            gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(-0.70));
             gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0.0));
-            gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(-1.0));
+            gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(1.0));
             gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
         }
 
@@ -75,13 +75,12 @@ public class Controls {
 
         }
 
-        // gamepadDriver.dPadRight().whenPressed(new ToggleCameraCommand());
         gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
         gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
         gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
 
-        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.25));
-        gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.25));
+        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.30));
+        gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.35));
     }
 
     /**

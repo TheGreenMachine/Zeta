@@ -77,11 +77,11 @@ public class DriveToHatchCommand extends Command {
 
         StringBuilder sb = new StringBuilder("cam: (");
         sb.append(width).append("x").append(height)
-            .append(")\tcenter: (").append(xCoord).append(",").append(yCoord)
-            .append(")\tlatErr: ").append(lateralError)
-            .append("\tcontrol: ").append(control)
-            .append("\nIn range?: ").append(deltaDist < DIST_THRESHOLD)
-            .append("\tDistance to target: ").append(deltaDist);
+                .append(")\tcenter: (").append(xCoord).append(",").append(yCoord)
+                .append(")\tlatErr: ").append(lateralError)
+                .append("\tcontrol: ").append(control)
+                .append("\nIn range?: ").append(deltaDist < DIST_THRESHOLD)
+                .append("\tDistance to target: ").append(deltaDist);
 
         System.out.println(sb.toString());
 
@@ -90,9 +90,9 @@ public class DriveToHatchCommand extends Command {
             leds.indicateStatus(RobotStatus.OFF);
         } else {
             if (Math.abs(lateralError) <= ON_TARGET_THRESHOLD) {
-                leds.indicateStatus(RobotStatus.ON_TARGET);
+                leds.blinkStatus(RobotStatus.ON_TARGET);
             } else {
-                leds.indicateStatus(RobotStatus.SEEN_TARGET);
+                leds.blinkStatus(RobotStatus.SEEN_TARGET);
             }
         }
 
@@ -137,7 +137,7 @@ public class DriveToHatchCommand extends Command {
         yawEntry = table.getEntry("yaw");
 
         width = widthEntry.getDouble(640);
-        height = widthEntry.getDouble(480);
+        height = heightEntry.getDouble(480);
     }
 
     private void updateCoordData() {

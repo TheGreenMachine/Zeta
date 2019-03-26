@@ -1,7 +1,5 @@
 package frc.team1816.robot.subsystems;
 
-import static frc.team1816.robot.subsystems.LedManager.RobotStatus.*;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -10,11 +8,13 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
+
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.DRIVETRAIN_FLIPPED;
+import static frc.team1816.robot.subsystems.LedManager.RobotStatus.ENABLED;
+
 
 @RunTest
 public class Drivetrain extends Subsystem implements Checkable {
@@ -48,7 +48,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPos;
     private double rightPos;
 
-    private NetworkTable positions = NetworkTableInstance.getDefault().getTable("positions");
+    //   private NetworkTable positions = NetworkTableInstance.getDefault().getTable("positions");
 
     private double gyroAngle;
     private double leftTalonVelocity;
@@ -236,9 +236,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     public void setReverseMode(boolean reverseMode) {
         this.isReverseMode = reverseMode;
-        if (reverseMode) {
-            ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
-        }
         outputsChanged = true;
     }
 
@@ -266,6 +263,11 @@ public class Drivetrain extends Subsystem implements Checkable {
             if (isReverseMode) {
                 leftPower *= -1;
                 rightPower *= -1;
+                if (!isVisionMode) {
+                    ledManager.indicateStatus(DRIVETRAIN_FLIPPED);
+                }
+            } else {
+                ledManager.indicateStatus(ENABLED);
             }
 
             leftPower += rotation * .55;
@@ -288,25 +290,25 @@ public class Drivetrain extends Subsystem implements Checkable {
         //  coordinateTracking();
     }
 
-    public void coordinateTracking() {
-        double currLeftInches = getLeftPosInches();
-        double currRightInches = getRightPosInches();
-        double avgDistance =
-            ((currLeftInches - prevLeftInches)
-            + (currRightInches - prevRightInches)) / 2;
-        double theta = (Math.toRadians(initAngle - gyroAngle) + Math.PI / 2);
-
-        xPos = avgDistance * Math.cos(theta) + prevX;
-        yPos = avgDistance * Math.sin(theta) + prevY;
-
-        positions.getEntry("xPos").setDouble(xPos);
-        positions.getEntry("yPos").setDouble(yPos);
-
-        prevX = xPos;
-        prevY = yPos;
-        prevLeftInches = currLeftInches;
-        prevRightInches = currRightInches;
-    }
+//    public void coordinateTracking() {
+//        double currLeftInches = getLeftPosInches();
+//        double currRightInches = getRightPosInches();
+//        double avgDistance =
+//            ((currLeftInches - prevLeftInches)
+//            + (currRightInches - prevRightInches)) / 2;
+//        double theta = (Math.toRadians(initAngle - gyroAngle) + Math.PI / 2);
+//
+//        xPos = avgDistance * Math.cos(theta) + prevX;
+//        yPos = avgDistance * Math.sin(theta) + prevY;
+//
+//        positions.getEntry("xPos").setDouble(xPos);
+//        positions.getEntry("yPos").setDouble(yPos);
+//
+//        prevX = xPos;
+//        prevY = yPos;
+//        prevLeftInches = currLeftInches;
+//        prevRightInches = currRightInches;
+//    }
 
     @Override
     protected void initDefaultCommand() {
