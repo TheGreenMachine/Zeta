@@ -128,15 +128,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (
-                drivetrain != null
-                        && leds != null
-                        && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)
-        ) {
-            if (DriverStation.getInstance().getMatchTime() <= 45
-                    && DriverStation.getInstance().getMatchTime() > 0) {
+        if (drivetrain != null && leds != null && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)) {
+            if (DriverStation.getInstance().getMatchTime() <= 45 && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
-            } else if (leds != null) {
+            } else if (drivetrain.isReverseMode()) {
+                leds.indicateStatus(RobotStatus.DRIVETRAIN_FLIPPED);
+            } else {
                 leds.indicateStatus(RobotStatus.ENABLED);
             }
         }
