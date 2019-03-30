@@ -121,7 +121,11 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         if (leds != null) {
-            leds.indicateStatus(RobotStatus.ENABLED);
+            if (drivetrain.isReverseMode()) {
+                leds.indicateStatus(RobotStatus.DRIVETRAIN_FLIPPED);
+            } else {
+                leds.indicateStatus(RobotStatus.ENABLED);
+            }
         }
         periodic();
     }
