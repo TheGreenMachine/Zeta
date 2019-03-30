@@ -62,7 +62,7 @@ public class Controls {
             gamepadDriver.rightTrigger().whenPressed(new SetCargoCollectorIntakeCommand(1.0));
             gamepadDriver.rightTrigger().whenReleased(new SetCargoCollectorIntakeCommand(0));
 
-            gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(-0.85));
+            gamepadOperator.rightTrigger().whenPressed(new SetCargoShooterIntakeCommand(-0.83));
             gamepadOperator.rightTrigger().whenReleased(new SetCargoShooterIntakeCommand(0.0));
             gamepadOperator.rightBumper().whenPressed(new SetCargoShooterIntakeCommand(1.0));
             gamepadOperator.rightBumper().whenReleased(new SetCargoShooterIntakeCommand(0.0));
