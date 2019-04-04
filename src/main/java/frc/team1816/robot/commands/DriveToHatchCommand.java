@@ -90,9 +90,9 @@ public class DriveToHatchCommand extends Command {
             leds.indicateStatus(RobotStatus.OFF);
         } else {
             if (Math.abs(lateralError) <= ON_TARGET_THRESHOLD) {
-                leds.blinkStatus(RobotStatus.ON_TARGET);
+                leds.indicateStatus(RobotStatus.ON_TARGET);
             } else {
-                leds.blinkStatus(RobotStatus.SEEN_TARGET);
+                leds.indicateStatus(RobotStatus.SEEN_TARGET);
             }
         }
 
