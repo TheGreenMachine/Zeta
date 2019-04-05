@@ -3,10 +3,7 @@ package frc.team1816.robot;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -31,16 +28,27 @@ public class Robot extends TimedRobot {
 
     private NetworkTableInstance inst;
     private NetworkTable table;
-    private NetworkTableEntry widthEntry;
-    private NetworkTableEntry heightEntry;
-    private NetworkTableEntry xCoordEntry;
 
-    public static RobotState stateInstance = new RobotState();
+    public static final RobotState state = new RobotState();
 
     public static class RobotState {
         public double width = 640;
         public double height = 480;
         public double xCoord = -1.0;
+
+        public void init(NetworkTable table) {
+            NetworkTableEntry widthEntry = table.getEntry("width");
+            NetworkTableEntry heightEntry = table.getEntry("height");
+            NetworkTableEntry xCoordEntry = table.getEntry("center_x");
+
+            width = widthEntry.getDouble(640.0);
+            height = heightEntry.getDouble(480.0);
+            xCoord = xCoordEntry.getDouble(-1.0);
+
+            xCoordEntry.addListener(evt -> {
+                xCoord = evt.value.getDouble();
+            }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+        }
 
         public double getVisionXCoord() {
             return xCoord;
@@ -92,16 +100,8 @@ public class Robot extends TimedRobot {
 
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("SmartDashboard");
-        widthEntry = table.getEntry("width");
-        heightEntry = table.getEntry("height");
-        xCoordEntry = table.getEntry("center_x");
 
-        stateInstance.width = widthEntry.getDouble(640.0);
-        stateInstance.height = heightEntry.getDouble(480.0);
-        stateInstance.xCoord = xCoordEntry.getDouble(-1.0);
-
-        table.addEntryListener("center_x", (table, key, entry, value, flags) -> {xCoord = value.getDouble();}, 
-                EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+        state.init(table);
     }
 
     @Override
