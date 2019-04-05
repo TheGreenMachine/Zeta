@@ -12,6 +12,7 @@ import frc.team1816.robot.subsystems.Birdbeak;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.Climber;
+import frc.team1816.robot.subsystems.Drivetrain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,7 @@ import java.util.List;
 import static frc.team1816.robot.Robot.factory;
 
 /**
- * Contains all control inputs of the robot.
- * Follows the singleton pattern.
+ * Contains all control inputs of the robot. Follows the singleton pattern.
  */
 public class Controls {
     private static Controls instance;
@@ -75,17 +75,19 @@ public class Controls {
 
         }
 
-        gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
-        gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
-        gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
+        if (factory.isImplemented(Drivetrain.NAME)) {
+            gamepadDriver.diamondUp().whenPressed(new ToggleReverseModeCommand());
+            gamepadDriver.rightBumper().whenPressed(new SetSlowModeCommand(true));
+            gamepadDriver.rightBumper().whenReleased(new SetSlowModeCommand(false));
 
-        gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.30));
-        gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.35));
+            gamepadDriver.diamondDown().whileHeld(new DriveToHatchCommand(0.30));
+            gamepadDriver.diamondLeft().whileHeld(new DriveToLoadHatchCommand(0.35));
+        }
     }
 
     /**
-     * Returns the current singleton instance of Controls.
-     * It will initialize the singleton instance if there is none.
+     * Returns the current singleton instance of Controls. It will initialize the
+     * singleton instance if there is none.
      *
      * @return The current singleton instance of Controls.
      */
