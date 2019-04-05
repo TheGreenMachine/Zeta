@@ -1,5 +1,9 @@
 package frc.team1816.robot;
 
+import static frc.team1816.robot.Robot.RobotState.height;
+import static frc.team1816.robot.Robot.RobotState.width;
+import static frc.team1816.robot.Robot.RobotState.xCoord;
+
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
@@ -37,18 +41,18 @@ public class Robot extends TimedRobot {
     public static RobotState stateInstance = new RobotState();
 
     public static class RobotState {
-        private static double width;
-        private static double height;
-        private static double xCoord;
+        public static double width;
+        public static double height;
+        public static double xCoord;
 
         public double getVisionXCoord() {
             return xCoord;
         }
-    
+
         public double getVisionWidth() {
             return width;
         }
-    
+
         public double getVisionHeight() {
             return height;
         }
