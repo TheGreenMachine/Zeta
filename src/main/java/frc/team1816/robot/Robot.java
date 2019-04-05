@@ -1,9 +1,5 @@
 package frc.team1816.robot;
 
-import static frc.team1816.robot.Robot.RobotState.height;
-import static frc.team1816.robot.Robot.RobotState.width;
-import static frc.team1816.robot.Robot.RobotState.xCoord;
-
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
@@ -42,9 +38,9 @@ public class Robot extends TimedRobot {
     public static RobotState stateInstance = new RobotState();
 
     public static class RobotState {
-        public static double width = 640;
-        public static double height = 480;
-        public static double xCoord = -1.0;
+        public double width = 640;
+        public double height = 480;
+        public double xCoord = -1.0;
 
         public double getVisionXCoord() {
             return xCoord;
@@ -100,9 +96,9 @@ public class Robot extends TimedRobot {
         heightEntry = table.getEntry("height");
         xCoordEntry = table.getEntry("center_x");
 
-        width = widthEntry.getDouble(640.0);
-        height = heightEntry.getDouble(480.0);
-        xCoord = xCoordEntry.getDouble(-1.0);
+        stateInstance.width = widthEntry.getDouble(640.0);
+        stateInstance.height = heightEntry.getDouble(480.0);
+        stateInstance.xCoord = xCoordEntry.getDouble(-1.0);
 
         table.addEntryListener("center_x", (table, key, entry, value, flags) -> {xCoord = value.getDouble();}, 
                 EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
