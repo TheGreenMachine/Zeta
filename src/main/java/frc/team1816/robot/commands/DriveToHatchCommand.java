@@ -60,8 +60,8 @@ public class DriveToHatchCommand extends Command {
         double control = Math.abs(lateralError * kP);
 
         StringBuilder sb = new StringBuilder("cam: (");
-        sb.append(width).append("x").append(height).append(")\tcenter X: (").append(xCoord).append(",")
-                .append(")\tlatErr: ").append(lateralError).append("\tcontrol: ").append(control);
+        sb.append(width).append("x").append(height).append(")\tcenter X: ").append(xCoord)
+                .append("\tlatErr: ").append(lateralError).append("\tcontrol: ").append(control);
 
         System.out.println(sb.toString());
 

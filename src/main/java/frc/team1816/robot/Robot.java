@@ -37,13 +37,14 @@ public class Robot extends TimedRobot {
     private NetworkTable table;
     private NetworkTableEntry widthEntry;
     private NetworkTableEntry heightEntry;
+    private NetworkTableEntry xCoordEntry;
 
     public static RobotState stateInstance = new RobotState();
 
     public static class RobotState {
-        public static double width;
-        public static double height;
-        public static double xCoord;
+        public static double width = 640;
+        public static double height = 480;
+        public static double xCoord = -1.0;
 
         public double getVisionXCoord() {
             return xCoord;
@@ -97,9 +98,11 @@ public class Robot extends TimedRobot {
         table = inst.getTable("SmartDashboard");
         widthEntry = table.getEntry("width");
         heightEntry = table.getEntry("height");
+        xCoordEntry = table.getEntry("center_x");
 
-        width = widthEntry.getDouble(640);
-        height = heightEntry.getDouble(480);
+        width = widthEntry.getDouble(640.0);
+        height = heightEntry.getDouble(480.0);
+        xCoord = xCoordEntry.getDouble(-1.0);
 
         table.addEntryListener("center_x", (table, key, entry, value, flags) -> {xCoord = value.getDouble();}, 
                 EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
