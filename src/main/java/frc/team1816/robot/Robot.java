@@ -2,6 +2,10 @@ package frc.team1816.robot;
 
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
+
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,6 +29,31 @@ public class Robot extends TimedRobot {
 
     private boolean autoInitialized;
 
+    private NetworkTableInstance inst;
+    private NetworkTable table;
+    private NetworkTableEntry widthEntry;
+    private NetworkTableEntry heightEntry;
+
+    public static RobotState stateInstance = new RobotState();
+
+    public static class RobotState {
+        private static double width;
+        private static double height;
+        private static double xCoord;
+
+        public double getVisionXCoord() {
+            return xCoord;
+        }
+    
+        public double getVisionWidth() {
+            return width;
+        }
+    
+        public double getVisionHeight() {
+            return height;
+        }
+    }
+
     public static final RobotFactory factory = new RobotFactory(
             System.getenv("ROBOT_NAME") != null ? System.getenv("ROBOT_NAME") : "zeta");
     private SendableChooser<Boolean> drivetrainReverseChooser;
@@ -39,10 +68,6 @@ public class Robot extends TimedRobot {
         System.out.print("Initializing robot! ");
         System.out.println(0f);
         System.out.println(System.getenv("ROBOT_NAME"));
-
-        // LogThread logThread = new LogThread();
-        // logThread.initLog();
-        NetworkTableInstance.getDefault(); // First initializing Network tables
 
         Components.getInstance();
         Controls.getInstance();
@@ -60,12 +85,20 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("InitDriveDir", drivetrainReverseChooser);
         autoInitialized = false;
 
-        // logThread.finishInitialization();
-        // logThread.start();
-
         if (leds != null) {
             leds.setDefaultCommand(new BlinkLedCommand(0.5));
         }
+
+        inst = NetworkTableInstance.getDefault();
+        table = inst.getTable("SmartDashboard");
+        widthEntry = table.getEntry("width");
+        heightEntry = table.getEntry("height");
+
+        width = widthEntry.getDouble(640);
+        height = heightEntry.getDouble(480);
+
+        table.addEntryListener("center_x", (table, key, entry, value, flags) -> {xCoord = value.getDouble();}, 
+                EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     @Override
