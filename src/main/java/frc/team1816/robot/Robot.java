@@ -1,5 +1,6 @@
 package frc.team1816.robot;
 
+import badlog.lib.BadLog;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
@@ -9,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,6 +19,9 @@ import frc.team1816.robot.commands.GamepadClimbCommand;
 import frc.team1816.robot.commands.GamepadDriveCommand;
 import frc.team1816.robot.subsystems.*;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Robot extends TimedRobot {
 
@@ -36,6 +41,8 @@ public class Robot extends TimedRobot {
     private NetworkTableEntry xCoordEntry;
 
     public static RobotState stateInstance = new RobotState();
+    private BadLog logger;
+    private double loopStart;
 
     public static class RobotState {
         public double width = 640;
@@ -102,7 +109,17 @@ public class Robot extends TimedRobot {
 
         table.addEntryListener("center_x", (table, key, entry, value, flags) -> {stateInstance.xCoord = value.getDouble();}, 
                 EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+        var logFile = new SimpleDateFormat("DDDHHmm").format(new Date());
+        logger = BadLog.init("/home/lvuser/" + logFile + ".bag");
+        BadLog.createTopic("Timings/RobotLoop", "ms", this::getLastLoop, "hide", "join:Timings");
+        logger.finishInitialization();
     }
+
+    private Double getLastLoop() {
+        return (Timer.getFPGATimestamp() - loopStart) * 1000;
+    }
+
 
     @Override
     public void disabledInit() {
@@ -143,6 +160,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        loopStart = Timer.getFPGATimestamp();
         if (shooter != null && leds != null) {
             // Check Shooter arm position
             if (shooter.getArmEncoderPosition() > CargoShooter.ARM_POSITION_MID + 100) {
@@ -156,6 +174,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
+        loopStart = Timer.getFPGATimestamp();
         if (leds != null) {
             if (drivetrain.isReverseMode()) {
                 leds.indicateStatus(RobotStatus.DRIVETRAIN_FLIPPED);
@@ -168,6 +187,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        loopStart = Timer.getFPGATimestamp();
         if (drivetrain != null && leds != null && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)) {
             if (DriverStation.getInstance().getMatchTime() <= 45 && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
@@ -190,5 +210,7 @@ public class Robot extends TimedRobot {
 
     private void periodic() {
         Scheduler.getInstance().run();
+        logger.updateTopics();
+        logger.log();
     }
 }
