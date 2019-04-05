@@ -34,13 +34,13 @@ public class Robot extends TimedRobot {
     private NetworkTableEntry widthEntry;
     private NetworkTableEntry heightEntry;
 
-    private static double width;
-    private static double height;
-    private static double xCoord;
-
     public static RobotState stateInstance = new RobotState();
 
     public static class RobotState {
+        private static double width;
+        private static double height;
+        private static double xCoord;
+
         public double getVisionXCoord() {
             return xCoord;
         }
