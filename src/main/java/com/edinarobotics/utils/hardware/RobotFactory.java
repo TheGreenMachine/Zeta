@@ -16,6 +16,7 @@ public class RobotFactory {
     private YamlConfiguration config;
 
     public RobotFactory(String configName) {
+        System.out.println("Loading Config for "+ configName);
         Yaml yaml = new Yaml(new Constructor(YamlConfiguration.class));
         yaml.setBeanAccess(BeanAccess.FIELD);
         config = yaml.load(
