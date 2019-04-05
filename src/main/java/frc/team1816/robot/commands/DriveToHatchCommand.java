@@ -49,8 +49,7 @@ public class DriveToHatchCommand extends Command {
         leds = Components.getInstance().ledManager;
         inst = NetworkTableInstance.getDefault();
         nominalPower = power;
-        if(drivetrain != null)
-            requires(drivetrain);
+        requires(drivetrain);
     }
 
     @Override
@@ -62,12 +61,10 @@ public class DriveToHatchCommand extends Command {
 
         updateCoordData();
 
-        if(drivetrain != null) {
-            drivetrain.setNeutralMode(NeutralMode.Brake);
+        drivetrain.setNeutralMode(NeutralMode.Brake);
 
-            prevReverseState = drivetrain.isReverseMode();
-            drivetrain.setReverseMode(true);
-        }
+        prevReverseState = drivetrain.isReverseMode();
+        drivetrain.setReverseMode(true);
     }
 
     @Override
