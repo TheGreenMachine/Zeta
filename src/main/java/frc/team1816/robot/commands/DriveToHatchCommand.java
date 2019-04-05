@@ -41,9 +41,9 @@ public class DriveToHatchCommand extends Command {
     protected void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
-        width = Robot.state.getVisionWidth();
-        height = Robot.state.getVisionHeight();
-        xCoord = Robot.state.getVisionXCoord();
+        width = Robot.stateInstance.getVisionWidth();
+        height = Robot.stateInstance.getVisionHeight();
+        xCoord = Robot.stateInstance.getVisionXCoord();
 
         drivetrain.setNeutralMode(NeutralMode.Brake);
 
@@ -109,6 +109,6 @@ public class DriveToHatchCommand extends Command {
     }
 
     private void updateCoordData() {
-        xCoord = Robot.state.getVisionXCoord();
+        xCoord = Robot.stateInstance.getVisionXCoord();
     }
 }
