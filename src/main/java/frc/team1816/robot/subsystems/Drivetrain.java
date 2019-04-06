@@ -44,6 +44,9 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftSetVel;
     private double rightSetVel;
 
+    private double leftMeasVel;
+    private double rightMeasVel;
+
     private double leftMeasPos;
     private double rightMeasPos;
     private double gyroAngle;
@@ -189,11 +192,19 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public double getLeftVel() {
-        return leftVel;
+        return leftSetVel;
     }
 
     public double getRightVel() {
-        return rightVel;
+        return rightSetVel;
+    }
+
+    public double getLeftMeasVel() {
+        return leftMeasVel;
+    }
+
+    public double getRightMeasVel() {
+        return rightMeasVel;
     }
 
     @Override
@@ -201,6 +212,9 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.gyroAngle = navX.getAngle();
         this.leftMeasPos = leftMain.getSelectedSensorPosition(0);
         this.rightMeasPos = rightMain.getSelectedSensorPosition(0);
+
+        this.leftMeasVel = leftMain.getSelectedSensorVelocity(0);
+        this.rightMeasVel = rightMain.getSelectedSensorVelocity(0);
 
         if (outputsChanged) {
             if (isSlowMode) {

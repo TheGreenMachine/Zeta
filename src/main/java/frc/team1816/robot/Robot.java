@@ -114,8 +114,8 @@ public class Robot extends TimedRobot {
         BadLog.createTopic("Timings/RobotLoop", "ms", this::getLastLoop, "hide", "join:Timings");
         BadLog.createTopic("Target Center X", "px", stateInstance::getVisionXCoord, "hide", "join:Vision");
         BadLog.createTopicSubscriber("Lateral Err", "px", DataInferMode.DEFAULT, "hide", "join:Vision");
-        BadLog.createTopic("Velocity/Left", "native", drivetrain::getLeftVel, "hide", "join:Velocities");
-        BadLog.createTopic("Velocity/Right", "native", drivetrain::getRightVel, "hide", "join:Velocities");
+        BadLog.createTopic("Velocity/Left", "native", drivetrain::getLeftMeasVel, "hide", "join:Velocities");
+        BadLog.createTopic("Velocity/Right", "native", drivetrain::getRightMeasVel, "hide", "join:Velocities");
         logger.finishInitialization();
     }
 
