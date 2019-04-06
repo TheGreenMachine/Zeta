@@ -191,6 +191,14 @@ public class Drivetrain extends Subsystem implements Checkable {
         outputsChanged = true;
     }
 
+    public double getLeftVel() {
+        return leftVel;
+    }
+
+    public double getRightVel() {
+        return rightVel;
+    }
+
     @Override
     public void periodic() {
         this.gyroAngle = navX.getAngle();
