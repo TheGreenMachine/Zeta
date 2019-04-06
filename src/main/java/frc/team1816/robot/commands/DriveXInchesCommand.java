@@ -16,14 +16,17 @@ public class DriveXInchesCommand extends Command {
     private double startSpeed;
     private double endSpeed;
 
+    private boolean gyroCorrection;
+    private double initAngle;
+
+    private static final double ROTATION_OFFSET_P = 0.06;
     private final double RAMP_UP_INCHES = 6;
     private double RAMP_DOWN_INCHES = 6;
 
-    public DriveXInchesCommand(double inches, double speed) {
+    public DriveXInchesCommand(double inches, double speed, boolean gyroCorrect) {
         super("drivexinchescommand");
         this.inches = inches;
         this.speed = speed;
-
         this.endSpeed = 0.2;
         this.startSpeed = 0.2;
 
@@ -32,10 +35,14 @@ public class DriveXInchesCommand extends Command {
         }
 
         drivetrain = Components.getInstance().drivetrain;
+
+        if (gyroCorrect && drivetrain.getGyroStatus()) {
+            gyroCorrection = true;
+        }
         requires(drivetrain);
     }
 
-    public DriveXInchesCommand(double inches, double speed, double startSpeed, double endSpeed) {
+    public DriveXInchesCommand(double inches, double speed, double startSpeed, double endSpeed, boolean gyroCorrect) {
         super("drivexinchescommand");
         this.inches = inches;
         this.speed = speed;
@@ -43,6 +50,9 @@ public class DriveXInchesCommand extends Command {
         this.endSpeed = endSpeed;
         drivetrain = Components.getInstance().drivetrain;
 
+        if (gyroCorrect && drivetrain.getGyroStatus()) {
+            gyroCorrection = true;
+        }
         requires(drivetrain);
     }
 
@@ -50,17 +60,21 @@ public class DriveXInchesCommand extends Command {
     protected void initialize() {
         initPosition = drivetrain.getLeftPosInches();
         System.out.println("DriveX Init\tPos:" + initPosition);
+
+        if (gyroCorrection) {
+            initAngle = drivetrain.getGyroAngle();
+        }
     }
 
     @Override
     protected void execute() {
-        double setVelPercent;
+        double deltaAngle = drivetrain.getGyroAngle() - initAngle;
+        double setVelPercent = speed;
+        double leftSetVel, rightSetVel;
         double currentInches = drivetrain.getLeftPosInches() - initPosition;
         remainingInches = inches - Math.abs(currentInches);
 
-        setVelPercent = speed;
-
-        // RAMP UP RATE
+        /*-----RAMP UP RATE-----*/
         if (currentInches < RAMP_UP_INCHES) {
             if (speed > 0) {
                 if (setVelPercent * (currentInches / RAMP_UP_INCHES) < startSpeed) {
@@ -77,7 +91,7 @@ public class DriveXInchesCommand extends Command {
             }
         }
 
-        // RAMP DOWN RATE
+        /*-----RAMP DOWN RATE-----*/
         if (remainingInches < RAMP_DOWN_INCHES) {
             if (speed > 0) {
                 if ((setVelPercent * (remainingInches / RAMP_DOWN_INCHES)) > endSpeed) {
@@ -95,11 +109,39 @@ public class DriveXInchesCommand extends Command {
             }
         }
 
-        drivetrain.setDrivetrainPercent(setVelPercent, setVelPercent);
+        leftSetVel = setVelPercent;
+        rightSetVel = setVelPercent;
+
+        /*-----GYRO CORRECTION-----*/
+        if (gyroCorrection) {
+            if (deltaAngle < 0) {
+                /*-----RIGHT GYRO CORRECTION-----*/
+                rightSetVel = rightSetVel - Math.abs(deltaAngle * ROTATION_OFFSET_P);
+
+                System.out.println("DriveX Correcting Right\t delta angle: " + deltaAngle);
+                System.out.println("L Velocity: " + leftSetVel + " R Velocity: " + rightSetVel);
+                System.out.println("---");
+            } else if (deltaAngle > 0) {
+                /*-----LEFT GYRO CORRECTION-----*/
+                leftSetVel = leftSetVel - Math.abs(deltaAngle * ROTATION_OFFSET_P);
+
+                System.out.println("DriveX Correcting Left\t delta angle: " + deltaAngle);
+                System.out.println("L Velocity: " + leftSetVel + " R Velocity: " + rightSetVel);
+                System.out.println("---");
+            } else {
+                /*-----NO GYRO CORRECTION-----*/
+                System.out.println("DriveX Straight\t delta angle: " + deltaAngle);
+                System.out.println("L Velocity: " + leftSetVel + " R Velocity: " + rightSetVel);
+                System.out.println("---");
+            }
+        }
 
         System.out.println("Remaining Inches: " + remainingInches);
         System.out.println("Inches Traveled: " + currentInches);
         System.out.println("Talon Pos L: " + drivetrain.getLeftPosInches());
+        System.out.println("---");
+
+        drivetrain.setDrivetrainPercent(setVelPercent, setVelPercent);
     }
 
     @Override
