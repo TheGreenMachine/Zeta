@@ -52,3 +52,4 @@ constants:
   ticksPerIn: 50
   maxVel: 800
   cheezyDrive: 0
+  loggingEnabled: 1

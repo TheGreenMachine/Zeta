@@ -214,7 +214,9 @@ public class Robot extends TimedRobot {
 
     private void periodic() {
         Scheduler.getInstance().run();
-        logger.updateTopics();
-        logger.log();
+        if (factory.getConstant("loggingEnabled") > 0) {
+            logger.updateTopics();
+            logger.log();
+        }
     }
 }
