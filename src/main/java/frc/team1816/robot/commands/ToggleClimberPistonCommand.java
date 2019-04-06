@@ -18,7 +18,7 @@ public class ToggleClimberPistonCommand extends Command {
     }
 
     @Override
-    protected void execute() { // TODO: test logic
+    protected void execute() {
         climber.toggleClimberPiston();
     }
 

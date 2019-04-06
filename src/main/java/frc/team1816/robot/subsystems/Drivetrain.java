@@ -40,16 +40,13 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPower;
     private double rightPower;
     private double rotation;
-    private double leftVel;
-    private double rightVel;
-    private double leftPos;
-    private double rightPos;
 
+    private double leftSetVel;
+    private double rightSetVel;
+
+    private double leftMeasPos;
+    private double rightMeasPos;
     private double gyroAngle;
-    private double leftTalonVelocity;
-    private double rightTalonVelocity;
-    private double talonPositionLeft;
-    private double talonPositionRight;
 
     private boolean isPercentOut;
     private boolean isSlowMode;
@@ -121,11 +118,11 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public double getLeftPosTicks() {
-        return leftPos;
+        return leftMeasPos;
     }
 
     public double getRightPosTicks() {
-        return rightPos;
+        return rightMeasPos;
     }
 
     public double ticksToInches(double ticks) {
@@ -133,11 +130,11 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public double getLeftPosInches() {
-        return ticksToInches(this.leftPos);
+        return ticksToInches(this.leftMeasPos);
     }
 
     public double getRightPosInches() {
-        return ticksToInches(this.rightPos);
+        return ticksToInches(this.rightMeasPos);
     }
 
     public void setDrivetrainVelocity(double leftPower, double rightPower) {
@@ -202,11 +199,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     @Override
     public void periodic() {
         this.gyroAngle = navX.getAngle();
-        this.leftPos = leftMain.getSelectedSensorPosition(0);
-        this.rightPos = rightMain.getSelectedSensorPosition(0);
-
-        this.talonPositionLeft = leftMain.getSelectedSensorPosition(0);
-        this.talonPositionRight = rightMain.getSelectedSensorPosition(0);
+        this.leftMeasPos = leftMain.getSelectedSensorPosition(0);
+        this.rightMeasPos = rightMain.getSelectedSensorPosition(0);
 
         if (outputsChanged) {
             if (isSlowMode) {
@@ -223,15 +217,15 @@ public class Drivetrain extends Subsystem implements Checkable {
             leftPower += rotation * .55;
             rightPower -= rotation * .55;
 
-            leftVel = leftPower * MAX_VEL_TICKS_PER_100MS;
-            rightVel = rightPower * MAX_VEL_TICKS_PER_100MS;
+            leftSetVel = leftPower * MAX_VEL_TICKS_PER_100MS;
+            rightSetVel = rightPower * MAX_VEL_TICKS_PER_100MS;
 
             if (isPercentOut) {
                 this.leftMain.set(ControlMode.PercentOutput, leftPower);
                 this.rightMain.set(ControlMode.PercentOutput, rightPower);
             } else {
-                this.leftMain.set(ControlMode.Velocity, leftVel);
-                this.rightMain.set(ControlMode.Velocity, rightVel);
+                this.leftMain.set(ControlMode.Velocity, leftSetVel);
+                this.rightMain.set(ControlMode.Velocity, rightSetVel);
             }
 
             outputsChanged = false;

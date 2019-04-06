@@ -52,7 +52,6 @@ public class GamepadDriveCommand extends Command {
             rotation = 0;
         }
 
-        // TODO: possibly check vision status tag, if necessary
         drivetrain.setDrivetrainPercent(leftPow, rightPow, rotation);
     }
 
