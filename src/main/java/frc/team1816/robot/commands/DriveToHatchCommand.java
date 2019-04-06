@@ -24,7 +24,6 @@ public class DriveToHatchCommand extends Command {
     private double nominalPower;
     private double targetCenterX = 320.0; // define x that corresponds to bot center
 
-    private double lateralError;
     private double width;
     private double height;
     private double xCoord;
@@ -50,14 +49,12 @@ public class DriveToHatchCommand extends Command {
 
         prevReverseState = drivetrain.isReverseMode();
         drivetrain.setReverseMode(true);
-
-        BadLog.createTopic("Lateral Err", BadLog.UNITLESS, this::getLatErr, "hide", "join:Vision");
     }
 
     @Override
     protected void execute() {
         updateCoordData();
-        lateralError = targetCenterX - xCoord;
+        double lateralError = targetCenterX - xCoord;
         double leftPow = nominalPower;
         double rightPow = nominalPower;
         double control = Math.abs(lateralError * kP);
@@ -91,6 +88,8 @@ public class DriveToHatchCommand extends Command {
 
         System.out.println("L set pow: " + leftPow + "\tR set pow: " + rightPow);
         drivetrain.setDrivetrainPercent(leftPow, rightPow);
+
+        BadLog.publish("Lateral Err", lateralError);
     }
 
     @Override
@@ -113,9 +112,5 @@ public class DriveToHatchCommand extends Command {
 
     private void updateCoordData() {
         xCoord = Robot.stateInstance.getVisionXCoord();
-    }
-
-    private double getLatErr() {
-        return lateralError;
     }
 }

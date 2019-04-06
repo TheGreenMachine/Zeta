@@ -1,6 +1,8 @@
 package frc.team1816.robot;
 
 import badlog.lib.BadLog;
+import badlog.lib.DataInferMode;
+
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
 
@@ -114,6 +116,7 @@ public class Robot extends TimedRobot {
         logger = BadLog.init("/home/lvuser/" + logFile + ".bag");
         BadLog.createTopic("Timings/RobotLoop", "ms", this::getLastLoop, "hide", "join:Timings");
         BadLog.createTopic("Target Center X", BadLog.UNITLESS, stateInstance::getVisionXCoord, "hide", "join:Vision");
+        BadLog.createTopicSubscriber("Lateral Err", BadLog.UNITLESS, DataInferMode.DEFAULT);
         logger.finishInitialization();
     }
 
