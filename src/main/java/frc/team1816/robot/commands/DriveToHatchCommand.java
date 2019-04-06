@@ -3,6 +3,7 @@ package frc.team1816.robot.commands;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.edinarobotics.utils.math.Math1816;
 
+import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Robot;
@@ -49,6 +50,8 @@ public class DriveToHatchCommand extends Command {
 
         prevReverseState = drivetrain.isReverseMode();
         drivetrain.setReverseMode(true);
+
+        BadLog.createTopic("Lateral Err", BadLog.UNITLESS, this::getLatErr, "hide", "join:Vision");
     }
 
     @Override
@@ -110,5 +113,9 @@ public class DriveToHatchCommand extends Command {
 
     private void updateCoordData() {
         xCoord = Robot.stateInstance.getVisionXCoord();
+    }
+
+    private double getLatErr() {
+        return lateralError;
     }
 }

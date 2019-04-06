@@ -113,6 +113,7 @@ public class Robot extends TimedRobot {
         var logFile = new SimpleDateFormat("DDDHHmm").format(new Date());
         logger = BadLog.init("/home/lvuser/" + logFile + ".bag");
         BadLog.createTopic("Timings/RobotLoop", "ms", this::getLastLoop, "hide", "join:Timings");
+        BadLog.createTopic("Target Center X", BadLog.UNITLESS, stateInstance::getVisionXCoord, "hide", "join:Vision");
         logger.finishInitialization();
     }
 
