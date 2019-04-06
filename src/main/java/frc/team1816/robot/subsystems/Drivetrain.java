@@ -1,8 +1,5 @@
 package frc.team1816.robot.subsystems;
 
-import static frc.team1816.robot.subsystems.LedManager.RobotStatus.DRIVETRAIN_FLIPPED;
-import static frc.team1816.robot.subsystems.LedManager.RobotStatus.ENABLED;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -13,7 +10,6 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1816.robot.Components;
 import frc.team1816.robot.Robot;
 
 
@@ -49,25 +45,11 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftPos;
     private double rightPos;
 
-    //   private NetworkTable positions = NetworkTableInstance.getDefault().getTable("positions");
-
     private double gyroAngle;
     private double leftTalonVelocity;
     private double rightTalonVelocity;
     private double talonPositionLeft;
     private double talonPositionRight;
-
-    private final double initTime;
-    private double initX;
-    private double initY;
-    private double xPos;
-    private double yPos;
-    private double prevInches;
-    private double prevX;
-    private double prevY;
-    private double prevLeftInches;
-    private double prevRightInches;
-    private double initAngle;
 
     private boolean isPercentOut;
     private boolean isSlowMode;
@@ -98,11 +80,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
         navX = new AHRS(I2C.Port.kMXP);
         System.out.println("NavX Active: " + getGyroStatus());
-
-        this.initTime = System.currentTimeMillis();
-
-        // initCoordinateTracking();
-        // initDrivetrainLog();
     }
 
     private void invertTalons(boolean invertRight) {
@@ -126,33 +103,6 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveOne.setNeutralMode(mode);
         this.rightSlaveTwo.setNeutralMode(mode);
     }
-
-    // private void initDrivetrainLog() { // TODO: do all bad logging in different thread
-    //     BadLog.createTopic("Drivetrain/Angle", "deg",
-    //             () -> getGyroAngle());
-    //     BadLog.createTopic("Drivetrain/Left Meas Velocity", BadLog.UNITLESS,
-    //             () -> (double) this.leftMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
-    //     BadLog.createTopic("Drivetrain/Right Meas Velocity", BadLog.UNITLESS,
-    //             () -> (double) this.rightMain.getSelectedSensorVelocity(0), "hide", "join:Drivetrain/Velocities");
-    //     BadLog.createTopic("Drivetrain/Left Set Percent", BadLog.UNITLESS,
-    //             () -> getLeftPower(), "hide", "join:Drivetrain/Percent Out");
-    //     BadLog.createTopic("Drivetrain/Right Set Percent", BadLog.UNITLESS,
-    //             () -> getRightPower(), "hide", "join:Drivetrain/Percent Out");
-    // }
-
-    // public void initCoordinateTracking() {
-    //     this.initX = 0;
-    //     this.initY = 0;
-    //     this.xPos = 0;
-    //     this.yPos = 0;
-    //     this.prevRightInches = 0.0;
-    //     this.prevLeftInches = 0.0;
-    //     this.prevInches = 0;
-    //     this.prevX = 0;
-    //     this.prevY = 0;
-    //     this.initAngle = navX.getAngle();
-    //     System.out.println(initAngle);
-    // }
 
     public double getLeftPower() {
         return leftPower;
@@ -278,29 +228,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
             outputsChanged = false;
         }
-
-        //  coordinateTracking();
     }
-
-//    public void coordinateTracking() {
-//        double currLeftInches = getLeftPosInches();
-//        double currRightInches = getRightPosInches();
-//        double avgDistance =
-//            ((currLeftInches - prevLeftInches)
-//            + (currRightInches - prevRightInches)) / 2;
-//        double theta = (Math.toRadians(initAngle - gyroAngle) + Math.PI / 2);
-//
-//        xPos = avgDistance * Math.cos(theta) + prevX;
-//        yPos = avgDistance * Math.sin(theta) + prevY;
-//
-//        positions.getEntry("xPos").setDouble(xPos);
-//        positions.getEntry("yPos").setDouble(yPos);
-//
-//        prevX = xPos;
-//        prevY = yPos;
-//        prevLeftInches = currLeftInches;
-//        prevRightInches = currRightInches;
-//    }
 
     @Override
     protected void initDefaultCommand() {
@@ -308,7 +236,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
-        // System.out.println("Warning: mechanisms will move!");
+        // no-op
         return true;
     }
 }

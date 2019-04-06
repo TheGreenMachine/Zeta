@@ -31,9 +31,6 @@ public class Robot extends TimedRobot {
 
     private NetworkTableInstance inst;
     private NetworkTable table;
-    private NetworkTableEntry widthEntry;
-    private NetworkTableEntry heightEntry;
-    private NetworkTableEntry xCoordEntry;
 
     public static RobotState stateInstance = new RobotState();
 
@@ -92,9 +89,9 @@ public class Robot extends TimedRobot {
 
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("SmartDashboard");
-        widthEntry = table.getEntry("width");
-        heightEntry = table.getEntry("height");
-        xCoordEntry = table.getEntry("center_x");
+        NetworkTableEntry widthEntry = table.getEntry("width");
+        NetworkTableEntry heightEntry = table.getEntry("height");
+        NetworkTableEntry xCoordEntry = table.getEntry("center_x");
 
         stateInstance.width = widthEntry.getDouble(640.0);
         stateInstance.height = heightEntry.getDouble(480.0);
