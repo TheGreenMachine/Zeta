@@ -8,7 +8,9 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.I2C;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
@@ -75,8 +77,12 @@ public class Drivetrain extends Subsystem implements Checkable {
         invertTalons(true);
         setNeutralMode(NeutralMode.Brake);
 
-        navX = new AHRS(I2C.Port.kMXP);
-        System.out.println("NavX Active: " + getGyroStatus());
+        try {
+            navX = new AHRS(SPI.Port.kMXP);
+            System.out.println("NavX Instantiated");
+        } catch (RuntimeException e) {
+            DriverStation.reportError("Error instantiating navX-MXP:  " + e.getMessage(), true);
+        }
     }
 
     private void invertTalons(boolean invertRight) {

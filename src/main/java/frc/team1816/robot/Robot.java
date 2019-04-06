@@ -99,6 +99,8 @@ public class Robot extends TimedRobot {
 
         table.addEntryListener("center_x", (table, key, entry, value, flags) -> {stateInstance.xCoord = value.getDouble();}, 
                 EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+        System.out.println("NavX Active?: " + drivetrain.getGyroStatus());
     }
 
     @Override
