@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.team254.lib.drivers.LazyTalonSRX;
 
 /**
  * A class to create TalonSRX, VictorSPX, and GhostTalonSRX objects.
@@ -71,7 +72,7 @@ public class CtreMotorFactory {
     }
 
     private static IMotorControllerEnhanced createTalon(int id, Configuration config) {
-        TalonSRX talon = new TalonSRX(id);
+        TalonSRX talon = new LazyTalonSRX(id);
         configureMotorController(talon, config);
 
         talon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
