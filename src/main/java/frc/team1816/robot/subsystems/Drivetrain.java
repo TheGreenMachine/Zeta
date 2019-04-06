@@ -191,11 +191,11 @@ public class Drivetrain extends Subsystem implements Checkable {
         outputsChanged = true;
     }
 
-    public double getLeftVel() {
+    public double getLeftSetVel() {
         return leftSetVel;
     }
 
-    public double getRightVel() {
+    public double getRightSetVel() {
         return rightSetVel;
     }
 
