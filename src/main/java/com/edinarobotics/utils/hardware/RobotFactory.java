@@ -125,7 +125,7 @@ public class RobotFactory {
             Map<String, Integer> talons = new HashMap<>();
             Map<String, Integer> victors = new HashMap<>();
             Map<String, Integer> solenoids = new HashMap<>();
-            Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
+            Map<String, DoubleSolenoidConfig> doublesolenoids = new HashMap<>();
             Map<String, Double> constants = new HashMap<>();
             Integer canifier;
 
@@ -136,7 +136,7 @@ public class RobotFactory {
                         "  talons = " + talons.toString() + ",\n" +
                         "  victors = " + victors.toString() + ",\n" +
                         "  solenoids = " + solenoids.toString() + ",\n" +
-                        "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
+                        "  doubleSolenoids = " + doublesolenoids.toString() + ",\n" +
                         "  canifier = " + canifier + ",\n" +
                         "  constants = " + constants.toString() + ",\n" +
                         "}";
