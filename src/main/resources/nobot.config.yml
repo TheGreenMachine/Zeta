@@ -14,7 +14,7 @@ subsystems:
     talons:
       climbMaster: 3
       climbSlave: 12
-    doubleSolenoids:
+    doublesolenoids:
       habPiston:
         forward: 5
         reverse: 6

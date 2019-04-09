@@ -82,7 +82,7 @@ public class RobotFactory {
     }
 
     public DoubleSolenoid getDoubleSolenoid(String subsystem, String name) {
-        YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
+        YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doublesolenoids.get(name);
         if (solenoidConfig != null) {
             return new DoubleSolenoid(config.pcm, solenoidConfig.forward, solenoidConfig.reverse);
         }
