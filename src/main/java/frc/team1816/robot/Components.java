@@ -15,6 +15,7 @@ public class Components {
     public CargoCollector collector;
     public Drivetrain drivetrain;
     public CargoShooter shooter;
+    public CameraShifter shifter;
 
     private Components() {
         RobotFactory factory = Robot.factory;
