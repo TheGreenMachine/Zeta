@@ -18,6 +18,8 @@ subsystems:
     implemented: false
   ledmanager:
     implemented: false
+  camerashifter:
+    implemented: false
 constants:
   wheelbase: 25
   ticksPerRev: 1025

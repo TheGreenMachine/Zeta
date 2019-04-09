@@ -45,6 +45,12 @@ subsystems:
       maxPos: 2100
       midPos: 2100
       minPos: 950
+  camerashifter:
+    implemented: false
+    doublesolenoids:
+      shifter:
+        forward: -1
+        reverse: -1
 pcm: -1
 constants:
   wheelbase: 15.75

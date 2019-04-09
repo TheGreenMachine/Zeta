@@ -19,7 +19,8 @@ public class CameraShifter extends Subsystem implements Checkable {
 
     private DoubleSolenoid shifter;
 
-    private boolean isRetracted;
+    private boolean isRetracted = false;
+    private boolean outputsChanged = false;
     private Value shifterState = Value.kOff;
 
     public CameraShifter() {
@@ -29,12 +30,13 @@ public class CameraShifter extends Subsystem implements Checkable {
         this.shifter = factory.getDoubleSolenoid(NAME, "shifter");
     }
 
-    public void setShifterPistonState(boolean isRetracted){
+    public void setShifterPistonState(boolean isRetracted) {
         this.isRetracted = isRetracted;
+        outputsChanged = true;
     }
 
-    public void toggleCameraShifter(){
-        if (isRetracted){
+    public void toggleCameraShifter() {
+        if (isRetracted) {
             shifterState = Value.kForward;
         } else {
             shifterState = Value.kReverse;
@@ -43,7 +45,9 @@ public class CameraShifter extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
-        shifter.set(shifterState);
+        if (outputsChanged){
+            shifter.set(shifterState);
+        }
     }
 
     public void initDefaultCommand() {
@@ -51,9 +55,6 @@ public class CameraShifter extends Subsystem implements Checkable {
 
     @Override
     public boolean check() throws CheckFailException {
-        System.out.println("Warning: mechanisms will move!");
-        Timer.delay(3);
-
         return true;
     }
 }

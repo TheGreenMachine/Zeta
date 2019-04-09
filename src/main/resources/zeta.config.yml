@@ -46,7 +46,7 @@ subsystems:
     implemented: true
     canifier: 18
   camerashifter:
-    implemented: true
+    implemented: false
     doublesolenoids:
       shifter:
         forward: -1

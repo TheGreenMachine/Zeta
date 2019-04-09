@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
         drivetrain = Components.getInstance().drivetrain;
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
-        shifter = Components.getInstance().shifter;
+        //shifter = Components.getInstance().shifter;
 
         drivetrainReverseChooser = new SendableChooser<>();
         drivetrainReverseChooser.addOption("Cargo Forward", false);

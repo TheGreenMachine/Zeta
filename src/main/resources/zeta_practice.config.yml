@@ -45,6 +45,12 @@ subsystems:
   ledmanager:
     implemented: true
     canifier: 18
+  camerashifter:
+    implemented: false
+    doublesolenoids:
+      shifter:
+        forward: -1
+        reverse: -1
 pcm: 17
 constants:
   wheelbase: 25

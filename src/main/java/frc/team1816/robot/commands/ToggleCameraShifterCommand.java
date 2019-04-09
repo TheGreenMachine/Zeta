@@ -24,6 +24,6 @@ public class ToggleCameraShifterCommand extends Command {
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 }
