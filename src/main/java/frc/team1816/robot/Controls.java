@@ -71,10 +71,11 @@ public class Controls {
 
         if (factory.isImplemented(Climber.NAME)) {
             if (factory.isImplemented(CameraMount.NAME)) {
-                gamepadDriver.dPadRight().whenPressed(new SubsystemClimbToggleCommand()); // TODO: enable
+                gamepadDriver.diamondRight().whenPressed(new SubsystemClimbToggleCommand()); // TODO: enable
+            } else {
+                gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
             }
-            
-            gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
+
             gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
             gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));
 
