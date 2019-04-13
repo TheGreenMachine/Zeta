@@ -68,11 +68,11 @@ public class Climber extends Subsystem implements Checkable {
         if (habPistonState == Value.kReverse) {
             setHabPiston(Value.kOff);
             setHabPiston(Value.kForward);
-            System.out.println("Set Climber Piston: fwd");
+            System.out.println("Set Climber Piston: k_fwd");
         } else {
             setHabPiston(Value.kOff);
             setHabPiston(Value.kReverse);
-            System.out.println("Set Climber Piston: rev");
+            System.out.println("Set Climber Piston: k_rev");
         }
     }
 

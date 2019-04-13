@@ -1,30 +1,31 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
+import frc.team1816.robot.subsystems.CameraMount;
 import frc.team1816.robot.subsystems.Climber;
 
-public class SetClimberPistonCommand extends Command {
+public class SubsystemClimbToggleCommand extends Command {
     private Climber climber;
-    private DoubleSolenoid.Value value;
+    private CameraMount shifter;
 
-    public SetClimberPistonCommand(Value value) {
-        super("setclimberpistoncommand");
+    public SubsystemClimbToggleCommand() {
+        super("subsystemclimbtogglecommand");
         climber = Components.getInstance().climber;
-        this.value = value;
+        shifter = Components.getInstance().shifter;
         requires(climber);
     }
 
     @Override
     protected void initialize() {
-        System.out.println("Setting Climber Piston: " + value.toString());
+        System.out.println("SUBSYSTEM climber toggle + camera retraction command");
     }
 
     @Override
     protected void execute() {
-        climber.setHabPiston(value);
+        climber.toggleClimberPiston();
+        shifter.setCameraPistonState(Value.kReverse); // TODO: match electrical state
     }
 
     @Override

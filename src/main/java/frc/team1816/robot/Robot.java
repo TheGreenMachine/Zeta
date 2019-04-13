@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +27,7 @@ public class Robot extends TimedRobot {
     public Drivetrain drivetrain;
     public LedManager leds;
     public CargoShooter shooter;
-    public CameraShifter shifter;
+    public CameraMount shifter;
 
     private boolean autoInitialized;
 
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot {
         drivetrain = Components.getInstance().drivetrain;
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
-        //shifter = Components.getInstance().shifter;
+        //shifter = Components.getInstance().shifter; // TODO: enable
 
         drivetrainReverseChooser = new SendableChooser<>();
         drivetrainReverseChooser.addOption("Cargo Forward", false);
@@ -112,19 +113,21 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        // shifter.setCameraPistonState(Value.kForward); // TODO: enable
+
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
             drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
-            // drivetrain.setSlowMode(true);
         }
         autoInitialized = true;
     }
 
     @Override
     public void teleopInit() {
+        // shifter.setCameraPistonState(Value.kForward); // TODO: enable
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
         }

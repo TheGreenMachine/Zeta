@@ -9,6 +9,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.SquareFilter;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team1816.robot.commands.*;
 import frc.team1816.robot.subsystems.Birdbeak;
+import frc.team1816.robot.subsystems.CameraMount;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.Climber;
@@ -69,6 +70,10 @@ public class Controls {
         }
 
         if (factory.isImplemented(Climber.NAME)) {
+            if (factory.isImplemented(CameraMount.NAME)) {
+                gamepadDriver.dPadRight().whenPressed(new SubsystemClimbToggleCommand()); // TODO: enable
+            }
+            
             gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
             gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
             gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));

@@ -45,7 +45,7 @@ subsystems:
   ledmanager:
     implemented: true
     canifier: 18
-  camerashifter:
+  cameramount:
     implemented: false
     doublesolenoids:
       shifter:

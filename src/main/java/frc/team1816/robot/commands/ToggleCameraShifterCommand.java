@@ -2,28 +2,28 @@ package frc.team1816.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
-import frc.team1816.robot.subsystems.CameraShifter;
+import frc.team1816.robot.subsystems.CameraMount;
 
 public class ToggleCameraShifterCommand extends Command {
-  private CameraShifter cameraShifter;
-  
-  public ToggleCameraShifterCommand() {
-    super("togglecamerashiftercommand");
-    cameraShifter = Components.getInstance().shifter;
-    requires(cameraShifter);
-  }
+    private CameraMount cameraShifter;
 
-  @Override
-  protected void initialize() {
-  }
+    public ToggleCameraShifterCommand() {
+        super("togglecamerashiftercommand");
+        cameraShifter = Components.getInstance().shifter;
+        requires(cameraShifter);
+    }
 
-  @Override
-  protected void execute() {
-    this.cameraShifter.toggleCameraShifter();
-  }
+    @Override
+    protected void initialize() {
+    }
 
-  @Override
-  protected boolean isFinished() {
-    return true;
-  }
+    @Override
+    protected void execute() {
+        this.cameraShifter.toggleCameraShifter();
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 }
