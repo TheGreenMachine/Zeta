@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
         drivetrain = Components.getInstance().drivetrain;
         leds = Components.getInstance().ledManager;
         shooter = Components.getInstance().shooter;
-        //shifter = Components.getInstance().shifter; // TODO: enable
+        shifter = Components.getInstance().shifter; // TODO: enable
 
         drivetrainReverseChooser = new SendableChooser<>();
         drivetrainReverseChooser.addOption("Cargo Forward", false);
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        // shifter.setCameraPistonState(Value.kForward); // TODO: enable
+        shifter.setCameraPistonState(Value.kForward); // TODO: enable
 
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // shifter.setCameraPistonState(Value.kForward); // TODO: enable
+        shifter.setCameraPistonState(Value.kForward); // TODO: enable
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
         }

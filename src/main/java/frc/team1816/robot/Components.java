@@ -29,7 +29,6 @@ public class Components {
         if (factory.isImplemented(CargoCollector.NAME)) {
             collector = new CargoCollector();
         }
-
         if (factory.isImplemented(Drivetrain.NAME)) {
             drivetrain = new Drivetrain();
         }
@@ -38,6 +37,9 @@ public class Components {
         }
         if (factory.isImplemented(LedManager.NAME)) {
             ledManager = new LedManager();
+        }
+        if (factory.isImplemented(CameraMount.NAME)) {
+            shifter = new CameraMount();
         }
     }
 
