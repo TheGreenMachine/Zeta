@@ -117,34 +117,23 @@ public class TrajectoryGenerator {
         }
 
         public final Trajectory<TimedState<Pose2dWithCurvature>> centerStartToStairs;
-        public final Trajectory<TimedState<Pose2dWithCurvature>> centerStartToStairsTunable;
         public final Trajectory<TimedState<Pose2dWithCurvature>> centerStartToVex;
 
         private TrajectorySet() {
             centerStartToStairs = getCenterStartToStairs();
-            centerStartToStairsTunable = getCenterStartToStairsTunable();
             centerStartToVex = getCenterStartToVex();
         }    
 
         private Trajectory<TimedState<Pose2dWithCurvature>> getCenterStartToStairs() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(kCenterStartPose);
-            waypoints.add(kMiddleWalkway);
-            waypoints.add(kStairs);
-            return generateTrajectory(true, waypoints, Arrays.asList(new CentripetalAccelerationConstraint(kMaxCentripetalAccel)),
-                    kMaxVelocity, kMaxAccel, kMaxVoltage);
-        }
-
-        
-        private Trajectory<TimedState<Pose2dWithCurvature>> getCenterStartToStairsTunable() {
-            List<Pose2d> waypoints = new ArrayList<>();
-            waypoints.add(kCenterStartPose);
-            // waypoints.add(kMiddleWalkway);
-            // waypoints.add(kStairs);
+            //waypoints.add(kMiddleWalkway);
+            //waypoints.add(kStairs);
             waypoints.add(kEndLine);
             return generateTrajectory(true, waypoints, Arrays.asList(new CentripetalAccelerationConstraint(kMaxCentripetalAccel)),
                     kMaxVelocity, kMaxAccel, kMaxVoltage);
         }
+
 
         private Trajectory<TimedState<Pose2dWithCurvature>> getCenterStartToVex() {
             List<Pose2d> waypoints = new ArrayList<>();

@@ -18,7 +18,9 @@ import com.team254.lib.trajectory.timing.TimedState;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1816.robot.Components;
 import frc.team1816.robot.Kinematics;
 import frc.team1816.robot.Robot;
 import frc.team1816.robot.RobotState;
@@ -49,8 +51,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private PigeonIMU gyro;
 
-    private RobotState robotState = RobotState.getInstance();
-
     private IMotorController rightMain;
     private IMotorController rightSlaveOne;
     private IMotorController rightSlaveTwo;
@@ -58,6 +58,8 @@ public class Drivetrain extends Subsystem implements Checkable {
     private IMotorController leftMain;
     private IMotorController leftSlaveOne;
     private IMotorController leftSlaveTwo;
+
+    private RobotState robotState = RobotState.getInstance();
 
     private double leftPower;
     private double rightPower;
@@ -76,7 +78,12 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private double leftMeasPos;
     private double rightMeasPos;
-    private double gyroAngle;
+    private Rotation2d gyroAngle;
+    private Rotation2d gyroOffset = Rotation2d.identity();
+
+    private double prevLeftInches;
+    private double prevRightInches;
+    private Rotation2d initAngle;
 
     private boolean isPercentOut;
     private boolean isSlowMode;
@@ -119,6 +126,8 @@ public class Drivetrain extends Subsystem implements Checkable {
         } catch (RuntimeException e) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + e.getMessage(), true);
         }
+
+        initEstimator();
     }
 
     private void invertTalons(boolean invertRight) {
@@ -143,6 +152,12 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveTwo.setNeutralMode(mode);
     }
 
+    public void initEstimator(){
+        prevLeftInches = 0;
+        prevRightInches = 0;
+        initAngle = getGyroAngle();
+    }
+
     public double getLeftPower() {
         return leftPower;
     }
@@ -152,11 +167,11 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public double getLeftVelocity(){
-        return leftVel;
+        return leftSetVel;
     }
 
     public double getRightVelocity(){
-        return rightVel;
+        return rightSetVel;
     }
 
     public double getLeftPosTicks() {
@@ -350,6 +365,8 @@ public class Drivetrain extends Subsystem implements Checkable {
 
             outputsChanged = false;
         }
+        updateEstimator();
+        updatePathFollower();
     }
 
     @Override

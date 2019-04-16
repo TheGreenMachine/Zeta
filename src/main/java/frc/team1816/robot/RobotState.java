@@ -15,6 +15,10 @@ public class RobotState {
     private static RobotState instance_ = new RobotState();
     private Drivetrain drivetrain = Components.getInstance().drivetrain;
 
+    public double width = 640;
+    public double height = 480;
+    public double xCoord = -1.0;
+
     public static RobotState getInstance() {
         return instance_;
     }
@@ -95,6 +99,18 @@ public class RobotState {
         SmartDashboard.putNumber("Robot Pose Y", odometry.getTranslation().y());
         SmartDashboard.putNumber("Robot Pose Theta", odometry.getRotation().getDegrees());
         SmartDashboard.putNumber("Robot Linear Velocity", vehicle_velocity_measured_.dx);
+    }
+
+    public double getVisionXCoord() {
+        return xCoord;
+    }
+
+    public double getVisionWidth() {
+        return width;
+    }
+
+    public double getVisionHeight() {
+        return height;
     }
 }
 

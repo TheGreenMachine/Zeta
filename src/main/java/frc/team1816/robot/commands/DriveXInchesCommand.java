@@ -60,13 +60,13 @@ public class DriveXInchesCommand extends Command {
     protected void initialize() {
         initPosition = drivetrain.getLeftPosInches();
         if (gyroCorrection) {
-            initAngle = drivetrain.getGyroAngle();
+            initAngle = drivetrain.getGyroAngle().getDegrees();
         }
     }
 
     @Override
     protected void execute() {
-        double deltaAngle = drivetrain.getGyroAngle() - initAngle;
+        double deltaAngle = drivetrain.getGyroAngle().getDegrees() - initAngle;
 
         double setVelPercent = speed;
         double leftSetVel, rightSetVel;
