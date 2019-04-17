@@ -42,10 +42,10 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private static double INCHES_PER_REV;
 
-    private double kP;
-    private double kI;
-    private double kD;
-    private double kF;
+    // private double kP;
+    // private double kI;
+    // private double kD;
+    // private double kF;
 
     private AHRS navX;
 
@@ -104,10 +104,10 @@ public class Drivetrain extends Subsystem implements Checkable {
         WHEELBASE = factory.getConstant("wheelbase");
         MAX_VEL_TICKS_PER_100MS = factory.getConstant("maxVel");
         INCHES_PER_REV = TICKS_PER_REV / TICKS_PER_INCH;
-        kP = factory.getConstant("kP");
-        kI = factory.getConstant("kI");
-        kD = factory.getConstant("kD");
-        kF = factory.getConstant("kF");
+        // kP = factory.getConstant("kP");
+        // kI = factory.getConstant("kI");
+        // kD = factory.getConstant("kD");
+        // kF = factory.getConstant("kF");
 
         this.leftMain = factory.getMotor(NAME, "leftMain");
         this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", leftMain);

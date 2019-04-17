@@ -26,6 +26,8 @@ public class Birdbeak extends Subsystem implements Checkable {
 
         this.beak = factory.getSolenoid(NAME, "beak");
         this.hatchPuncher = factory.getSolenoid(NAME, "puncher");
+
+        System.out.println("Birdbeak initialized");
     }
 
     public void setBeak(boolean notGripped) {
