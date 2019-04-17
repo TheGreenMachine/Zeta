@@ -59,8 +59,6 @@ public class Drivetrain extends Subsystem implements Checkable {
     private IMotorController leftSlaveOne;
     private IMotorController leftSlaveTwo;
 
-    private RobotState robotState = RobotState.getInstance();
-
     private double leftPower;
     private double rightPower;
     private double leftAccel;
@@ -207,7 +205,7 @@ public class Drivetrain extends Subsystem implements Checkable {
     }
 
     public void setHeading(Rotation2d heading){
-        gyroOffset = heading.rotateBy(Rotation2d.fromDegrees(this.gyro.getFusedHeading()).inverse());
+        gyroOffset = heading.rotateBy(Rotation2d.fromDegrees(this.navX.getAngle()).inverse());
         gyroAngle = heading;
     }
 
@@ -323,17 +321,16 @@ public class Drivetrain extends Subsystem implements Checkable {
         final double deltaLeft = currLeftInches - prevLeftInches;
         final double deltaRight = currRightInches - prevRightInches;
         final Rotation2d gyroAngle = getGyroAngle();
-        final Twist2d measuredVelocity = robotState.generateOdometryFromSensors(deltaLeft, deltaRight, gyroAngle);
+        final Twist2d measuredVelocity = RobotState.getInstance().generateOdometryFromSensors(deltaLeft, deltaRight, gyroAngle);
         final Twist2d predictedVelocity = Kinematics.forwardKinematics(getLeftVelocity(), getLeftPosInches());
-        robotState.addObservations(timestamp, measuredVelocity, predictedVelocity);
+        RobotState.getInstance().addObservations(timestamp, measuredVelocity, predictedVelocity);
         prevLeftInches = currLeftInches;
         prevRightInches = currRightInches;
     }
 
     @Override
     public void periodic() {
-        //this.gyroAngle = navX.getAngle();
-        this.gyroAngle = Rotation2d.fromDegrees(this.gyro.getFusedHeading()).rotateBy(gyroOffset);
+        this.gyroAngle = Rotation2d.fromDegrees(this.navX.getAngle()).rotateBy(gyroOffset);
         this.leftMeasPos = leftMain.getSelectedSensorPosition(0);
         this.rightMeasPos = rightMain.getSelectedSensorPosition(0);
 
