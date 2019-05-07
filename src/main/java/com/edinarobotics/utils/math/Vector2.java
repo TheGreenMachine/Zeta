@@ -16,7 +16,7 @@ public class Vector2 extends Point2 {
     public Vector2(double x, double y){
         super(x, y);
     }
-    
+
     /**
      * Returns a String representation of this Vector2.
      * 

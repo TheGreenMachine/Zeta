@@ -2,16 +2,17 @@ package frc.team1816.robot.commands;
 
 import com.team254.lib.util.CheesyDriveHelper;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1816.robot.Controls;
 import frc.team1816.robot.Components;
+import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.Drivetrain;
+
 import static frc.team1816.robot.Robot.factory;
 
 public class GamepadDriveCommand extends Command {
-    private static final String NAME = "gamepaddrivecommand";
+    public static final String NAME = "gamepaddrivecommand";
 
     private Drivetrain drivetrain;
-    CheesyDriveHelper mCheesyDriveHelper = new CheesyDriveHelper();
+    private CheesyDriveHelper cheesyDriveHelper = new CheesyDriveHelper();
 
     private double prevPowLeft = 0;
     private double prevPowRight = 0;
@@ -44,13 +45,14 @@ public class GamepadDriveCommand extends Command {
             prevPowRight = rightPow;
         } else { // Cheesy Drive
             boolean quickTurn = Controls.getInstance().getQuickTurn();
-            var signal = mCheesyDriveHelper.cheesyDrive(leftPow, rotation, quickTurn, false);
+            var signal = cheesyDriveHelper.cheesyDrive(leftPow, rotation, quickTurn, false);
             leftPow = signal.getLeft();
             rightPow = signal.getRight();
-            rotation = 0; // CheezyDrive takes care of rotation so set to 0 to keep or code from adjusting
+            // CheezyDrive takes care of rotation so set to 0 to keep or code from adjusting
+            rotation = 0;
         }
 
-        drivetrain.setDrivetrainPercent(leftPow, rightPow, rotation); // TODO: possibly check vision status tag, if necessary
+        drivetrain.setDrivetrainPercent(leftPow, rightPow, rotation);
     }
 
     @Override

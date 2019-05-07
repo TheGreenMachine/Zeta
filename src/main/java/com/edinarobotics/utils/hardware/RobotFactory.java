@@ -16,6 +16,7 @@ public class RobotFactory {
     private YamlConfiguration config;
 
     public RobotFactory(String configName) {
+        System.out.println("Loading Config for "+ configName);
         Yaml yaml = new Yaml(new Constructor(YamlConfiguration.class));
         yaml.setBeanAccess(BeanAccess.FIELD);
         config = yaml.load(
@@ -81,7 +82,7 @@ public class RobotFactory {
     }
 
     public DoubleSolenoid getDoubleSolenoid(String subsystem, String name) {
-        YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doubleSolenoids.get(name);
+        YamlConfiguration.DoubleSolenoidConfig solenoidConfig = getSubsystem(subsystem).doublesolenoids.get(name);
         if (solenoidConfig != null) {
             return new DoubleSolenoid(config.pcm, solenoidConfig.forward, solenoidConfig.reverse);
         }
@@ -89,7 +90,7 @@ public class RobotFactory {
     }
 
     public CANifier getCanifier(String subsystem) {
-        if (getSubsystem(subsystem).canifier != null) {
+        if (isImplemented(subsystem) && getSubsystem(subsystem).canifier != null) {
             return new CANifier(getSubsystem(subsystem).canifier);
         }
         return null;
@@ -124,7 +125,7 @@ public class RobotFactory {
             Map<String, Integer> talons = new HashMap<>();
             Map<String, Integer> victors = new HashMap<>();
             Map<String, Integer> solenoids = new HashMap<>();
-            Map<String, DoubleSolenoidConfig> doubleSolenoids = new HashMap<>();
+            Map<String, DoubleSolenoidConfig> doublesolenoids = new HashMap<>();
             Map<String, Double> constants = new HashMap<>();
             Integer canifier;
 
@@ -135,7 +136,7 @@ public class RobotFactory {
                         "  talons = " + talons.toString() + ",\n" +
                         "  victors = " + victors.toString() + ",\n" +
                         "  solenoids = " + solenoids.toString() + ",\n" +
-                        "  doubleSolenoids = " + doubleSolenoids.toString() + ",\n" +
+                        "  doubleSolenoids = " + doublesolenoids.toString() + ",\n" +
                         "  canifier = " + canifier + ",\n" +
                         "  constants = " + constants.toString() + ",\n" +
                         "}";

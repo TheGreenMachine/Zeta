@@ -14,7 +14,7 @@ subsystems:
     talons:
       climbMaster: 3
       climbSlave: 12
-    doubleSolenoids:
+    doublesolenoids:
       habPiston:
         forward: 5
         reverse: 6
@@ -45,6 +45,12 @@ subsystems:
       maxPos: 2100
       midPos: 2100
       minPos: 950
+  cameramount:
+    implemented: false
+    doublesolenoids:
+      shifter:
+        forward: -1
+        reverse: -1
 pcm: -1
 constants:
   wheelbase: 15.75

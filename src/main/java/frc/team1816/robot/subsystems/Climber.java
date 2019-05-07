@@ -7,9 +7,9 @@ import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1816.robot.Robot;
 
 @RunTest
@@ -20,7 +20,7 @@ public class Climber extends Subsystem implements Checkable {
     private IMotorControllerEnhanced climbSlave;
 
     private DoubleSolenoid habPiston;
-    private DoubleSolenoid.Value habPistonState = Value.kOff;
+    private Value habPistonState = Value.kOff;
 
     private double motorPower;
 
@@ -33,7 +33,8 @@ public class Climber extends Subsystem implements Checkable {
         RobotFactory factory = Robot.factory;
 
         this.climbMaster = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbMaster");
-        this.climbSlave = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbSlave", climbMaster);
+        this.climbSlave =
+                (IMotorControllerEnhanced) factory.getMotor(NAME, "climbSlave", climbMaster);
         this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
 
         this.climbSlave.setInverted(true);
@@ -42,6 +43,8 @@ public class Climber extends Subsystem implements Checkable {
         this.climbMaster.configContinuousCurrentLimit(30, kTimeoutMs);
         this.climbMaster.configPeakCurrentLimit(35, kTimeoutMs);
         this.climbMaster.configPeakCurrentDuration(500, kTimeoutMs);
+
+        this.climbMaster.set(ControlMode.PercentOutput, 0.0);
     }
 
     public void setClimberPower(double motorPow) {
@@ -53,27 +56,31 @@ public class Climber extends Subsystem implements Checkable {
         this.habPistonState = state;
     }
 
-    public void toggleHabPiston() {
-        if(habPistonState == Value.kForward) {
-            habPistonState = Value.kReverse;
-        } else {
-            habPistonState = Value.kForward;
-        }
-    }
-
-    public String getHabPistonState() {
-        return habPistonState.toString();
+    public Value getHabPistonState() {
+        return habPistonState;
     }
 
     public double getMotorPower() {
         return motorPower;
     }
 
+    public void toggleClimberPiston() {
+        if (habPistonState == Value.kReverse) {
+            setHabPiston(Value.kOff);
+            setHabPiston(Value.kForward);
+            System.out.println("Set Climber Piston: k_fwd");
+        } else {
+            setHabPiston(Value.kOff);
+            setHabPiston(Value.kReverse);
+            System.out.println("Set Climber Piston: k_rev");
+        }
+    }
+
     @Override
     public void periodic() {
         if (outputsChanged) {
             climbMaster.set(ControlMode.PercentOutput, motorPower);
-            habPiston.set(habPistonState); // TODO: wire
+            habPiston.set(habPistonState);
             outputsChanged = false;
         }
     }

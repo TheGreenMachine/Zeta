@@ -13,12 +13,14 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     private double initTime;
     private double elapsedDelayMs;
 
+    private boolean chainExecuted = false;
+
     public SubsystemCargoIntakeDownCommand() {
         super("subsystemcargointakedowncommand");
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
-        elapsedDelayMs = 1000;
+        elapsedDelayMs = 700;
 
         requires(collector);
         requires(shooter);
@@ -28,21 +30,27 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     protected void initialize() {
         System.out.println("SUBSYSTEM Cargo Intake Down");
         initTime = System.currentTimeMillis();
+        chainExecuted = false;
     }
 
     @Override
     protected void execute() {
         collector.setArm(true);
-        collector.setIntake(-1.0);
-        shooter.setIntake(-1.0);
-        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.getArmPistonState()) {
+
+        if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.isArmDown()) {
             shooter.setArmPosition(ArmPosition.DOWN);
+            if (shooter.getArmEncoderPosition() > (CargoShooter.ARM_POSITION_MAX - 150) // check arm pos below threshold
+                    || (initTime + elapsedDelayMs + 1000) < System.currentTimeMillis()) { // wait 1000ms max before override
+                collector.setIntake(-1.0);
+                shooter.setIntake(1.0);
+                chainExecuted = true;
+            }
         }
     }
 
     @Override
     protected boolean isFinished() {
-        return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
+        return chainExecuted;
     }
 
     @Override

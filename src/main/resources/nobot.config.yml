@@ -1,16 +1,16 @@
 subsystems:
   drivetrain:
-    implemented: true
+    implemented: false
     talons:
-      leftMain: 14
-      leftSlaveOne: 13
-      rightMain: 1
-      rightSlaveOne: 2
+      leftMain: 1
+      leftSlaveOne: -1
+      rightMain: 2
+      rightSlaveOne: -1
     victors:
-      rightSlaveTwo: 0
-      leftSlaveTwo: 15
+      rightSlaveTwo: -1
+      leftSlaveTwo: -1
   climber:
-    implemented: true
+    implemented: false
     talons:
       climbMaster: 3
       climbSlave: 12
@@ -19,42 +19,42 @@ subsystems:
         forward: 5
         reverse: 6
   cargocollector:
-    implemented: true
+    implemented: false
     talons:
       intake: 11
     solenoids:
       arm: 2
   birdbeak:
-    implemented: true
+    implemented: false
+    talons:
+      hatchIntake: 4
     solenoids:
       beak: 1
       puncher: 3
+      arm: 4
   cargoshooter:
-    implemented: true
+    implemented: false
     talons:
       arm: 5
       intake: 10
     constants:
-      kP: 2.5
+      kP: 5.0
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 1870
-      midPos: 1000
-      minPos: 650
-  ledmanager:
-    implemented: true
-    canifier: 18
+      maxPos: 2100
+      midPos: 2100
+      minPos: 950
   cameramount:
     implemented: false
     doublesolenoids:
       shifter:
         forward: -1
         reverse: -1
-pcm: 17
+pcm: -1
 constants:
-  wheelbase: 25
-  ticksPerRev: 1025
-  ticksPerIn: 50
+  wheelbase: 15.75
+  ticksPerRev: 960
+  ticksPerIn: 78
   maxVel: 800
-  cheezyDrive: 0
+  cheezyDrive: 1

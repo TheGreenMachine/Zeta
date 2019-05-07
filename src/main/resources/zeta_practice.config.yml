@@ -14,7 +14,7 @@ subsystems:
     talons:
       climbMaster: 3
       climbSlave: 12
-    doubleSolenoids:
+    doublesolenoids:
       habPiston:
         forward: 5
         reverse: 6
@@ -26,12 +26,9 @@ subsystems:
       arm: 2
   birdbeak:
     implemented: true
-    talons:
-      hatchIntake: 4
     solenoids:
       beak: 1
       puncher: 3
-      arm: 4
   cargoshooter:
     implemented: true
     talons:
@@ -42,12 +39,18 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 2300
-      midPos: 2400
-      minPos: 1300
+      maxPos: 3690
+      midPos: 2800
+      minPos: 2425
   ledmanager:
     implemented: true
     canifier: 18
+  cameramount:
+    implemented: true
+    doublesolenoids:
+      shifter:
+        forward: 4
+        reverse: 7
 pcm: 17
 constants:
   wheelbase: 25

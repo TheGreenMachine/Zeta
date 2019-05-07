@@ -7,8 +7,6 @@ import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.Robot;
 
 /**
@@ -68,7 +66,6 @@ public class CargoShooter extends Subsystem implements Checkable {
         // Calibrate quadrature encoder with absolute mag encoder
         int absolutePosition = getArmPositionAbsolute();
 
-
         /* Set the quadrature (relative) sensor to match absolute */
         this.armTalon.setSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
@@ -80,10 +77,11 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.setInverted(kMotorInverted);
         armTalon.setSensorPhase(kSensorPhase);
         armTalon.enableCurrentLimit(true);
-        armTalon.configContinuousCurrentLimit(3,kTimeoutMs);
-        armTalon.configPeakCurrentLimit(5,kTimeoutMs);
+        armTalon.configContinuousCurrentLimit(3, kTimeoutMs);
+        armTalon.configPeakCurrentLimit(5, kTimeoutMs);
         armTalon.configPeakCurrentDuration(75, kTimeoutMs);
-        armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
+        armTalon.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
         /* Config the peak and nominal outputs, 12V means full */
         armTalon.configNominalOutputForward(0, kTimeoutMs);
@@ -93,7 +91,8 @@ public class CargoShooter extends Subsystem implements Checkable {
 
         this.setPid(kP, kI, kD);
 
-        armTalon.configAllowableClosedloopError(kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
+        armTalon.configAllowableClosedloopError(
+                kPIDLoopIdx, ALLOWABLE_CLOSED_LOOP_ERROR, kTimeoutMs);
 
         // Both overrides must be true to enable soft limits
         armTalon.overrideLimitSwitchesEnable(true);
@@ -116,8 +115,8 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MAX), 
-        ROCKET(ARM_POSITION_MID), 
+        DOWN(ARM_POSITION_MAX),
+        ROCKET(ARM_POSITION_MID),
         UP(ARM_POSITION_MIN);
 
         private double armPos;
@@ -161,10 +160,14 @@ public class CargoShooter extends Subsystem implements Checkable {
     public void setArmPower(double armPow) {
         isPercentOutput = true;
 
-        System.out.println("Nominal range\tSet value: " + armPow + "Arm Pos Abs: " + getArmPositionAbsolute()
-                + "Arm Pos Rel: " + getArmEncoderPosition());
+        System.out.println(
+                new StringBuilder("Nominal range\tSet value: ").append(armPow)
+                        .append(" Arm Pos Abs: ").append(getArmPositionAbsolute())
+                        .append(" Arm Pos Rel: ").append(getArmEncoderPosition())
+                        .toString()
+        );
 
-            this.armPower = armPow * 0.50;
+        this.armPower = armPow * 0.50;
 
         outputsChanged = true;
     }
@@ -192,7 +195,7 @@ public class CargoShooter extends Subsystem implements Checkable {
             if (isPercentOutput) {
                 armTalon.set(ControlMode.PercentOutput, armPower);
             } else {
-                System.out.println("Setting Arm to " + armPosition.getPos() + "...");
+                System.out.println("Setting Arm to " + armPosition.getPos());
                 armTalon.set(ControlMode.Position, armPosition.getPos());
             }
             intakeMotor.set(ControlMode.PercentOutput, intakePower);
@@ -205,27 +208,27 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     }
 
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        builder.addStringProperty("ControlMode", () -> armTalon.getControlMode().toString(), null);
-        builder.addDoubleProperty("CurrentPosition", this::getArmEncoderPosition, null);
-        builder.addDoubleProperty("ClosedLoop/TargetPosition",
-                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
-        builder.addDoubleProperty("ClosedLoop/Error",
-                () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopError(kPIDLoopIdx) : 0), null);
-        builder.addDoubleProperty("MotorOutput", armTalon::getMotorOutputPercent, null);
-        builder.addBooleanProperty("Busy", this::isBusy, null);
-        builder.addDoubleProperty("IntakePower", this::getIntakePower, this::setIntake);
-        builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);
-        SmartDashboard.putNumber("max_thresh", ARM_POSITION_MAX);
-        SmartDashboard.putNumber("min_thresh", ARM_POSITION_MIN);
-    }
+    // @Override
+    // public void initSendable(SendableBuilder builder) {
+    //     builder.addStringProperty("ControlMode", () -> armTalon.getControlMode().toString(), null);
+    //     builder.addDoubleProperty("CurrentPosition", this::getArmEncoderPosition, null);
+    //     builder.addDoubleProperty("ClosedLoop/TargetPosition",
+    //             () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopTarget(kPIDLoopIdx) : 0), null);
+    //     builder.addDoubleProperty("ClosedLoop/Error",
+    //             () -> (armTalon.getControlMode() == ControlMode.Position ? armTalon.getClosedLoopError(kPIDLoopIdx) : 0), null);
+    //     builder.addDoubleProperty("MotorOutput", armTalon::getMotorOutputPercent, null);
+    //     builder.addBooleanProperty("Busy", this::isBusy, null);
+    //     builder.addDoubleProperty("IntakePower", this::getIntakePower, this::setIntake);
+    //     builder.addDoubleProperty("Absolute Arm Position", this::getArmPositionAbsolute, null);
+    //     SmartDashboard.putNumber("max_thresh", ARM_POSITION_MAX);
+    //     SmartDashboard.putNumber("min_thresh", ARM_POSITION_MIN);
+    // }
 
     @Override
     public boolean check() throws CheckFailException {
         System.out.println("Warning: mechanisms will move!");
         Timer.delay(3);
-        
+
         setIntake(1.0);
         Timer.delay(0.5);
         setIntake(0);

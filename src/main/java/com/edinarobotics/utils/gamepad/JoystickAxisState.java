@@ -100,4 +100,12 @@ public class JoystickAxisState {
     public double getDirection(){
         return Math.toDegrees(Math.atan2(getY(), getX()));
     }
+
+    public void setTwist(double twist) {
+        this.twist = twist;
+    }
+
+    public void setThrottle(double throttle) {
+        this.throttle = throttle;
+    }
 }

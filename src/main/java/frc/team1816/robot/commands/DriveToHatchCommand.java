@@ -1,38 +1,38 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.edinarobotics.utils.math.Math1816;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
+import frc.team1816.robot.Robot;
 import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.LedManager;
+import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 public class DriveToHatchCommand extends Command {
 
     private Drivetrain drivetrain;
 
-    private NetworkTable table;
-    private NetworkTableEntry xEntry;
-    private NetworkTableEntry yEntry;
-    private NetworkTableEntry widthEntry;
-    private NetworkTableEntry heightEntry;
-    private NetworkTableEntry distanceEntry;
+    private static final double kP = 0.0015; // kP 0.0015 used @ NSR, stable
+    private static final double ERROR_THRESHOLD = 0;
+    private static final double ON_TARGET_THRESHOLD = 20;
 
-    private static final double kP = 0.0025; // halve velocity for half throttle as nominal with 100px error
-    private static final double ERROR_THRESHOLD = 5;
-    private static final double DIST_THRESHOLD = 4;
+    private boolean prevReverseState;
 
     private double nominalPower;
+    private double targetCenterX = 320.0; // define x that corresponds to bot center
 
+    private double lateralError;
     private double width;
     private double height;
     private double xCoord;
-    private double yCoord;
-    private double deltaDist;
-    private double lateralError;
+
+    private LedManager leds;
 
     public DriveToHatchCommand(double power) {
         drivetrain = Components.getInstance().drivetrain;
+        leds = Components.getInstance().ledManager;
         nominalPower = power;
         requires(drivetrain);
     }
@@ -41,31 +41,48 @@ public class DriveToHatchCommand extends Command {
     protected void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        table = inst.getTable("SmartDashboard");
-        setupTableEntries();
+        width = Robot.stateInstance.getVisionWidth();
+        height = Robot.stateInstance.getVisionHeight();
+        xCoord = Robot.stateInstance.getVisionXCoord();
 
-        updateCoordData();
+        drivetrain.setNeutralMode(NeutralMode.Brake);
 
-        drivetrain.enableBrakeMode();
+        prevReverseState = drivetrain.isReverseMode();
+        drivetrain.setReverseMode(true);
     }
 
     @Override
     protected void execute() {
         updateCoordData();
-        lateralError = (width / 2) - xCoord;
+        lateralError = targetCenterX - xCoord;
         double leftPow = nominalPower;
         double rightPow = nominalPower;
-        double control = lateralError * kP;
+        double control = Math.abs(lateralError * kP);
 
-        System.out.println("x: " + xCoord + "\ty: " + yCoord + "\tlatErr: " + lateralError + "\tcontrol: " + control);
-        System.out.println("Distance to target: " + deltaDist);
+        StringBuilder sb = new StringBuilder("cam: (");
+        sb.append(width).append("x").append(height).append(")\tcenter X: ").append(xCoord)
+                .append("\tlatErr: ").append(lateralError).append("\tcontrol: ").append(control);
+
+        System.out.println(sb.toString());
+
+        if (xCoord == -1.0) {
+            control = 0;
+            leds.indicateStatus(RobotStatus.OFF);
+        } else {
+            if (Math.abs(lateralError) <= ON_TARGET_THRESHOLD) {
+                leds.indicateStatus(RobotStatus.ON_TARGET);
+            } else {
+                leds.indicateStatus(RobotStatus.SEEN_TARGET);
+            }
+        }
 
         if (Math.abs(lateralError) >= ERROR_THRESHOLD) {
-            if(lateralError < 0) { // target is right of center, so decrease right side vel
-                rightPow = rightPow - control;
-            } else { // target is left of center, so decrease left side vel
-                leftPow = leftPow - control;
+            if (lateralError < 0) { // target is right of center, so decrease right side (wrt cargo) vel
+                leftPow = leftPow - control; // drivetrain reversed, so apply control to other side
+                leftPow = Math1816.coerceValue(1.0, 0.0, leftPow);
+            } else { // target is left of center, so decrease left side (wrt cargo) vel
+                rightPow = rightPow - control; // drivetrain reversed, so apply control to other side
+                rightPow = Math1816.coerceValue(1.0, 0.0, rightPow);
             }
         }
 
@@ -82,7 +99,8 @@ public class DriveToHatchCommand extends Command {
     @Override
     protected void end() {
         drivetrain.setDrivetrainVisionNav(false);
-        drivetrain.setDrivetrainPercent(0,0);
+        drivetrain.setDrivetrainPercent(0, 0);
+        drivetrain.setReverseMode(prevReverseState);
     }
 
     @Override
@@ -90,20 +108,7 @@ public class DriveToHatchCommand extends Command {
         end();
     }
 
-    private void setupTableEntries() {
-        xEntry = table.getEntry("center_x");
-        yEntry = table.getEntry("center_y");
-        widthEntry = table.getEntry("width");
-        heightEntry = table.getEntry("height");
-        distanceEntry = table.getEntry("distance_esti");
-
-        width = widthEntry.getDouble(640);
-        height = widthEntry.getDouble(480);
-    }
-
     private void updateCoordData() {
-        xCoord = xEntry.getDouble(320);
-        yCoord = yEntry.getDouble(240);
-        deltaDist = distanceEntry.getDouble(-1);
+        xCoord = Robot.stateInstance.getVisionXCoord();
     }
 }
