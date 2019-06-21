@@ -4,6 +4,7 @@ import badlog.lib.BadLog;
 import badlog.lib.DataInferMode;
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
+import com.team254.lib.geometry.Pose2d;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
@@ -131,9 +132,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         if (shifter != null) {
-            shifter.setCameraPistonState(Value.kForward);
+            shifter.setCameraPistonState(Value.kForward); // TODO: enable
         }
-
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
         }
@@ -143,6 +143,7 @@ public class Robot extends TimedRobot {
         }
         autoInitialized = true;
 
+        stateInstance.getInstance().reset(Timer.getFPGATimestamp(), Pose2d.identity());
         Command autoCommand = driveTrajectoryAuto;
         autoCommand.start();
     }
@@ -150,7 +151,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         if (shifter != null) {
-            shifter.setCameraPistonState(Value.kForward);
+            shifter.setCameraPistonState(Value.kForward); // TODO: enable
         }
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
@@ -162,6 +163,7 @@ public class Robot extends TimedRobot {
                 drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
             }
         }
+        stateInstance.getInstance().reset(Timer.getFPGATimestamp(), Pose2d.identity());
     }
 
     @Override

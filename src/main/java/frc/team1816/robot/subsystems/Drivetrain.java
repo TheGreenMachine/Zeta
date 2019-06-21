@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1816.robot.Components;
 import frc.team1816.robot.Kinematics;
 import frc.team1816.robot.Robot;
 import frc.team1816.robot.RobotState;
@@ -125,6 +124,7 @@ public class Drivetrain extends Subsystem implements Checkable {
             DriverStation.reportError("Error instantiating navX-MXP:  " + e.getMessage(), true);
         }
 
+        driveMotionPlanner = new DriveMotionPlanner();
         initEstimator();
     }
 
@@ -284,7 +284,9 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private void updatePathFollower() {
         final double now = Timer.getFPGATimestamp();
-
+        System.out.println("Robot State Instance:\t" + RobotState.getInstance());
+        System.out.println("Time Stamp:\t" + now);
+        System.out.println("DriveMotionPlanner:\t" + driveMotionPlanner);
         DriveMotionPlanner.Output output = driveMotionPlanner.update(now, RobotState.getInstance().getFieldToVehicle(now));
 
         this.MPOutputLeftVel = radiansPerSecondToTicksPer100ms(output.left_velocity);

@@ -87,7 +87,7 @@ public class TrajectoryGenerator {
     public static final Pose2d kShop2 = new Pose2d(114,-126,Rotation2d.fromDegrees(180-22));
     public static final Pose2d kVexBox = new Pose2d(198,-150,Rotation2d.fromDegrees(180));
 
-    public static final Pose2d kEndLine = new Pose2d(300,0,Rotation2d.fromDegrees(180));
+    public static final Pose2d kEndLine = new Pose2d(200,0,Rotation2d.fromDegrees(180));
 
     public static final Pose2d kMiddleWalkway = new Pose2d(79.5,11.0,Rotation2d.fromDegrees(180+45));
     public static final Pose2d kStraight  = new Pose2d( 60.0,0, Rotation2d.fromDegrees(180));

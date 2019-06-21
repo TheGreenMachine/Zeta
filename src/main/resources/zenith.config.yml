@@ -21,6 +21,8 @@ subsystems:
   cameramount:
     implemented: false
 constants:
+  loggingEnabled: 0
+  driveEncoderPPR: 1440
   wheelbase: 25
   ticksPerRev: 1025
   ticksPerIn: 50
