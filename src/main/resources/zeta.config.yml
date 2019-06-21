@@ -46,11 +46,11 @@ subsystems:
     implemented: true
     canifier: 18
   cameramount:
-    implemented: false
+    implemented: true
     doublesolenoids:
       shifter:
-        forward: -1
-        reverse: -1
+        forward: 4
+        reverse: 7
 pcm: 17
 constants:
   driveEncoderPPR: 4096

@@ -51,6 +51,7 @@ public class CameraMount extends Subsystem implements Checkable {
     public void periodic() {
         if (outputsChanged) {
             camRetractor.set(camState);
+            outputsChanged = false;
         }
     }
 

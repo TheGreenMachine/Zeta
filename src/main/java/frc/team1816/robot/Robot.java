@@ -130,7 +130,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        shifter.setCameraPistonState(Value.kForward); // TODO: enable
+        if (shifter != null) {
+            shifter.setCameraPistonState(Value.kForward);
+        }
 
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
@@ -147,7 +149,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        shifter.setCameraPistonState(Value.kForward); // TODO: enable
+        if (shifter != null) {
+            shifter.setCameraPistonState(Value.kForward);
+        }
         if (climber != null) {
             climber.setDefaultCommand(new GamepadClimbCommand());
         }
