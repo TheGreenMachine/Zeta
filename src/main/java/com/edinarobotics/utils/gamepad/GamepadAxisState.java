@@ -1,7 +1,6 @@
 package com.edinarobotics.utils.gamepad;
 
 import com.edinarobotics.utils.math.Vector2;
-import java.lang.Math;
 
 /**
  * This class represents the state of all joystick axes of a Gamepad.

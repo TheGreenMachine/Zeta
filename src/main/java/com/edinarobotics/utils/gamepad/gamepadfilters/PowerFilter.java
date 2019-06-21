@@ -1,7 +1,6 @@
 package com.edinarobotics.utils.gamepad.gamepadfilters;
 
 import com.edinarobotics.utils.math.Math1816;
-import java.lang.Math;
 
 /**
  * This filter raises gamepad axis values to a given power while preserving

@@ -1,6 +1,5 @@
 package com.edinarobotics.utils.gamepad.gamepadfilters;
 
-import com.edinarobotics.utils.gamepad.GamepadAxisState;
 import com.edinarobotics.utils.gamepad.JoystickAxisState;
 import com.edinarobotics.utils.math.Vector2;
 

@@ -1,8 +1,8 @@
 package com.edinarobotics.utils.gamepad.gamepadfilters;
 
-import java.util.List;
-
 import com.edinarobotics.utils.gamepad.GamepadAxisState;
+
+import java.util.List;
 
 /**
  * This class applies multiple other GamepadFilters to a Gamepad.

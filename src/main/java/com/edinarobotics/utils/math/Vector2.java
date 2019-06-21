@@ -1,7 +1,5 @@
 package com.edinarobotics.utils.math;
 
-import java.lang.Math;
-
 /**
  * This class implements a 2-dimensional vector and associated mathematical
  * operations.
