@@ -284,9 +284,9 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private void updatePathFollower() {
         final double now = Timer.getFPGATimestamp();
-        System.out.println("Robot State Instance:\t" + RobotState.getInstance());
-        System.out.println("Time Stamp:\t" + now);
-        System.out.println("DriveMotionPlanner:\t" + driveMotionPlanner);
+        // System.out.println("Robot State Instance:\t" + RobotState.getInstance());
+        // System.out.println("Time Stamp:\t" + now);
+        // System.out.println("DriveMotionPlanner:\t" + driveMotionPlanner);
         DriveMotionPlanner.Output output = driveMotionPlanner.update(now, RobotState.getInstance().getFieldToVehicle(now));
 
         this.MPOutputLeftVel = radiansPerSecondToTicksPer100ms(output.left_velocity);
@@ -297,8 +297,9 @@ public class Drivetrain extends Subsystem implements Checkable {
                                     radiansPerSecondToTicksPer100ms(output.right_velocity),
                                     output.left_feedforward_voltage / 12.0,
                                     output.right_feedforward_voltage / 12.0);
-                System.out.println("Left Velocity: " + output.left_velocity);
-                System.out.println("Right Velocity: " + output.right_velocity);
+                System.out.print("Left Velocity: " + output.left_velocity);
+                System.out.print("\tRight Velocity: " + output.right_velocity);
+                System.out.println("\tGyro Angle:" + gyroAngle);
 
             this.leftAccel = radiansPerSecondToTicksPer100ms(output.left_accel) / 1000.0;
             this.rightAccel = radiansPerSecondToTicksPer100ms(output.right_accel) / 1000.0;
