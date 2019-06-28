@@ -7,6 +7,8 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import frc.team1816.robot.Robot;
+
 /**
  * A class to create TalonSRX, VictorSPX, and GhostTalonSRX objects.
  * Based on FRC Team 254 The Cheesy Poof's 2018 TalonSRXFactory.
@@ -89,6 +91,7 @@ public class CtreMotorFactory {
                 config.ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS, kTimeoutMs);
         talon.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth,
                 config.PULSE_WIDTH_STATUS_FRAME_RATE_MS, kTimeoutMs);
+        talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 20);
 
         return talon;
     }
@@ -161,8 +164,11 @@ public class CtreMotorFactory {
         motor.overrideSoftLimitsEnable(config.ENABLE_SOFT_LIMIT);
 
         motor.setInverted(config.INVERTED);
-        motor.setSensorPhase(config.SENSOR_PHASE);
-
+        if (Robot.factory.getConstant("sensorPhase") == 1){
+                motor.setSensorPhase(true);
+        } else {
+                motor.setSensorPhase(config.SENSOR_PHASE);
+        }
         motor.selectProfileSlot(0, 0);
 
         ErrorCode code = motor.configVelocityMeasurementPeriod(config.VELOCITY_MEASUREMENT_PERIOD, kTimeoutMs);

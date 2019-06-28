@@ -21,6 +21,7 @@ subsystems:
   cameramount:
     implemented: false
 constants:
+  sensorPhase: 1
   loggingEnabled: 0
   driveEncoderPPR: 1440
   wheelbase: 25

@@ -2,6 +2,7 @@ package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -41,10 +42,10 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private static double INCHES_PER_REV;
 
-    // private double kP;
-    // private double kI;
-    // private double kD;
-    // private double kF;
+    private double kP;
+    private double kI;
+    private double kD;
+    private double kF;
 
     private AHRS navX;
 
@@ -101,10 +102,10 @@ public class Drivetrain extends Subsystem implements Checkable {
         WHEELBASE = factory.getConstant("wheelbase");
         MAX_VEL_TICKS_PER_100MS = factory.getConstant("maxVel");
         INCHES_PER_REV = TICKS_PER_REV / TICKS_PER_INCH;
-        // kP = factory.getConstant("kP");
-        // kI = factory.getConstant("kI");
-        // kD = factory.getConstant("kD");
-        // kF = factory.getConstant("kF");
+        kP = factory.getConstant("kP");
+        kI = factory.getConstant("kI");
+        kD = factory.getConstant("kD");
+        kF = factory.getConstant("kF");
 
         this.leftMain = factory.getMotor(NAME, "leftMain");
         this.leftSlaveOne = factory.getMotor(NAME, "leftSlaveOne", leftMain);
@@ -114,6 +115,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightSlaveOne = factory.getMotor(NAME, "rightSlaveOne", rightMain);
         this.rightSlaveTwo = factory.getMotor(NAME, "rightSlaveTwo", rightMain);
 
+        setPID(kP, kI, kD, kF);
         invertTalons(true);
         setNeutralMode(NeutralMode.Brake);
 
@@ -148,6 +150,18 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.rightMain.setNeutralMode(mode);
         this.rightSlaveOne.setNeutralMode(mode);
         this.rightSlaveTwo.setNeutralMode(mode);
+    }
+
+    public void setPID(double kP, double kI, double kD, double kF){
+        this.leftMain.config_kP(0, kP, 20);
+        this.leftMain.config_kI(0, kI, 20);
+        this.leftMain.config_kD(0, kD, 20);
+        this.leftMain.config_kF(0, kF, 20);
+
+        this.rightMain.config_kP(0, kP, 20);
+        this.rightMain.config_kI(0, kI, 20);
+        this.rightMain.config_kD(0, kD, 20);
+        this.rightMain.config_kF(0, kF, 20);
     }
 
     public void initEstimator(){
