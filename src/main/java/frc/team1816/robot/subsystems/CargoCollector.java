@@ -46,10 +46,6 @@ public class CargoCollector extends Subsystem implements Checkable {
         return armDown;
     }
 
-    public boolean getArmPistonState() {
-        return armDown;
-    }
-
     public double getIntakePow() {
         return this.intakePow;
     }

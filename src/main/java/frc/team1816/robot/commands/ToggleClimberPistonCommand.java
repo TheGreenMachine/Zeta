@@ -1,6 +1,5 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Climber;
@@ -19,7 +18,7 @@ public class ToggleClimberPistonCommand extends Command {
     }
 
     @Override
-    protected void execute() { // TODO: test logic
+    protected void execute() {
         climber.toggleClimberPiston();
     }
 

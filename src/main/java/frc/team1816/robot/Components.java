@@ -1,9 +1,6 @@
 package frc.team1816.robot;
 
 import com.edinarobotics.utils.hardware.RobotFactory;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSink;
-import edu.wpi.first.cameraserver.CameraServer;
 import frc.team1816.robot.subsystems.*;
 
 /**
@@ -18,10 +15,8 @@ public class Components {
     public CargoCollector collector;
     public Drivetrain drivetrain;
     public CargoShooter shooter;
-
-    VideoSink server;
-    public UsbCamera camCargo, camHatch;
-    private boolean isFrontCam = true;
+    public CameraMount shifter;
+    public RobotState robotState;
 
     private Components() {
         RobotFactory factory = Robot.factory;
@@ -35,7 +30,6 @@ public class Components {
         if (factory.isImplemented(CargoCollector.NAME)) {
             collector = new CargoCollector();
         }
-
         if (factory.isImplemented(Drivetrain.NAME)) {
             drivetrain = new Drivetrain();
         }
@@ -45,21 +39,8 @@ public class Components {
         if (factory.isImplemented(LedManager.NAME)) {
             ledManager = new LedManager();
         }
-        
-        camHatch = CameraServer.getInstance().startAutomaticCapture(0);
-        // camCargo = CameraServer.getInstance().startAutomaticCapture(1);
-        // server = CameraServer.getInstance().getServer();
-    }
-
-    public void toggleCamera() {
-        if (isFrontCam) {
-            System.out.println("Activating Rear Cam");
-            server.setSource(camHatch);
-            isFrontCam = false;
-        } else {
-            System.out.println("Activating Front Cam");
-            server.setSource(camCargo);
-            isFrontCam = true;
+        if (factory.isImplemented(CameraMount.NAME)) {
+            shifter = new CameraMount();
         }
     }
 

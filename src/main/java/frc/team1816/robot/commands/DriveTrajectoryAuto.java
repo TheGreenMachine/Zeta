@@ -8,7 +8,7 @@ public class DriveTrajectoryAuto extends CommandGroup {
   
   public DriveTrajectoryAuto(){
       // addSequential(new ResetGyroCommand());
-      var trajectory = trajectoryGenerator.getTrajectorySet().centerStartToStairsTunable;
+      var trajectory = trajectoryGenerator.getTrajectorySet().centerStartToStairs;
       //System.out.println(trajectoryGenerator.toString());
       //System.out.println(trajectoryGenerator.getTrajectorySet().toString());
       addSequential(new DriveTrajectoryCommand(trajectory, true));

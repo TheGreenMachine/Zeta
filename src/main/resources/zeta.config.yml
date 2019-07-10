@@ -14,7 +14,7 @@ subsystems:
     talons:
       climbMaster: 3
       climbSlave: 12
-    doubleSolenoids:
+    doublesolenoids:
       habPiston:
         forward: 5
         reverse: 6
@@ -26,12 +26,9 @@ subsystems:
       arm: 2
   birdbeak:
     implemented: true
-    talons:
-      hatchIntake: 4
     solenoids:
       beak: 1
       puncher: 3
-      arm: 4
   cargoshooter:
     implemented: true
     talons:
@@ -42,21 +39,29 @@ subsystems:
       kI: 0
       kD: 1.0
       kF: 0
-      maxPos: 1820
+      maxPos: 1870
       midPos: 1000
-      minPos: 730
+      minPos: 650
   ledmanager:
     implemented: true
     canifier: 18
+  cameramount:
+    implemented: true
+    doublesolenoids:
+      shifter:
+        forward: 4
+        reverse: 7
 pcm: 17
 constants:
-  driveEncoderPPR: 4096
+  sensorPhase: 0
+  loggingEnabled: 0
+  driveEncoderPPR: 1440
   wheelbase: 25
   ticksPerRev: 1025
   ticksPerIn: 50
   maxVel: 800
-  cheezyDrive: 0
   kP: 0.116
   kI: 0
   kD: 1.16
-  kF: 0.128
+  kF: 0.834
+  cheezyDrive: 0

@@ -29,6 +29,8 @@ gradle-app.setting
 
 # Log Files
 *.csv
+*.bag
+*.bag.html
 
 1816-Project-Template.iml
 1816-Project-Template.ipr

@@ -71,7 +71,7 @@ public class LedManager extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
-        if (outputsChanged) {
+        if (outputsChanged && canifier != null) {
             canifier.setLEDOutput((double) (ledG / 255.0), CANifier.LEDChannel.LEDChannelA);
             canifier.setLEDOutput((double) (ledR / 255.0), CANifier.LEDChannel.LEDChannelB);
             canifier.setLEDOutput((double) (ledB / 255.0), CANifier.LEDChannel.LEDChannelC);
@@ -105,12 +105,13 @@ public class LedManager extends Subsystem implements Checkable {
     }
 
     public enum RobotStatus {
-        ENABLED(0, 255, 0), // green
+        ENABLED(223, 255, 0), // gross yellowgreen
         DISABLED(255, 103, 0), // orange
         ERROR(255, 0, 0), // red
         ENDGAME(0, 0, 255), // blue
         SEEN_TARGET(255, 0, 255), // magenta
-        ON_TARGET(255, 0, 20),
+        ON_TARGET(255, 0, 20), // deep magenta
+        DRIVETRAIN_FLIPPED(0, 255, 0), // green
         OFF(0, 0, 0); // off
 
 

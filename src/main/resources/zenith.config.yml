@@ -18,7 +18,12 @@ subsystems:
     implemented: false
   ledmanager:
     implemented: false
+  cameramount:
+    implemented: false
 constants:
+  sensorPhase: 1
+  loggingEnabled: 0
+  driveEncoderPPR: 1440
   wheelbase: 25
   ticksPerRev: 1025
   ticksPerIn: 50
