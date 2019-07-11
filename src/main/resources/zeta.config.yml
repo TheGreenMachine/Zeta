@@ -59,9 +59,9 @@ constants:
   wheelbase: 25
   ticksPerRev: 1025
   ticksPerIn: 50
-  maxVel: 800
-  kP: 0.116
+  maxVel: 989.5
+  kP: 0
   kI: 0
-  kD: 1.16
-  kF: 0.834
+  kD: 0
+  kF: 0.93
   cheezyDrive: 0
