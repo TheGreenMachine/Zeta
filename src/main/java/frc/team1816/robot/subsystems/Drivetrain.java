@@ -227,19 +227,19 @@ public class Drivetrain extends Subsystem implements Checkable {
         return navX.isConnected();
     }
 
-    public void setDrivetrainVelocity(double leftPower, double rightPower, double leftFeedForward, double rightFeedForward){
+    public void setDrivetrainVelocity(double leftSetVel, double rightSetVel, double leftFeedForward, double rightFeedForward){
         this.leftFeedForward = leftFeedForward;
         this.rightFeedForward = rightFeedForward;
-        setDrivetrainVelocity(leftPower, rightPower, 0);
+        setDrivetrainVelocity(leftSetVel, rightSetVel, 0);
     }
 
-    public void setDrivetrainVelocity(double leftPower, double rightPower) {
-        setDrivetrainVelocity(leftPower, rightPower, 0);
+    public void setDrivetrainVelocity(double leftSetVel, double rightSetVel) {
+        setDrivetrainVelocity(leftSetVel, rightSetVel, 0);
     }
 
-    public void setDrivetrainVelocity(double leftPower, double rightPower, double rotation) {
-        this.leftPower = leftPower;
-        this.rightPower = rightPower;
+    public void setDrivetrainVelocity(double leftSetVel, double rightSetVel, double rotation) {
+        this.leftSetVel = leftSetVel;
+        this.rightSetVel = rightSetVel;
         this.rotation = rotation;
         isPercentOut = false;
         outputsChanged = true;
@@ -311,9 +311,6 @@ public class Drivetrain extends Subsystem implements Checkable {
                                     radiansPerSecondToTicksPer100ms(output.right_velocity),
                                     output.left_feedforward_voltage / 12.0,
                                     output.right_feedforward_voltage / 12.0);
-                System.out.print("Left Velocity: " + output.left_velocity);
-                System.out.print("\tRight Velocity: " + output.right_velocity);
-                System.out.println("\tGyro Angle:" + gyroAngle);
 
             this.leftAccel = radiansPerSecondToTicksPer100ms(output.left_accel) / 1000.0;
             this.rightAccel = radiansPerSecondToTicksPer100ms(output.right_accel) / 1000.0;
@@ -366,8 +363,12 @@ public class Drivetrain extends Subsystem implements Checkable {
             leftPower += rotation * .55;
             rightPower -= rotation * .55;
 
-            leftSetVel = leftPower * MAX_VEL_TICKS_PER_100MS;
-            rightSetVel = rightPower * MAX_VEL_TICKS_PER_100MS;
+            // leftSetVel = leftPower * MAX_VEL_TICKS_PER_100MS;
+            // rightSetVel = rightPower * MAX_VEL_TICKS_PER_100MS;
+
+            System.out.print("Left Velocity: " + leftSetVel);
+            System.out.print("\tRight Velocity: " + rightSetVel);
+            System.out.println("\tGyro Angle:" + gyroAngle);
 
             if (isPercentOut) {
                 this.leftMain.set(ControlMode.PercentOutput, leftPower);
