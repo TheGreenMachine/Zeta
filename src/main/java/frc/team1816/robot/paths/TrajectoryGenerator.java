@@ -87,7 +87,7 @@ public class TrajectoryGenerator {
     public static final Pose2d kShop2 = new Pose2d(114,-126,Rotation2d.fromDegrees(180-22));
     public static final Pose2d kVexBox = new Pose2d(198,-150,Rotation2d.fromDegrees(180));
 
-    public static final Pose2d kEndLine = new Pose2d(200,0,Rotation2d.fromDegrees(180));
+    public static final Pose2d kEndLine = new Pose2d(200,0,Rotation2d.fromDegrees(0));
 
     public static final Pose2d kMiddleWalkway = new Pose2d(79.5,11.0,Rotation2d.fromDegrees(180+45));
     public static final Pose2d kStraight  = new Pose2d( 60.0,0, Rotation2d.fromDegrees(180));
@@ -95,7 +95,7 @@ public class TrajectoryGenerator {
     public static final Pose2d kSideStartPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(180.0));
    
     // STARTING IN CENTER
-    public static final Pose2d kCenterStartPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(180.0));
+    public static final Pose2d kCenterStartPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0));
     public static final Pose2d kSimpleSwitchStartPose = new Pose2d(0.0, -2.0, Rotation2d.fromDegrees(180.0));
     public static final Pose2d kRightSwitchPose = new Pose2d(new Translation2d(100.0, -60.0), Rotation2d.fromDegrees(0.0 + 180.0));
     public static final Pose2d kLeftSwitchPose = new Pose2d(new Translation2d(100.0, 60.0), Rotation2d.fromDegrees(0.0 + 180.0));

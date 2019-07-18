@@ -1,8 +1,6 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -16,7 +14,8 @@ import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Twist2d;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
-
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
@@ -50,6 +49,18 @@ public class Drivetrain extends Subsystem implements Checkable {
     private AHRS navX;
 
     private PigeonIMU gyro;
+
+    private NetworkTable positions = NetworkTableInstance.getDefault().getTable("positions");
+
+    private final double initTime;
+    private double initX;
+    private double initY;
+    private double xPos;
+    private double yPos;
+    private double prevInches;
+    private double prevX;
+    private double prevY;
+    private double pigeonAngle;
 
     private IMotorController rightMain;
     private IMotorController rightSlaveOne;
@@ -126,8 +137,11 @@ public class Drivetrain extends Subsystem implements Checkable {
             DriverStation.reportError("Error instantiating navX-MXP:  " + e.getMessage(), true);
         }
 
+        this.initTime = System.currentTimeMillis();
+
         driveMotionPlanner = new DriveMotionPlanner();
         initEstimator();
+        initCoordinateTracking();
     }
 
     private void invertTalons(boolean invertRight) {
@@ -168,6 +182,16 @@ public class Drivetrain extends Subsystem implements Checkable {
         prevLeftInches = 0;
         prevRightInches = 0;
         initAngle = getGyroAngle();
+    }
+
+    public void initCoordinateTracking() {
+        this.initX = 0;
+        this.initY = 0;
+        this.xPos = 0;
+        this.yPos = 0;
+        this.prevInches = 0;
+        this.prevX = 0;
+        this.prevY = 0;
     }
 
     public double getLeftPower() {
@@ -342,6 +366,24 @@ public class Drivetrain extends Subsystem implements Checkable {
         prevRightInches = currRightInches;
     }
 
+    public void coordinateTracking() {
+        double currLeftInches = getLeftPosInches();
+        double currRightInches = getRightPosInches();
+        double avgDistance = ((currLeftInches - prevLeftInches) + (currRightInches - prevRightInches)) / 2;
+        double theta = (Math.toRadians(initAngle.getDegrees() - gyroAngle.getDegrees()) + Math.PI /2);
+
+        xPos = avgDistance * Math.cos(theta) + prevX;
+        yPos = avgDistance * Math.sin(theta) + prevY;
+
+        positions.getEntry("xPos").setDouble(xPos);
+        positions.getEntry("yPos").setDouble(yPos);
+
+        prevX = xPos;
+        prevY = yPos;
+       // prevLeftInches = currLeftInches;
+       // prevRightInches = currRightInches;
+    }
+
     @Override
     public void periodic() {
         this.gyroAngle = Rotation2d.fromDegrees(this.navX.getAngle()).rotateBy(gyroOffset);
@@ -380,6 +422,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
             outputsChanged = false;
         }
+        coordinateTracking();
         updateEstimator();
         updatePathFollower();
     }
