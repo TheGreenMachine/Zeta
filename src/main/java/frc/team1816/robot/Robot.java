@@ -2,20 +2,17 @@ package frc.team1816.robot;
 
 import com.edinarobotics.utils.checker.Checker;
 import com.edinarobotics.utils.hardware.RobotFactory;
-
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1816.robot.commands.BlinkLedCommand;
-import frc.team1816.robot.commands.GamepadClimbCommand;
-import frc.team1816.robot.commands.GamepadDriveCommand;
+import frc.team1816.robot.commands.*;
 import frc.team1816.robot.subsystems.*;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
@@ -177,7 +174,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         if (drivetrain != null && leds != null && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)) {
-            if (DriverStation.getInstance().getMatchTime() <= 45 && DriverStation.getInstance().getMatchTime() > 0) {
+            if (DriverStation.getInstance().getMatchTime() <= 60 && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
             } else if (drivetrain.isReverseMode()) {
                 leds.indicateStatus(RobotStatus.DRIVETRAIN_FLIPPED);

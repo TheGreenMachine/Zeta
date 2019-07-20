@@ -6,14 +6,9 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.SquareFilter;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.team1816.robot.commands.*;
-import frc.team1816.robot.subsystems.Birdbeak;
-import frc.team1816.robot.subsystems.CameraMount;
-import frc.team1816.robot.subsystems.CargoCollector;
-import frc.team1816.robot.subsystems.CargoShooter;
-import frc.team1816.robot.subsystems.Climber;
-import frc.team1816.robot.subsystems.Drivetrain;
+import frc.team1816.robot.subsystems.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +71,8 @@ public class Controls {
                 gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
             }
 
-            gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(Value.kReverse));
-            gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(Value.kForward));
+            gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
+            gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
 
         }
 
@@ -127,4 +122,17 @@ public class Controls {
     public boolean getOperatorRightTrigger() {
         return gamepadOperator.rightTrigger().get();
     }
+
+//    public void activateClimber() {
+//        if (factory.isImplemented(Climber.NAME)) {
+//            if (factory.isImplemented(CameraMount.NAME)) {
+//                gamepadDriver.diamondRight().whenPressed(new SubsystemClimbToggleCommand()); // TODO: enable
+//            } else {
+//                gamepadDriver.diamondRight().whenPressed(new ToggleClimberPistonCommand());
+//            }
+//
+//            gamepadDriver.middleLeft().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kReverse));
+//            gamepadDriver.middleRight().whenPressed(new SetClimberPistonCommand(DoubleSolenoid.Value.kForward));
+//        }
+//    }
 }
