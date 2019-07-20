@@ -117,9 +117,9 @@ public class CargoShooter extends Subsystem implements Checkable {
     }
 
     public enum ArmPosition {
-        DOWN(ARM_POSITION_MIN),
+        DOWN(ARM_POSITION_MAX),
         ROCKET(ARM_POSITION_MID),
-        UP(ARM_POSITION_MAX);
+        UP(ARM_POSITION_MIN);
 
         private double armPos;
 
