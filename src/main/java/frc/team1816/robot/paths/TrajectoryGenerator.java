@@ -87,18 +87,22 @@ public class TrajectoryGenerator {
     public static final Pose2d kShop2 = new Pose2d(114,-126,Rotation2d.fromDegrees(180-22));
     public static final Pose2d kVexBox = new Pose2d(198,-150,Rotation2d.fromDegrees(180));
 
-    public static final Pose2d kEndLine = new Pose2d(200,0,Rotation2d.fromDegrees(0));
-
-    public static final Pose2d kMiddleWalkway = new Pose2d(79.5,11.0,Rotation2d.fromDegrees(180+45));
     public static final Pose2d kStraight  = new Pose2d( 60.0,0, Rotation2d.fromDegrees(180));
     public static final Pose2d kStairs = new Pose2d(176,36,Rotation2d.fromDegrees(180));
     public static final Pose2d kSideStartPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(180.0));
    
     // STARTING IN CENTER
-    public static final Pose2d kCenterStartPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0));
     public static final Pose2d kSimpleSwitchStartPose = new Pose2d(0.0, -2.0, Rotation2d.fromDegrees(180.0));
     public static final Pose2d kRightSwitchPose = new Pose2d(new Translation2d(100.0, -60.0), Rotation2d.fromDegrees(0.0 + 180.0));
     public static final Pose2d kLeftSwitchPose = new Pose2d(new Translation2d(100.0, 60.0), Rotation2d.fromDegrees(0.0 + 180.0));
+
+
+    // LOWER SHOP //TODO: Add PID and play around with Rotation degrees (perhaps it has something to do with the navX?)
+    public static final Pose2d kCenterStartPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0));
+    public static final Pose2d kStraightLine = new Pose2d(200,0,Rotation2d.fromDegrees(-45));
+    public static final Pose2d kTurnLine = new Pose2d(300,100, Rotation2d.fromDegrees(-45));
+    public static final Pose2d kEndLine = new Pose2d(400, 100, Rotation2d.fromDegrees(0));
+
 
     public class TrajectorySet {
 
@@ -127,8 +131,9 @@ public class TrajectoryGenerator {
         private Trajectory<TimedState<Pose2dWithCurvature>> getCenterStartToStairs() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(kCenterStartPose);
-            //waypoints.add(kMiddleWalkway);
             //waypoints.add(kStairs);
+            waypoints.add(kStraightLine);
+            waypoints.add(kTurnLine);
             waypoints.add(kEndLine);
             return generateTrajectory(true, waypoints, Arrays.asList(new CentripetalAccelerationConstraint(kMaxCentripetalAccel)),
                     kMaxVelocity, kMaxAccel, kMaxVoltage);

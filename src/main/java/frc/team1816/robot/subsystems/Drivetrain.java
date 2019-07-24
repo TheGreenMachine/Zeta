@@ -140,8 +140,8 @@ public class Drivetrain extends Subsystem implements Checkable {
         this.initTime = System.currentTimeMillis();
 
         driveMotionPlanner = new DriveMotionPlanner();
-        initEstimator();
         initCoordinateTracking();
+        initEstimator();
     }
 
     private void invertTalons(boolean invertRight) {
@@ -370,7 +370,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         double currLeftInches = getLeftPosInches();
         double currRightInches = getRightPosInches();
         double avgDistance = ((currLeftInches - prevLeftInches) + (currRightInches - prevRightInches)) / 2;
-        double theta = (Math.toRadians(initAngle.getDegrees() - gyroAngle.getDegrees()) + Math.PI /2);
+        double theta = Math.toRadians(0 - navX.getAngle()) + Math.PI/2;
 
         xPos = avgDistance * Math.cos(theta) + prevX;
         yPos = avgDistance * Math.sin(theta) + prevY;
@@ -380,8 +380,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
         prevX = xPos;
         prevY = yPos;
-       // prevLeftInches = currLeftInches;
-       // prevRightInches = currRightInches;
     }
 
     @Override
