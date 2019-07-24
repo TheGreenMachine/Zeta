@@ -370,7 +370,7 @@ public class Drivetrain extends Subsystem implements Checkable {
         double currLeftInches = getLeftPosInches();
         double currRightInches = getRightPosInches();
         double avgDistance = ((currLeftInches - prevLeftInches) + (currRightInches - prevRightInches)) / 2;
-        double theta = Math.toRadians(0 - navX.getAngle()) + Math.PI/2;
+        double theta = Math.toRadians(initAngle.getDegrees() - navX.getAngle()) + Math.PI/2;
 
         xPos = avgDistance * Math.cos(theta) + prevX;
         yPos = avgDistance * Math.sin(theta) + prevY;

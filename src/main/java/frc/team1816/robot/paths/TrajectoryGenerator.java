@@ -103,6 +103,8 @@ public class TrajectoryGenerator {
     public static final Pose2d kTurnLine = new Pose2d(300,100, Rotation2d.fromDegrees(-45));
     public static final Pose2d kEndLine = new Pose2d(400, 100, Rotation2d.fromDegrees(0));
 
+    //TODO: Try rotation with 180 degrees; use TrajectoryGeneratorTest
+
 
     public class TrajectorySet {
 
