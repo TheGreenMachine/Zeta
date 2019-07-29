@@ -77,9 +77,9 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.setInverted(kMotorInverted);
         armTalon.setSensorPhase(kSensorPhase);
         armTalon.enableCurrentLimit(true);
-        armTalon.configContinuousCurrentLimit(3, kTimeoutMs);
-        armTalon.configPeakCurrentLimit(5, kTimeoutMs);
-        armTalon.configPeakCurrentDuration(75, kTimeoutMs);
+        armTalon.configContinuousCurrentLimit(3, kTimeoutMs); // once current-limiting is activated, hold at 3A
+        armTalon.configPeakCurrentLimit(5, kTimeoutMs); // don't activate current-limiting until current exceeds 5A ...
+        armTalon.configPeakCurrentDuration(75, kTimeoutMs); // ... for at least 75 ms
         armTalon.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 

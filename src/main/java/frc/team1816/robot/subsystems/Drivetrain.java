@@ -1,25 +1,32 @@
 package frc.team1816.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.PigeonIMU;
+
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
+
 import com.kauailabs.navx.frc.AHRS;
+
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Twist2d;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 import frc.team1816.robot.Kinematics;
 import frc.team1816.robot.Robot;
 import frc.team1816.robot.RobotState;
@@ -48,7 +55,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private AHRS navX;
 
-    private PigeonIMU gyro;
+//    private PigeonIMU gyro;
 
     private NetworkTable positions = NetworkTableInstance.getDefault().getTable("positions");
 
@@ -60,13 +67,13 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double prevInches;
     private double prevX;
     private double prevY;
-    private double pigeonAngle;
+//    private double pigeonAngle;
 
-    private IMotorController rightMain;
+    private IMotorControllerEnhanced rightMain;
     private IMotorController rightSlaveOne;
     private IMotorController rightSlaveTwo;
 
-    private IMotorController leftMain;
+    private IMotorControllerEnhanced leftMain;
     private IMotorController leftSlaveOne;
     private IMotorController leftSlaveTwo;
 
@@ -75,12 +82,10 @@ public class Drivetrain extends Subsystem implements Checkable {
     private double leftAccel;
     private double rightAccel;
     private double rotation;
-    private double leftError;
-    private double rightError;
+    private double leftError; //For logging purposes
+    private double rightError; //For logging purposes
     private double leftFeedForward;
     private double rightFeedForward;
-    private double MPOutputLeftVel;
-    private double MPOutputRightVel;
 
     private double leftSetVel;
     private double rightSetVel;
@@ -322,13 +327,7 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     private void updatePathFollower() {
         final double now = Timer.getFPGATimestamp();
-        // System.out.println("Robot State Instance:\t" + RobotState.getInstance());
-        // System.out.println("Time Stamp:\t" + now);
-        // System.out.println("DriveMotionPlanner:\t" + driveMotionPlanner);
         DriveMotionPlanner.Output output = driveMotionPlanner.update(now, RobotState.getInstance().getFieldToVehicle(now));
-
-        this.MPOutputLeftVel = radiansPerSecondToTicksPer100ms(output.left_velocity);
-        this.MPOutputRightVel = radiansPerSecondToTicksPer100ms(output.right_velocity);
 
         if (!overrideTrajectory) {
             setDrivetrainVelocity(radiansPerSecondToTicksPer100ms(output.left_velocity), 
@@ -342,14 +341,6 @@ public class Drivetrain extends Subsystem implements Checkable {
             setDrivetrainVelocity(0, 0, 0, 0);
             this.leftAccel = this.rightAccel = 0.0;
         }
-    }
-
-    public double getMPOutputLeftVelocity(){
-        return this.MPOutputLeftVel;
-    }
-
-    public double getMPOutputRightVelocity(){
-        return this.MPOutputRightVel;
     }
 
     public void updateEstimator(){
@@ -403,9 +394,6 @@ public class Drivetrain extends Subsystem implements Checkable {
             leftPower += rotation * .55;
             rightPower -= rotation * .55;
 
-            // leftSetVel = leftPower * MAX_VEL_TICKS_PER_100MS;
-            // rightSetVel = rightPower * MAX_VEL_TICKS_PER_100MS;
-
             System.out.print("Left Velocity: " + leftSetVel);
             System.out.print("\tRight Velocity: " + rightSetVel);
             System.out.println("\tGyro Angle:" + gyroAngle);
@@ -414,8 +402,12 @@ public class Drivetrain extends Subsystem implements Checkable {
                 this.leftMain.set(ControlMode.PercentOutput, leftPower);
                 this.rightMain.set(ControlMode.PercentOutput, rightPower);
             } else {
-                this.leftMain.set(ControlMode.Velocity, leftSetVel);
-                this.rightMain.set(ControlMode.Velocity, rightSetVel);
+                // this.leftMain.set(ControlMode.Velocity, leftSetVel);
+                // this.rightMain.set(ControlMode.Velocity, rightSetVel);
+                this.leftMain.set(ControlMode.Velocity, leftSetVel, DemandType.ArbitraryFeedForward,
+                    this.leftFeedForward + kD * this.leftAccel / 1023.0);
+                this.rightMain.set(ControlMode.Velocity, rightSetVel, DemandType.ArbitraryFeedForward, 
+                    this.rightFeedForward + kD * this.rightAccel / 1023.0);
             }
 
             outputsChanged = false;

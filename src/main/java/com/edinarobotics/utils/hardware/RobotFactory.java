@@ -2,6 +2,8 @@ package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -22,14 +24,12 @@ public class RobotFactory {
         return (getSubsystem(subsystem) != null) && (getSubsystem(subsystem).implemented);
     }
 
-    public IMotorController getMotor(String subsystemName, String name) {
+    public IMotorControllerEnhanced getMotor(String subsystemName, String name) {
         if (isImplemented(subsystemName)) {
             YamlConfig.SubsystemConfig subsystem = getSubsystem(subsystemName);
             if (isHardwareValid(subsystem.talons.get(name))) {
                 return CtreMotorFactory.createDefaultTalon(subsystem.talons.get(name));
-            } else if (isHardwareValid(subsystem.victors.get(name))) {
-                return CtreMotorFactory.createDefaultVictor(subsystem.victors.get(name));
-            }
+            } //Never make the victor a master
         }
         return CtreMotorFactory.createGhostTalon();
     }
