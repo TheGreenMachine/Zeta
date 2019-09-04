@@ -322,6 +322,11 @@ public class GhostTalonSRX implements IMotorControllerEnhanced {
     }
 
     @Override
+    public ErrorCode configMotionSCurveStrength(int curveStrength, int timeoutMs) {
+        return ErrorCode.OK;
+    }
+
+    @Override
     public ErrorCode configMotionProfileTrajectoryPeriod(int baseTrajDurationMs, int timeoutMs) {
         return ErrorCode.OK;
     }
