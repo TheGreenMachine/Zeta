@@ -3,14 +3,14 @@ package frc.team1816.robot.commands;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.edinarobotics.utils.math.Math1816;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Robot;
 import frc.team1816.robot.subsystems.Drivetrain;
 import frc.team1816.robot.subsystems.LedManager;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
-public class DriveToHatchCommand extends Command {
+public class DriveToHatchCommand extends CommandBase {
 
     private Drivetrain drivetrain;
 
@@ -34,11 +34,11 @@ public class DriveToHatchCommand extends Command {
         drivetrain = Components.getInstance().drivetrain;
         leds = Components.getInstance().ledManager;
         nominalPower = power;
-        requires(drivetrain);
+        addRequirements(drivetrain);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         drivetrain.setDrivetrainVisionNav(true);
 
         width = Robot.stateInstance.getVisionWidth();
@@ -52,7 +52,7 @@ public class DriveToHatchCommand extends Command {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         updateCoordData();
         lateralError = targetCenterX - xCoord;
         double leftPow = nominalPower;
@@ -91,21 +91,16 @@ public class DriveToHatchCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // return (deltaDist > 0 && deltaDist < DIST_THRESHOLD);
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         drivetrain.setDrivetrainVisionNav(false);
         drivetrain.setDrivetrainPercent(0, 0);
         drivetrain.setReverseMode(prevReverseState);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 
     private void updateCoordData() {

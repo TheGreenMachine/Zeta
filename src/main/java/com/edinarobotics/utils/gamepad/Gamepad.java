@@ -3,14 +3,14 @@ package com.edinarobotics.utils.gamepad;
 import com.edinarobotics.utils.gamepad.buttons.DPadButton;
 import com.edinarobotics.utils.math.Vector2;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class Gamepad {
 	
 	private Joystick joystick;
-	private Button leftBumper, rightBumper;
+	private JoystickButton leftBumper, rightBumper;
 	private Button leftTrigger, rightTrigger;
     private Button diamondLeft, diamondDown, diamondRight, diamondUp;
     private Button middleLeft, middleRight;

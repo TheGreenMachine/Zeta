@@ -5,12 +5,13 @@ import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.BaseTalon;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class GhostTalonSRX implements IMotorControllerEnhanced {
-
-    private SensorCollection sensorCollection = new SensorCollection(new BaseMotorController(0) {
-    });
+    private SensorCollection sensorCollection = new SensorCollection(
+        new BaseTalon(0, "Talon SRX") {}
+    );
 
     @Override
     public void set(ControlMode Mode, double demand) {
@@ -323,7 +324,7 @@ public class GhostTalonSRX implements IMotorControllerEnhanced {
 
     @Override
     public ErrorCode configMotionSCurveStrength(int curveStrength, int timeoutMs) {
-        return ErrorCode.OK;
+      return ErrorCode.OK;
     }
 
     @Override
@@ -491,27 +492,6 @@ public class GhostTalonSRX implements IMotorControllerEnhanced {
         return ErrorCode.OK;
     }
 
-    @Override
-    public ErrorCode configPeakCurrentLimit(int amps, int timeoutMs) {
-        return ErrorCode.OK;
-    }
-
-    @Override
-    public ErrorCode configPeakCurrentDuration(int milliseconds, int timeoutMs) {
-        return ErrorCode.OK;
-    }
-
-    @Override
-    public ErrorCode configContinuousCurrentLimit(int amps, int timeoutMs) {
-        return ErrorCode.OK;
-    }
-
-    @Override
-    public void enableCurrentLimit(boolean enable) {
-
-    }
-
-    @Override
     public SensorCollection getSensorCollection() {
         return sensorCollection;
     }

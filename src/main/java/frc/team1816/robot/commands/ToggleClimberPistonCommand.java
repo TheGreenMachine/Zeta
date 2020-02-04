@@ -1,29 +1,28 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Climber;
 
-public class ToggleClimberPistonCommand extends Command {
+public class ToggleClimberPistonCommand extends CommandBase {
     private Climber climber;
 
     public ToggleClimberPistonCommand() {
-        super("toggleclimberpistoncommand");
         climber = Components.getInstance().climber;
-        requires(climber);
+        addRequirements(climber);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         climber.toggleClimberPiston();
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 }

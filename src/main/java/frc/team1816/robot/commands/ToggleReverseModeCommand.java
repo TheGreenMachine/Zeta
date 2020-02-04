@@ -1,41 +1,34 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
 
-public class ToggleReverseModeCommand extends Command {
+public class ToggleReverseModeCommand extends CommandBase {
 
     private Drivetrain drivetrain;
 
     public ToggleReverseModeCommand() {
-        super("togglereversemodecommand");
         drivetrain = Components.getInstance().drivetrain;
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         System.out.println("Reversing Drivetrain");
         drivetrain.toggleReverseMode();
 
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 
     @Override
-    protected void end() {
-
-    }
-
-    @Override
-    protected void interrupted() {
-        super.interrupted();
+    public void end(boolean isFinished) {
     }
 }

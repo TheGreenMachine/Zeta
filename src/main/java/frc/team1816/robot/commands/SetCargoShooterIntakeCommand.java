@@ -1,22 +1,21 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoShooter;
 
-public class SetCargoShooterIntakeCommand extends Command {
+public class SetCargoShooterIntakeCommand extends CommandBase {
     private CargoShooter shooter;
     private double power;
 
     public SetCargoShooterIntakeCommand(double power) {
-        super("setcargoshooterintakecommand");
         shooter = Components.getInstance().shooter;
         this.power = power;
-        requires(shooter);
+        addRequirements(shooter);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         StringBuilder sb = new StringBuilder()
                 .append("Setting Shooter Intake")
                 .append(power);
@@ -24,12 +23,12 @@ public class SetCargoShooterIntakeCommand extends Command {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         shooter.setIntake(power);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 }

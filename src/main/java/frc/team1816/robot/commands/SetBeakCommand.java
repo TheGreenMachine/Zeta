@@ -1,36 +1,35 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 
-public class SetBeakCommand extends Command {
+public class SetBeakCommand extends CommandBase {
     private Birdbeak birdbeak;
     private boolean beakNotGripped;
 
     public SetBeakCommand(boolean notGripped) {
-        super("setbeakcommand");
         birdbeak = Components.getInstance().birdbeak;
         this.beakNotGripped = notGripped;
         if (birdbeak != null) {
-            requires(birdbeak);
+            addRequirements(birdbeak);
         }
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         System.out.println("Setting Beak (not gripped): " + beakNotGripped);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         if (birdbeak != null) {
             birdbeak.setBeak(beakNotGripped);
         }
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 }

@@ -1,28 +1,27 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 
-public class SetBeakPuncherCommand extends Command {
+public class SetBeakPuncherCommand extends CommandBase {
     private Birdbeak birdbeak;
     private boolean isOut;
 
     public SetBeakPuncherCommand(boolean out) {
-        super("setbeakpunchercommand");
         birdbeak = Components.getInstance().birdbeak;
         this.isOut = out;
-        requires(birdbeak);
+        addRequirements(birdbeak);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         System.out.println("Setting Puncher: " + isOut);
         birdbeak.setPuncher(isOut);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 }

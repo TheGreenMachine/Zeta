@@ -2,6 +2,7 @@ package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
@@ -9,11 +10,11 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1816.robot.Robot;
 
 @RunTest
-public class Climber extends Subsystem implements Checkable {
+public class Climber extends SubsystemBase implements Checkable {
     public static final String NAME = "climber";
 
     private IMotorControllerEnhanced climbMaster;
@@ -29,7 +30,6 @@ public class Climber extends Subsystem implements Checkable {
     private static final int kTimeoutMs = 100;
 
     public Climber() {
-        super(NAME);
         RobotFactory factory = Robot.factory;
 
         this.climbMaster = (IMotorControllerEnhanced) factory.getMotor(NAME, "climbMaster");
@@ -38,11 +38,11 @@ public class Climber extends Subsystem implements Checkable {
         this.habPiston = factory.getDoubleSolenoid(NAME, "habPiston");
 
         this.climbSlave.setInverted(true);
-
-        this.climbMaster.enableCurrentLimit(true);
-        this.climbMaster.configContinuousCurrentLimit(30, kTimeoutMs);
-        this.climbMaster.configPeakCurrentLimit(35, kTimeoutMs);
-        this.climbMaster.configPeakCurrentDuration(500, kTimeoutMs);
+        
+        ((TalonSRX) this.climbMaster).enableCurrentLimit(true);
+        ((TalonSRX) this.climbMaster).configContinuousCurrentLimit(30, kTimeoutMs);
+        ((TalonSRX) this.climbMaster).configPeakCurrentLimit(35, kTimeoutMs);
+        ((TalonSRX) this.climbMaster).configPeakCurrentDuration(500, kTimeoutMs);
 
         this.climbMaster.set(ControlMode.PercentOutput, 0.0);
     }
@@ -83,9 +83,6 @@ public class Climber extends Subsystem implements Checkable {
             habPiston.set(habPistonState);
             outputsChanged = false;
         }
-    }
-
-    public void initDefaultCommand() {
     }
 
     @Override

@@ -1,42 +1,35 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
 
-public class SetSlowModeCommand extends Command {
+public class SetSlowModeCommand extends CommandBase {
 
     private Drivetrain drivetrain;
     private boolean slowMode;
 
     public SetSlowModeCommand(boolean slowMode) {
-        super("setslowmodecommand");
         drivetrain = Components.getInstance().drivetrain;
         this.slowMode = slowMode;
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         System.out.println("Setting Slow Mode: " + slowMode);
         drivetrain.setSlowMode(slowMode);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 
     @Override
-    protected void end() {
-
-    }
-
-    @Override
-    protected void interrupted() {
-        super.interrupted();
+    public void end(boolean isFinished) {
     }
 }

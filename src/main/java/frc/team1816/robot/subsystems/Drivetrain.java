@@ -7,16 +7,15 @@ import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1816.robot.Robot;
 
 
 @RunTest
-public class Drivetrain extends Subsystem implements Checkable {
+public class Drivetrain extends SubsystemBase implements Checkable {
     public static final String NAME = "drivetrain";
 
     private static final double SLOW_MOD_THROTTLE = 0.5;
@@ -28,8 +27,6 @@ public class Drivetrain extends Subsystem implements Checkable {
     private static double MAX_VEL_TICKS_PER_100MS;
 
     private static double INCHES_PER_REV;
-
-    private AHRS navX;
 
     private IMotorController rightMain;
     private IMotorController rightSlaveOne;
@@ -57,7 +54,6 @@ public class Drivetrain extends Subsystem implements Checkable {
     private boolean outputsChanged = false;
 
     public Drivetrain() {
-        super(NAME);
         RobotFactory factory = Robot.factory;
 
         TICKS_PER_REV = factory.getConstant("ticksPerRev");
@@ -76,13 +72,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
         invertTalons(true);
         setNeutralMode(NeutralMode.Brake);
-
-        try {
-            navX = new AHRS(SPI.Port.kMXP);
-            System.out.println("NavX Instantiated");
-        } catch (RuntimeException e) {
-            DriverStation.reportError("Error instantiating navX-MXP:  " + e.getMessage(), true);
-        }
     }
 
     private void invertTalons(boolean invertRight) {
@@ -117,10 +106,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     public double getGyroAngle() {
         return gyroAngle;
-    }
-
-    public boolean getGyroStatus() {
-        return navX.isConnected();
     }
 
     public double getLeftPosTicks() {
@@ -196,7 +181,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
     @Override
     public void periodic() {
-        this.gyroAngle = navX.getAngle();
         this.leftMeasPos = leftMain.getSelectedSensorPosition(0);
         this.rightMeasPos = rightMain.getSelectedSensorPosition(0);
 
@@ -228,10 +212,6 @@ public class Drivetrain extends Subsystem implements Checkable {
 
             outputsChanged = false;
         }
-    }
-
-    @Override
-    protected void initDefaultCommand() {
     }
 
     @Override

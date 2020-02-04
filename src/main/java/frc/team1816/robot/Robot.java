@@ -9,9 +9,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import frc.team1816.robot.commands.*;
 import frc.team1816.robot.subsystems.*;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
@@ -99,8 +100,6 @@ public class Robot extends TimedRobot {
 
         table.addEntryListener("center_x", (table, key, entry, value, flags) -> {stateInstance.xCoord = value.getDouble();}, 
                 EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-        System.out.println("NavX Active?: " + drivetrain.getGyroStatus());
     }
 
     @Override
@@ -173,7 +172,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (drivetrain != null && leds != null && drivetrain.getCurrentCommandName().equals(GamepadDriveCommand.NAME)) {
+        if (drivetrain != null && leds != null && drivetrain.getCurrentCommand().getName().equals(GamepadDriveCommand.NAME)) {
             if (DriverStation.getInstance().getMatchTime() <= 60 && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
             } else if (drivetrain.isReverseMode()) {
@@ -194,6 +193,6 @@ public class Robot extends TimedRobot {
     }
 
     private void periodic() {
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 }

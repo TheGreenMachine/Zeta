@@ -1,41 +1,35 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.Climber;
 
-public class GamepadClimbCommand extends Command {
+public class GamepadClimbCommand extends CommandBase {
     private Climber climber;
 
     public GamepadClimbCommand() {
-        super("gamepadclimbcommand");
         this.climber = Components.getInstance().climber;
-        requires(climber);
+        addRequirements(climber);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         double climberPow = Controls.getInstance().getClimbThrottle();
         climber.setClimberPower(climberPow);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         climber.setClimberPower(0);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 }

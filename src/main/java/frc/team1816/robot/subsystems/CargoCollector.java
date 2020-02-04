@@ -8,11 +8,11 @@ import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1816.robot.Robot;
 
 @RunTest
-public class CargoCollector extends Subsystem implements Checkable {
+public class CargoCollector extends SubsystemBase implements Checkable {
     public static final String NAME = "cargocollector";
 
     private Solenoid armPiston;
@@ -24,7 +24,6 @@ public class CargoCollector extends Subsystem implements Checkable {
     private boolean outputsChanged = false;
 
     public CargoCollector() {
-        super(NAME);
         RobotFactory factory = Robot.factory;
 
         this.intake = factory.getMotor(NAME, "intake");
@@ -57,9 +56,6 @@ public class CargoCollector extends Subsystem implements Checkable {
             this.armPiston.set(armDown);
             outputsChanged = false;
         }
-    }
-
-    public void initDefaultCommand() {
     }
 
     @Override

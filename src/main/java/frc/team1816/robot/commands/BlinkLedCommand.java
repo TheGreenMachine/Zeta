@@ -1,35 +1,42 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.LedManager;
 import frc.team1816.robot.subsystems.LedManager.RobotStatus;
 
 import java.util.Arrays;
 
-public class BlinkLedCommand extends Command {
+public class BlinkLedCommand extends CommandBase {
     private LedManager leds;
 
     private double period;
     private double prevTime;
     private int[] color;
+    private double initializedTime;
 
     public BlinkLedCommand(double blinkRateS) {
         leds = Components.getInstance().ledManager;
         this.period = blinkRateS;
 
-        setRunWhenDisabled(true);
-        requires(leds);
+        runsWhenDisabled();
+        addRequirements(leds);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         prevTime = timeSinceInitialized();
         color = leds.getLedRgbBlink();
+        initializedTime = Timer.getFPGATimestamp();
+    }
+
+    private double timeSinceInitialized(){
+        return Timer.getFPGATimestamp();
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         int[] setColor = leds.getLedRgbBlink();
         if (!Arrays.equals(setColor, color)) {
             color = setColor;
@@ -46,17 +53,12 @@ public class BlinkLedCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         leds.indicateStatus(RobotStatus.OFF);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 }

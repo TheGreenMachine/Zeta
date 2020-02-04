@@ -7,11 +7,11 @@ import com.edinarobotics.utils.hardware.RobotFactory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1816.robot.Robot;
 
 @RunTest
-public class CameraMount extends Subsystem implements Checkable {
+public class CameraMount extends SubsystemBase implements Checkable {
     public static final String NAME = "cameramount";
 
     private DoubleSolenoid camRetractor;
@@ -20,7 +20,6 @@ public class CameraMount extends Subsystem implements Checkable {
     private Value camState = Value.kOff;
 
     public CameraMount() {
-        super(NAME);
         RobotFactory factory = Robot.factory;
 
         this.camRetractor = factory.getDoubleSolenoid(NAME, "shifter");
@@ -53,9 +52,6 @@ public class CameraMount extends Subsystem implements Checkable {
             camRetractor.set(camState);
             outputsChanged = false;
         }
-    }
-
-    public void initDefaultCommand() {
     }
 
     @Override

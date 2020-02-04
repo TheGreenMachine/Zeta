@@ -1,15 +1,15 @@
 package com.edinarobotics.utils.commands;
 
-import edu.wpi.first.wpilibj.buttons.InternalButton;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * This {@link Command} repeats the supplied {@link Command} or
  * {@link edu.wpi.first.wpilibj.command.CommandGroup} for the specified number
  * of repetitions. If it is interrupted, it will cancel the command that is running.
  */
-public class RepeatCommand extends Command {
-    private Command commandToRepeat;
+public class RepeatCommand extends CommandBase {
+    private CommandBase commandToRepeat;
     private final int REPETITIONS;
     private int timesStarted;
     private InternalButton button;
@@ -23,7 +23,7 @@ public class RepeatCommand extends Command {
      * @param repetitions The number of times to repeat the command.
      * @throws IllegalArgumentException when {@code repetitions} is negative.
      */
-    public RepeatCommand(Command commandToRepeat, int repetitions) {
+    public RepeatCommand(CommandBase commandToRepeat, int repetitions) {
         super("Repeat*" + repetitions + ":" + commandToRepeat.getName());
         this.commandToRepeat = commandToRepeat;
         this.REPETITIONS = repetitions;
@@ -41,7 +41,7 @@ public class RepeatCommand extends Command {
      * Resets the number of times the {@code commandToRepeat} has repeated to 0.
      * This method prepares RepeatCommand for another round of command repetition.
      */
-    protected void initialize() {
+    public void initialize() {
         timesStarted = 0;
         button.setPressed(false);
         this.commandToRepeat.cancel();
@@ -52,7 +52,7 @@ public class RepeatCommand extends Command {
      * Repeats the {@code commandToRepeat} if it hasn't reached the number of
      * repetitions specified.
      */
-    protected void execute() {
+    public void execute() {
         if(timesStarted < REPETITIONS) {
             if(!commandToRepeat.isRunning() && needToStartCommand < START_COMMAND_THRESHOLD) {
                 needToStartCommand++;
@@ -74,7 +74,7 @@ public class RepeatCommand extends Command {
      * @return Whether {@code commandToRepeat} has stopped and the number of repetitions
      * has completed.
      */
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return timesStarted >= REPETITIONS && !commandToRepeat.isRunning();
     }
 
@@ -82,20 +82,9 @@ public class RepeatCommand extends Command {
      * Shuts down RepeatCommand after it has repeated the command the requested
      * number of times.
      */
-    protected void end() {
+    public void end(boolean isFinished) {
         button.setPressed(false);
         needToStartCommand = 0;
         timesStarted = 0;
-    }
-
-    /**
-     * Calls the cancel method of {@code commandToRepeat} when RepeatCommand is
-     * interrupted.
-     */
-    protected void interrupted() {
-        if(commandToRepeat.isRunning()) {
-            commandToRepeat.cancel();
-        }
-        end();
     }
 }

@@ -1,8 +1,8 @@
 package com.edinarobotics.utils.gamepad;
 
 import com.edinarobotics.utils.math.Vector2;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class implements a simple interface for interacting with a 2-axis

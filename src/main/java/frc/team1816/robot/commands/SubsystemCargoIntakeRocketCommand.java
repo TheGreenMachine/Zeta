@@ -1,12 +1,12 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
-public class SubsystemCargoIntakeRocketCommand extends Command {
+public class SubsystemCargoIntakeRocketCommand extends CommandBase {
     private CargoCollector collector;
     private CargoShooter shooter;
 
@@ -14,24 +14,23 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
     private double elapsedDelayMs;
 
     public SubsystemCargoIntakeRocketCommand() {
-        super("subsystemcargointakerocketcommand");
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
         elapsedDelayMs = 800;
 
-        requires(collector);
-        requires(shooter);
+        addRequirements(collector);
+        addRequirements(shooter);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         System.out.println("SUBSYSTEM Cargo Intake To Rocket");
         initTime = System.currentTimeMillis();
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         collector.setIntake(0.0);
         shooter.setIntake(0.0);
         shooter.setArmPosition(ArmPosition.ROCKET);
@@ -41,18 +40,13 @@ public class SubsystemCargoIntakeRocketCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         collector.setIntake(0.0);
         shooter.setIntake(0.0);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 }

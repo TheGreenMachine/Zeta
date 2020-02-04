@@ -1,10 +1,10 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Drivetrain;
 
-public class DriveXInchesCommand extends Command {
+public class DriveXInchesCommand extends CommandBase {
     // FIXME: UNSTABLE - UNTESTED CODE, EMERGENCY USE ONLY
 
     private Drivetrain drivetrain;
@@ -24,7 +24,6 @@ public class DriveXInchesCommand extends Command {
     private double RAMP_DOWN_INCHES = 6;
 
     public DriveXInchesCommand(double inches, double speed, boolean gyroCorrect) {
-        super("drivexinchescommand");
         this.inches = inches;
         this.speed = speed;
         this.endSpeed = 0.2;
@@ -36,28 +35,21 @@ public class DriveXInchesCommand extends Command {
 
         drivetrain = Components.getInstance().drivetrain;
 
-        if (gyroCorrect && drivetrain.getGyroStatus()) {
-            gyroCorrection = true;
-        }
-        requires(drivetrain);
+        addRequirements(drivetrain);
     }
 
     public DriveXInchesCommand(double inches, double speed, double startSpeed, double endSpeed, boolean gyroCorrect) {
-        super("drivexinchescommand");
         this.inches = inches;
         this.speed = speed;
         this.startSpeed = startSpeed;
         this.endSpeed = endSpeed;
         drivetrain = Components.getInstance().drivetrain;
 
-        if (gyroCorrect && drivetrain.getGyroStatus()) {
-            gyroCorrection = true;
-        }
-        requires(drivetrain);
+        addRequirements(drivetrain);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         initPosition = drivetrain.getLeftPosInches();
         if (gyroCorrection) {
             initAngle = drivetrain.getGyroAngle();
@@ -65,7 +57,7 @@ public class DriveXInchesCommand extends Command {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         double deltaAngle = drivetrain.getGyroAngle() - initAngle;
 
         double setVelPercent = speed;
@@ -145,17 +137,12 @@ public class DriveXInchesCommand extends Command {
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         drivetrain.setDrivetrainPercent(0, 0);
     }
 
     @Override
-    protected void interrupted() {
-        end();
-    }
-
-    @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         if (remainingInches <= 0) {
             System.out.println("DriveX Finished");
             return true;

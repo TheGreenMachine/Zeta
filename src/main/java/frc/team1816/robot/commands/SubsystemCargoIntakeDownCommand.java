@@ -1,12 +1,12 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
 import frc.team1816.robot.subsystems.CargoShooter;
 import frc.team1816.robot.subsystems.CargoShooter.ArmPosition;
 
-public class SubsystemCargoIntakeDownCommand extends Command {
+public class SubsystemCargoIntakeDownCommand extends CommandBase {
     private CargoCollector collector;
     private CargoShooter shooter;
 
@@ -16,25 +16,24 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     private boolean chainExecuted = false;
 
     public SubsystemCargoIntakeDownCommand() {
-        super("subsystemcargointakedowncommand");
         collector = Components.getInstance().collector;
         shooter = Components.getInstance().shooter;
 
         elapsedDelayMs = 700;
 
-        requires(collector);
-        requires(shooter);
+        addRequirements(collector);
+        addRequirements(shooter);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         System.out.println("SUBSYSTEM Cargo Intake Down");
         initTime = System.currentTimeMillis();
         chainExecuted = false;
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         collector.setArm(true);
 
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis() && collector.isArmDown()) {
@@ -49,16 +48,11 @@ public class SubsystemCargoIntakeDownCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return chainExecuted;
     }
 
     @Override
-    protected void end() {
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+    public void end(boolean isFinished) {
     }
 }

@@ -1,7 +1,7 @@
 package com.edinarobotics.utils.gamepad.buttons;
 
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * This class implements a fake button that can internally forward method calls
@@ -68,7 +68,7 @@ public class ButtonShim {
 	 *            button shim.
 	 * @see Button#cancelWhenPressed(edu.wpi.first.wpilibj.command.Command)
 	 */
-	public void cancelWhenPressed(Command command) {
+	public void cancelWhenPressed(CommandBase command) {
 		if (isActive()) {
 			internalButton.cancelWhenPressed(command);
 		}
@@ -82,7 +82,7 @@ public class ButtonShim {
 	 *            button shim.
 	 * @see Button#toggleWhenPressed(edu.wpi.first.wpilibj.command.Command)
 	 */
-	public void toggleWhenPressed(Command command) {
+	public void toggleWhenPressed(CommandBase command) {
 		if (isActive()) {
 			internalButton.toggleWhenPressed(command);
 		}
@@ -96,7 +96,7 @@ public class ButtonShim {
 	 *            button shim.
 	 * @see Button#whenPressed(edu.wpi.first.wpilibj.command.Command)
 	 */
-	public void whenPressed(Command command) {
+	public void whenPressed(CommandBase command) {
 		if (isActive()) {
 			internalButton.whenPressed(command);
 		}
@@ -110,7 +110,7 @@ public class ButtonShim {
 	 *            button shim.
 	 * @see Button#whenReleased(edu.wpi.first.wpilibj.command.Command)
 	 */
-	public void whenReleased(Command command) {
+	public void whenReleased(CommandBase command) {
 		if (isActive()) {
 			internalButton.whenReleased(command);
 		}
@@ -124,7 +124,7 @@ public class ButtonShim {
 	 *            button shim.
 	 * @see Button#whileHeld(edu.wpi.first.wpilibj.command.Command)
 	 */
-	public void whileHeld(Command command) {
+	public void whileHeld(CommandBase command) {
 		if (isActive()) {
 			internalButton.whileHeld(command);
 		}

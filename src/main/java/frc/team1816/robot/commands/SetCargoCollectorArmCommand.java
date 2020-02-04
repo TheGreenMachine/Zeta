@@ -1,29 +1,28 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
 
-public class SetCargoCollectorArmCommand extends Command {
+public class SetCargoCollectorArmCommand extends CommandBase {
     private CargoCollector collector;
     private boolean isDown;
 
     public SetCargoCollectorArmCommand(boolean down) {
-        super("setcargocollectorcommand");
         collector = Components.getInstance().collector;
         this.isDown = down;
-        requires(collector);
+        addRequirements(collector);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         System.out.println("Setting Cargo Arm\t Down: " + isDown);
 
         collector.setArm(isDown);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 }

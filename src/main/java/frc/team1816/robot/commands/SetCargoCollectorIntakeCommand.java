@@ -1,22 +1,21 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.CargoCollector;
 
-public class SetCargoCollectorIntakeCommand extends Command {
+public class SetCargoCollectorIntakeCommand extends CommandBase {
     private CargoCollector collector;
     private double power;
 
     public SetCargoCollectorIntakeCommand(double pow) {
-        super("setcargocollectorintakecommand");
         collector = Components.getInstance().collector;
         this.power = pow;
-        requires(collector);
+        addRequirements(collector);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         StringBuilder sb = new StringBuilder()
                 .append("Setting Cargo Intake: ")
                 .append(power);
@@ -25,7 +24,7 @@ public class SetCargoCollectorIntakeCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 }

@@ -1,42 +1,36 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Climber;
 
-public class SetClimberPowerCommand extends Command {
+public class SetClimberPowerCommand extends CommandBase {
     private Climber climber;
     private double power;
 
     public SetClimberPowerCommand(double power) {
-        super("setclimberpowercommand");
         climber = Components.getInstance().climber;
         this.power = power;
-        requires(climber);
+        addRequirements(climber);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         System.out.println("Setting Climber Power: " + power);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         climber.setClimberPower(power);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         climber.setClimberPower(0);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 }

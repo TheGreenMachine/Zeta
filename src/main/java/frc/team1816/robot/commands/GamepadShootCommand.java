@@ -1,42 +1,36 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.CargoShooter;
 
-public class GamepadShootCommand extends Command {
+public class GamepadShootCommand extends CommandBase {
     private CargoShooter shooter;
 
     public GamepadShootCommand() {
-        super("gamepadshootcommand");
         this.shooter = Components.getInstance().shooter;
-        requires(shooter);
+        addRequirements(shooter);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         double armPower = Controls.getInstance().getShooterArmThrottle();
 
         shooter.setArmPower(armPower);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         shooter.setArmPower(0);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 }

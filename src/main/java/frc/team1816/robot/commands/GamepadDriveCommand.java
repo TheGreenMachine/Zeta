@@ -1,14 +1,14 @@
 package frc.team1816.robot.commands;
 
 import com.team254.lib.util.CheesyDriveHelper;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.Controls;
 import frc.team1816.robot.subsystems.Drivetrain;
 
 import static frc.team1816.robot.Robot.factory;
 
-public class GamepadDriveCommand extends Command {
+public class GamepadDriveCommand extends CommandBase {
     public static final String NAME = "gamepaddrivecommand";
 
     private Drivetrain drivetrain;
@@ -20,17 +20,16 @@ public class GamepadDriveCommand extends Command {
     public static final double SET_SPEED_DIFF_MAX = 0.08;
 
     public GamepadDriveCommand() {
-        super(NAME);
         this.drivetrain = Components.getInstance().drivetrain;
-        requires(drivetrain);
+        addRequirements(drivetrain);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         double leftPow = Controls.getInstance().getDriveThrottle();
         double rightPow = leftPow;
         double rotation = Controls.getInstance().getDriveTurn();
@@ -56,18 +55,13 @@ public class GamepadDriveCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean isFinished) {
         drivetrain.setDrivetrainPercent(0, 0);
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 
     private double limitAcceleration(double setPow, double prevPow) {

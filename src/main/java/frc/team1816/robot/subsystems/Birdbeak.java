@@ -6,11 +6,11 @@ import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1816.robot.Robot;
 
 @RunTest
-public class Birdbeak extends Subsystem implements Checkable {
+public class Birdbeak extends SubsystemBase implements Checkable {
     public static final String NAME = "birdbeak";
 
     private Solenoid beak;
@@ -21,7 +21,6 @@ public class Birdbeak extends Subsystem implements Checkable {
     private boolean outputsChanged = false;
 
     public Birdbeak() {
-        super(NAME);
         RobotFactory factory = Robot.factory;
 
         this.beak = factory.getSolenoid(NAME, "beak");
@@ -44,10 +43,6 @@ public class Birdbeak extends Subsystem implements Checkable {
 
     public boolean getPuncherState() {
         return hatchPuncher.get();
-    }
-
-    @Override
-    protected void initDefaultCommand() {
     }
 
     @Override

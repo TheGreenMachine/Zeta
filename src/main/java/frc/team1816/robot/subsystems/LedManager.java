@@ -5,11 +5,11 @@ import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1816.robot.Robot;
 
 @RunTest
-public class LedManager extends Subsystem implements Checkable {
+public class LedManager extends SubsystemBase implements Checkable {
     public static final String NAME = "ledmanager";
 
     private CANifier canifier;
@@ -26,7 +26,6 @@ public class LedManager extends Subsystem implements Checkable {
     private int ledBlinkB;
 
     public LedManager() {
-        super(NAME);
         this.canifier = Robot.factory.getCanifier(NAME);
         this.ledR = 0;
         this.ledG = 0;
@@ -77,11 +76,6 @@ public class LedManager extends Subsystem implements Checkable {
             canifier.setLEDOutput((double) (ledB / 255.0), CANifier.LEDChannel.LEDChannelC);
             outputsChanged = false;
         }
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-
     }
 
     @Override

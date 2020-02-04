@@ -1,12 +1,13 @@
 package frc.team1816.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.edinarobotics.utils.checker.CheckFailException;
 import com.edinarobotics.utils.checker.Checkable;
 import com.edinarobotics.utils.checker.RunTest;
 import com.edinarobotics.utils.hardware.RobotFactory;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1816.robot.Robot;
@@ -15,7 +16,7 @@ import frc.team1816.robot.Robot;
  * Subsystem for the cargo shooter.
  */
 @RunTest
-public class CargoShooter extends Subsystem implements Checkable {
+public class CargoShooter extends SubsystemBase implements Checkable {
     public static final String NAME = "cargoshooter";
 
     private IMotorControllerEnhanced armTalon;
@@ -46,7 +47,6 @@ public class CargoShooter extends Subsystem implements Checkable {
     private boolean isPercentOutput;
 
     public CargoShooter() {
-        super(NAME);
         RobotFactory factory = Robot.factory;
 
         this.armTalon = (IMotorControllerEnhanced) factory.getMotor(NAME, "arm");
@@ -78,10 +78,10 @@ public class CargoShooter extends Subsystem implements Checkable {
         armTalon.setNeutralMode(NeutralMode.Brake);
         armTalon.setInverted(kMotorInverted);
         armTalon.setSensorPhase(kSensorPhase);
-        armTalon.enableCurrentLimit(true);
-        armTalon.configContinuousCurrentLimit(3, kTimeoutMs);
-        armTalon.configPeakCurrentLimit(5, kTimeoutMs);
-        armTalon.configPeakCurrentDuration(75, kTimeoutMs);
+        ((TalonSRX) armTalon).enableCurrentLimit(true);
+        ((TalonSRX) armTalon).configContinuousCurrentLimit(3, kTimeoutMs);
+        ((TalonSRX) armTalon).configPeakCurrentLimit(5, kTimeoutMs);
+        ((TalonSRX) armTalon).configPeakCurrentDuration(75, kTimeoutMs);
         armTalon.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 
@@ -145,9 +145,9 @@ public class CargoShooter extends Subsystem implements Checkable {
 
     public int getArmPositionAbsolute() {
         /* Mask out overflows, keep bottom 12 bits */
-        return armTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
+        return ((TalonSRX) armTalon).getSensorCollection().getPulseWidthPosition() & 0xFFF;
     }
-
+    
     public double getArmEncoderPosition() {
         return armTalon.getSelectedSensorPosition(kPIDLoopIdx);
     }
@@ -203,11 +203,6 @@ public class CargoShooter extends Subsystem implements Checkable {
             intakeMotor.set(ControlMode.PercentOutput, intakePower);
             outputsChanged = false;
         }
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-
     }
 
      @Override

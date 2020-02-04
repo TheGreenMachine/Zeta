@@ -2,15 +2,15 @@ package com.edinarobotics.utils.hardware;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 class RobotFactoryTest {
     private RobotFactory robotFactory = new RobotFactory("zeta");
@@ -45,11 +45,11 @@ class RobotFactoryTest {
     }
 
     @Test
-    @Disabled
+    @Ignore
     void definedTalonReturnsTalon_zetaDrivetrain() {
         assertTrue(
-                robotFactory.getMotor("drivetrain", "leftMain") instanceof TalonSRX,
-                "Talon defined in config does not return TalonSRX"
+                "Talon defined in config does not return TalonSRX",
+                robotFactory.getMotor("drivetrain", "leftMain") instanceof TalonSRX
         );
     }
 
@@ -58,8 +58,8 @@ class RobotFactoryTest {
         IMotorController talon = robotFactory.getMotor("CargoShooter", "arm");
         System.out.println(talon);
         assertTrue(
-                talon instanceof GhostTalonSRX,
-                "Talon undefined in undefined subsystem does not return GhostTalonSRX"
+                "Talon undefined in undefined subsystem does not return GhostTalonSRX",
+                talon instanceof GhostTalonSRX
         );
     }
 
@@ -68,8 +68,8 @@ class RobotFactoryTest {
         IMotorController talon = robotFactory.getMotor("drivetrain", "undefined");
         System.out.println(talon);
         assertTrue(
-                talon instanceof GhostTalonSRX,
-                "Talon undefined in defined subsystem does not return GhostTalonSRX"
+                "Talon undefined in defined subsystem does not return GhostTalonSRX",
+                talon instanceof GhostTalonSRX
         );
     }
 
@@ -78,8 +78,8 @@ class RobotFactoryTest {
         IMotorController talon = robotFactory.getMotor("climber", "one");
         System.out.println(talon);
         assertTrue(
-                talon instanceof GhostTalonSRX,
-                "Talon defined in unimplemented subsystem does not return GhostTalonSRX"
+                "Talon defined in unimplemented subsystem does not return GhostTalonSRX",
+                talon instanceof GhostTalonSRX
         );
     }
 
@@ -88,8 +88,8 @@ class RobotFactoryTest {
         IMotorController talon = robotFactory.getMotor("climber", "two");
         System.out.println(talon);
         assertTrue(
-                talon instanceof GhostTalonSRX,
-                "Talon undefined in unimplemented subsystem does not return GhostTalonSRX"
+                "Talon undefined in unimplemented subsystem does not return GhostTalonSRX",
+                talon instanceof GhostTalonSRX
         );
     }
 

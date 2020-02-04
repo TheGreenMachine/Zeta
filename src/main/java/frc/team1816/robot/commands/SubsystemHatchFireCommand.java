@@ -1,32 +1,31 @@
 package frc.team1816.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team1816.robot.Components;
 import frc.team1816.robot.subsystems.Birdbeak;
 
-public class SubsystemHatchFireCommand extends Command {
+public class SubsystemHatchFireCommand extends CommandBase {
     private Birdbeak birdbeak;
 
     private double initTime;
     private double elapsedDelayMs;
 
     public SubsystemHatchFireCommand() {
-        super("subsystemhatchfirecommand");
         birdbeak = Components.getInstance().birdbeak;
 
         elapsedDelayMs = 100;
 
-        requires(birdbeak);
+        addRequirements(birdbeak);
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         System.out.println("Firing Hatch");
         initTime = System.currentTimeMillis();
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         birdbeak.setPuncher(true);
         if ((initTime + elapsedDelayMs) < System.currentTimeMillis()) {
             birdbeak.setBeak(true);
@@ -34,15 +33,11 @@ public class SubsystemHatchFireCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return ((initTime + elapsedDelayMs) < System.currentTimeMillis());
     }
 
     @Override
-    protected void end() {
-    }
-
-    @Override
-    protected void interrupted() {
+    public void end(boolean isFinished) {
     }
 }
