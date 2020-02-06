@@ -7,6 +7,7 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 
 public class GhostTalonSRX implements IMotorControllerEnhanced {
     private SensorCollection sensorCollection = new SensorCollection(
@@ -140,6 +141,11 @@ public class GhostTalonSRX implements IMotorControllerEnhanced {
     @Override
     public ErrorCode configRemoteFeedbackFilter(int deviceID, RemoteSensorSource remoteSensorSource, int remoteOrdinal, int timeoutMs) {
         return ErrorCode.OK;
+    }
+
+    @Override
+    public ErrorCode configRemoteFeedbackFilter(CANCoder canCoderRef, int remoteOrdinal, int timeoutMs) {
+        return null;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.edinarobotics.utils.commands;
 
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.InternalButton;
 
 /**
- * This {@link Command} repeats the supplied {@link Command} or
- * {@link edu.wpi.first.wpilibj.command.CommandGroup} for the specified number
+ * This {@link CommandBase} repeats the supplied {@link CommandBase} or
+ * {@link edu.wpi.first.wpilibj2.command.CommandGroupBase} for the specified number
  * of repetitions. If it is interrupted, it will cancel the command that is running.
  */
 public class RepeatCommand extends CommandBase {
@@ -24,7 +24,7 @@ public class RepeatCommand extends CommandBase {
      * @throws IllegalArgumentException when {@code repetitions} is negative.
      */
     public RepeatCommand(CommandBase commandToRepeat, int repetitions) {
-        super("Repeat*" + repetitions + ":" + commandToRepeat.getName());
+        super();
         this.commandToRepeat = commandToRepeat;
         this.REPETITIONS = repetitions;
         timesStarted = 0;
@@ -54,15 +54,15 @@ public class RepeatCommand extends CommandBase {
      */
     public void execute() {
         if(timesStarted < REPETITIONS) {
-            if(!commandToRepeat.isRunning() && needToStartCommand < START_COMMAND_THRESHOLD) {
+            if(commandToRepeat.isFinished() && needToStartCommand < START_COMMAND_THRESHOLD) {
                 needToStartCommand++;
                 button.setPressed(false);
             }
-            if(!commandToRepeat.isRunning() && needToStartCommand <= (START_COMMAND_THRESHOLD)){
+            if(commandToRepeat.isFinished() && needToStartCommand <= (START_COMMAND_THRESHOLD)){
                 button.setPressed(true);
                 needToStartCommand++;
             }
-            else if(!commandToRepeat.isRunning() && needToStartCommand >= (START_COMMAND_THRESHOLD+1)){
+            else if(commandToRepeat.isFinished() && needToStartCommand >= (START_COMMAND_THRESHOLD+1)){
                 button.setPressed(false);
                 timesStarted++;
                 needToStartCommand = 0;
@@ -75,7 +75,7 @@ public class RepeatCommand extends CommandBase {
      * has completed.
      */
     public boolean isFinished() {
-        return timesStarted >= REPETITIONS && !commandToRepeat.isRunning();
+        return timesStarted >= REPETITIONS && commandToRepeat.isFinished();
     }
 
     /**
