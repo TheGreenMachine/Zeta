@@ -20,6 +20,7 @@ public class GamepadDriveCommand extends CommandBase {
     public static final double SET_SPEED_DIFF_MAX = 0.08;
 
     public GamepadDriveCommand() {
+        super();
         this.drivetrain = Components.getInstance().drivetrain;
         addRequirements(drivetrain);
     }

@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
         }
         if (drivetrain != null) {
             drivetrain.setDefaultCommand(new GamepadDriveCommand());
-            drivetrain.setSlowMode(false);
+            drivetrain.setSlowMode(true);
             if (!autoInitialized) {
                 drivetrain.setReverseMode(drivetrainReverseChooser.getSelected());
             }
@@ -172,7 +172,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (drivetrain != null && leds != null && drivetrain.getCurrentCommand().getName().equals(GamepadDriveCommand.NAME)) {
+        if (drivetrain != null && leds != null) {
             if (DriverStation.getInstance().getMatchTime() <= 60 && DriverStation.getInstance().getMatchTime() > 0) {
                 leds.blinkStatus(RobotStatus.ENDGAME);
             } else if (drivetrain.isReverseMode()) {
